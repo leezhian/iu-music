@@ -1,0 +1,65 @@
+@font-face {
+    font-family: 'iconfont';
+    src: url('../fonts/iconfont.eot');
+    src: url('../fonts/iconfont.eot?#iefix') format('embedded-opentype'),
+    url('../fonts/iconfont.woff2') format('woff2'),
+    url('../fonts/iconfont.woff') format('woff'),
+    url('../fonts/iconfont.ttf') format('truetype'),
+    url('../fonts/iconfont.svg#iconfont') format('svg');
+}
+
+.iconfont {
+    font-family: "iconfont" !important;
+    font-size: .32rem;
+    font-style: normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-user {
+    &:before {
+        content: "\e690";
+    }
+
+    &.active {
+        &:before {
+            content: "\e63b";
+        }
+    }
+}
+
+.icon-album {
+    &:before {
+        content: "\e68f";
+    }
+
+    &.active {
+        &:before {
+            content: "\e68c";
+        }
+    }
+}
+
+.icon-rankingList {
+    &:before {
+        content: "\e68e";
+    }
+
+    &.active {
+        &:before {
+            content: "\e604";
+        }
+    }
+}
+
+.icon-music {
+    &:before {
+        content: "\e68d";
+    }
+
+    &.active {
+        &:before {
+            content: "\e611";
+        }
+    }
+}

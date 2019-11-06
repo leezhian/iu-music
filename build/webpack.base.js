@@ -11,6 +11,10 @@ const VueLoaderPlugin = require('vue-loader/lib/plugin');
 
 const devMode = process.env.NODE_ENV !== 'production';
 
+function resolve(dir) {
+    return path.join(__dirname, '..', dir);
+}
+
 // webpack 插件
 const plugins = [
     new HtmlWebpackPlugin({
@@ -57,7 +61,7 @@ module.exports = {
             {
                 test: /\.(sc|sa|c)ss$/,
                 use: [
-                    {
+                    devMode ? 'vue-style-loader' : {
                         loader: MiniCssExtractPlugin.loader,
                         options: {
                             hmr: devMode,
@@ -66,10 +70,10 @@ module.exports = {
                     },
                     {
                         loader: 'css-loader',
-                        options: {
-                            importLoaders: 2,
-                            modules: true,
-                        }
+                        // options: {
+                        //     importLoaders: 2,
+                        //     modules: true,
+                        // }
                     },
                     'sass-loader',
                     'postcss-loader'
@@ -144,6 +148,10 @@ module.exports = {
         extensions: ['.js', '.vue', '.jsx'],
         alias: {
             // 配置路径别名
+            'components': resolve('src/components'),
+            'common': resolve('src/common'),
+            'api': resolve('src/api'),
+            'static': resolve('src/static')
         }
     }
 };
