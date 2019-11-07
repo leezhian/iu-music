@@ -18,48 +18,114 @@
 
 .icon-user {
     &:before {
-        content: "\e690";
-    }
-
-    &.active {
-        &:before {
-            content: "\e63b";
-        }
+        content: "\e63b";
     }
 }
 
 .icon-album {
     &:before {
-        content: "\e68f";
-    }
-
-    &.active {
-        &:before {
-            content: "\e68c";
-        }
+        content: "\e68c";
     }
 }
 
 .icon-rankingList {
     &:before {
-        content: "\e68e";
-    }
-
-    &.active {
-        &:before {
-            content: "\e604";
-        }
+        content: "\e604";
     }
 }
 
 .icon-music {
     &:before {
+        content: "\e611";
+    }
+}
+
+.icon-prev {
+    &:before {
         content: "\e68d";
     }
+}
 
-    &.active {
-        &:before {
-            content: "\e611";
-        }
+.icon-next {
+    &:before {
+        content: "\e663";
+    }
+}
+
+.icon-play {
+    &:before {
+        content: "\e665";
+    }
+}
+
+.icon-pause {
+    &:before {
+        content: "\e666";
+    }
+}
+
+.icon-loop {
+    &:before {
+        content: "\e667";
+    }
+}
+
+.icon-random {
+    &:before {
+        content: "\e619";
+    }
+}
+
+.icon-single {
+    &:before {
+        content: "\e668";
+    }
+}
+
+.icon-menu {
+    &:before {
+        content: "\e664";
+    }
+}
+
+.icon-back {
+    &:before {
+        content: "\e607";
+    }
+}
+
+.icon-noLike {
+    &:before {
+        content: "\e609";
+    }
+}
+
+.icon-like {
+    &:before {
+        content: "\e616";
+    }
+}
+
+.icon-download {
+    &:before {
+        content: "\e60b";
+    }
+}
+
+.icon-vip {
+    &:before {
+        content: "\e670";
+    }
+}
+
+.icon-audition {
+    &:before {
+        content: "\e671";
+    }
+}
+
+.icon-smallPlay {
+    &:before {
+        content: "\e612";
     }
 }

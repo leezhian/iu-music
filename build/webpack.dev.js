@@ -11,7 +11,8 @@ const devConfig = module.exports = {
         contentBase: './dist',
         port: 3000,
         hot: true,
-        historyApiFallback: true
+        historyApiFallback: true,
+        // host: '0.0.0.0'
     },
     plugins: [
         new webpack.HotModuleReplacementPlugin()

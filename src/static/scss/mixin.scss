@@ -4,7 +4,12 @@
   @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
     background-image: url($url + "@3x.png");
   }
+}
 
+@mixin bg-coverAndCenter() {
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
 }
 
 // 不换行
