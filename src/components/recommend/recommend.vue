@@ -36,7 +36,7 @@
 </template>
 
 <script>
-    import slider from '../../common/slider/slider';
+    import slider from 'common/slider/slider';
 
     export default {
         mounted() {

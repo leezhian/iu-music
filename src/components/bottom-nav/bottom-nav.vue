@@ -1,28 +1,52 @@
 <template>
     <div class="nav-container">
         <div class="nav">
-            <router-link tag="div" to="/recommend" class="nav-item active">
-                <i class="icon icon-music"></i>
-                <p class="title">推荐</p>
-            </router-link>
-            <router-link tag="div" to="/album" class="nav-item">
-                <i class="icon icon-album"></i>
-                <p class="title">专辑</p>
-            </router-link>
-            <router-link tag="div" to="/rankinglist" class="nav-item">
-                <i class="icon icon-rankingList"></i>
-                <p class="title">排行</p>
-            </router-link>
-            <router-link tag="div" to="/user" class="nav-item">
-                <i class="icon icon-user"></i>
-                <p class="title">我的</p>
+            <router-link tag="div"
+                         :to="'/' + item.route"
+                         class="nav-item"
+                         v-for="item in nav"
+                         :key="item.id">
+                <i :class="['icon', item.icon]"></i>
+                <p class="title">{{item.title}}</p>
             </router-link>
         </div>
     </div>
 </template>
 
 <script>
-    export default {}
+    export default {
+        data() {
+            return {
+                nav: [
+                    {
+                        id: 1,
+                        title: '推荐',
+                        route: 'recommend',
+                        icon: 'icon-music'
+                    },
+                    {
+                        id: 2,
+                        title: '专辑',
+                        route: 'album',
+                        icon: 'icon-album'
+                    },
+                    {
+                        id: 3,
+                        title: '排行榜',
+                        route: 'rankinglist',
+                        icon: 'icon-rankingList'
+                    },
+                    {
+                        id: 4,
+                        title: '我的',
+                        route: 'user',
+                        icon: 'icon-user'
+                    }
+                ]
+            }
+        },
+        methods: {}
+    }
 </script>
 
 <style scoped lang="scss" rel="stylesheet">
@@ -57,7 +81,7 @@
                     text-align: center;
                 }
 
-                &.active {
+                &.router-link-active {
                     color: $color-font-theme;
                 }
             }
