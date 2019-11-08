@@ -1,7 +1,7 @@
 <template>
     <div id="app">
         <keep-alive>
-            <router-view></router-view>
+            <router-view class="container"></router-view>
         </keep-alive>
         <bottom-nav class="nav-fixed"></bottom-nav>
     </div>
@@ -18,6 +18,10 @@
 </script>
 
 <style scoped lang="scss" rel="stylesheet">
+    .container {
+        padding-bottom: 1.2rem;
+    }
+
     .nav-fixed {
         position: fixed;
         bottom: 0;

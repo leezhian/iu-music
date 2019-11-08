@@ -9,18 +9,21 @@
                 </div>
             </div>
         </cover>
+        <record></record>
     </div>
 </template>
 
 <script>
     import cover from 'common/cover/cover';
+    import record from 'common/record/record';
 
     export default {
         data() {
             return {}
         },
         components: {
-            cover
+            cover,
+            record
         }
     }
 </script>
