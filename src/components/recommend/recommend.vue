@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="recommend-page">
         <div class="search-wrap">
             <input class="search" type="search" placeholder="搜索">
         </div>
@@ -114,6 +114,16 @@
 <style scoped rel="stylesheet" lang="scss">
     @import "static/scss/variable.scss";
     @import "static/scss/mixin.scss";
+    .recommend-page{
+        position: fixed;
+        width: 100%;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 1.2rem;
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
 
     .search-wrap {
         display: flex;

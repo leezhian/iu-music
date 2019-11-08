@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="album-page">
         <cover>
             <div class="cover-container">
                 <div class="title">专辑</div>
@@ -9,7 +9,10 @@
                 </div>
             </div>
         </cover>
+
         <record></record>
+
+        <router-view></router-view>
     </div>
 </template>
 
@@ -29,5 +32,14 @@
 </script>
 
 <style scoped lang="scss" rel="stylesheet">
-
+    .album-page{
+        position: fixed;
+        width: 100%;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 1.2rem;
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
 </style>

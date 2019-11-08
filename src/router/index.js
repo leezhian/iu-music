@@ -5,6 +5,8 @@ import Album from 'components/album/album.vue';
 import RankingList from 'components/rankingList/rankingList';
 import User from 'components/user/user';
 
+import recordDetail from 'components/recordDetail/recordDetail';
+
 Vue.use(Router);
 
 export default new Router({
@@ -19,7 +21,13 @@ export default new Router({
         },
         {
             path: '/album',
-            component: Album
+            component: Album,
+            children: [
+                {
+                    path: ':id',
+                    component: recordDetail
+                }
+            ]
         },
         {
             path: '/rankinglist',

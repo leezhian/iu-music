@@ -53,6 +53,10 @@
     @import "static/scss/variable.scss";
 
     .nav-container {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
         width: 100%;
         height: 1.2rem;
 

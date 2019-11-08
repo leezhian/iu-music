@@ -4,7 +4,8 @@
             <div class="record-item"
                  v-for="item in recordList"
                  :key="item.id"
-                 ref="recordItem">
+                 ref="recordItem"
+                 @click="handleClickRecord(item.id)">
                 <div class="record-cover"
                      :style="{'height': `${recordH}px`, 'background-image': `url(${item.cover})`}">
                     <div class="listen-info">
@@ -69,6 +70,15 @@
                         num: '11万'
                     }
                 ]
+            }
+        },
+        methods: {
+            handleClickRecord(recordId) {
+                this.$router.push({
+                    path: `/album/${recordId}`
+                });
+                // 提交singer到store
+                // this.setSinger(singer)
             }
         }
     }
