@@ -10,16 +10,68 @@
                     </div>
                 </div>
             </cover>
+
+            <song-list :songList="songList"></song-list>
         </div>
     </transition>
 </template>
 
 <script>
     import cover from 'common/cover/cover';
+    import songList from 'common/song-list/song-list';
 
     export default {
+        data() {
+            return {
+                songList: [
+                    {
+                        id: 1,
+                        name: '夜信',
+                        singer: 'IU',
+                        album: '밤편지'
+                    },
+                    {
+                        id: 2,
+                        name: '삐삐 - (BBIBBI)',
+                        singer: 'IU',
+                        album: '삐삐 - (BBIBBI)'
+                    },
+                    {
+                        id: 3,
+                        name: '除了春天 爱情和樱花',
+                        singer: 'IU',
+                        album: '밤편지'
+                    },
+                    {
+                        id: 4,
+                        name: '팔레트 - (Palette)',
+                        singer: 'IU',
+                        album: 'Palette'
+                    },
+                    {
+                        id: 5,
+                        name: '좋은 날 - (好日子)',
+                        singer: 'IU',
+                        album: 'Real'
+                    },
+                    {
+                        id: 6,
+                        name: '囍帖街 (Live) - (原唱:谢安琪)',
+                        singer: 'IU',
+                        album: 'Covers & Unreleased Songs'
+                    },
+                    {
+                        id: 7,
+                        name: '喜欢你 - (原唱：Beyond)',
+                        singer: 'IU',
+                        album: 'Covers & Unreleased Songs'
+                    }
+                ]
+            }
+        },
         components: {
-            cover
+            cover,
+            songList
         }
     }
 </script>
