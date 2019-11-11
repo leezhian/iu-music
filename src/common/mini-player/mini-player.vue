@@ -1,6 +1,6 @@
 <template>
-    <div class="mini-wrap">
-        <div class="mini-player play" @click="handlePlayer">
+    <div class="mini-wrap" @click="handlePlayer">
+        <div class="mini-player play" >
             <img class="mini-cover" :src="`https://y.gtimg.cn/music/photo_new/T002R90x90M000003HmTZY2CV5yp.jpg?max_age=2592000)`" alt="">
         </div>
 
@@ -25,11 +25,13 @@
     @import "static/scss/mixin.scss";
 
     .mini-wrap {
+        z-index: 50;
         position: fixed;
         right: .3rem;
         bottom: 2rem;
         width: 1rem;
         height: 1rem;
+        border-radius: 50%;
         background-color: $color-background;
     }
 

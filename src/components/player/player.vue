@@ -1,54 +1,59 @@
 <template>
-    <transition name="player">
-        <div class="player-page">
-            <div class="player-header">
-                <div class="goToBack icon-back"></div>
-                <div class="title-box">
-                    <p class="sing-name">夜信</p>
-                    <p class="singer">IU</p>
-                </div>
-                <div class="like-btn icon-noLike"></div>
-            </div>
-
-            <div class="player-container">
-                <div class="cd-wrapper">
-                    <div class="cd play">
-                        <img class="cd-img"
-                             src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1573478362532&di=f88ceb288ac93bc766849914a3bf310b&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201506%2F21%2F20150621222230_KieHX.thumb.700_0.jpeg"
-                             alt="">
-                        <div class="wave"></div>
-                        <div class="wave"></div>
-                        <div class="wave"></div>
+    <div class="player">
+        <transition name="player">
+            <div class="player-page">
+                <div class="player-header">
+                    <div class="goToBack icon-back"></div>
+                    <div class="title-box">
+                        <p class="sing-name">夜信</p>
+                        <p class="singer">IU</p>
                     </div>
+                    <div class="like-btn icon-noLike"></div>
                 </div>
-            </div>
 
-            <div class="player-footer">
-                <div class="progressBar-box">
-                    <div class="time">00:00</div>
-
-                    <div class="progressBar">
-                        <div class="progress">
+                <div class="player-container">
+                    <div class="cd-wrapper">
+                        <div class="cd play">
+                            <img class="cd-img"
+                                 src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1573478362532&di=f88ceb288ac93bc766849914a3bf310b&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201506%2F21%2F20150621222230_KieHX.thumb.700_0.jpeg"
+                                 alt="">
+                            <div class="wave"></div>
+                            <div class="wave"></div>
                         </div>
                     </div>
-
-                    <div class="time">03:38</div>
                 </div>
-                <div class="tools">
-                    <div class="btn icon-loop"></div>
-                    <div class="btn icon-prev"></div>
-                    <div class="btn playBtn icon-play"></div>
-                    <div class="btn icon-next"></div>
-                    <div class="btn icon-menu"></div>
+
+                <div class="player-footer">
+                    <div class="progressBar-box">
+                        <div class="time">00:00</div>
+
+                        <div class="progressBar">
+                            <div class="progress">
+                            </div>
+                        </div>
+
+                        <div class="time">03:38</div>
+                    </div>
+                    <div class="tools">
+                        <div class="btn icon-loop"></div>
+                        <div class="btn icon-prev"></div>
+                        <div class="btn playBtn icon-play"></div>
+                        <div class="btn icon-next"></div>
+                        <div class="btn icon-menu"></div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </transition>
+        </transition>
+
+        <mini-player></mini-player>
+    </div>
 </template>
 
 <script>
+    import MiniPlayer from 'common/mini-player/mini-player';
+
     export default {
-        name: "player"
+        components: {MiniPlayer}
     }
 </script>
 
@@ -122,10 +127,10 @@
 
     @keyframes enlargeWave {
         from {
-            transform: scale(1,1);
+            transform: scale(1, 1);
         }
         to {
-            transform: scale(1.5,1.5);
+            transform: scale(1.5, 1.5);
             opacity: 0;
         }
     }
@@ -158,11 +163,7 @@
                     }
 
                     .wave:nth-of-type(2) {
-                        animation: enlargeWave 2s linear .6s infinite;
-                    }
-
-                    .wave:nth-of-type(3) {
-                        animation: enlargeWave 2s linear 1.2s infinite;
+                        animation: enlargeWave 2s linear 1s infinite;
                     }
                 }
 

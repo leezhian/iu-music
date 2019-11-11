@@ -2,6 +2,7 @@
     <div class="recommend-page">
         <div class="search-wrap">
             <input class="search" type="search" placeholder="搜索">
+            <div class="logo"></div>
         </div>
 
         <div class="swiper-wrap">
@@ -31,12 +32,19 @@
                     <p class="cover-content">{{item.title}}</p>
                 </li>
             </ul>
+
+            <div class="playList-header">
+                <p class="title">推荐单曲</p>
+            </div>
+
+            <song-list :songList="songList"></song-list>
         </div>
     </div>
 </template>
 
 <script>
     import slider from 'common/slider/slider';
+    import SongList from 'common/song-list/song-list';
 
     export default {
         mounted() {
@@ -102,6 +110,44 @@
                         imgUrl: 'https://p.qpic.cn/music_cover/X9lmt3gQ1KkaezXF13jX3yDqG1XgKQrnMOYq7I7ialLL5CicPmyRBABw/300?n=1',
                         title: '致前任：你以为我不会走，我以为你会留'
                     }
+                ],
+                songList: [
+                    {
+                        id: 1,
+                        name: '夜信',
+                        singer: 'IU',
+                        album: '밤편지'
+                    },
+                    {
+                        id: 2,
+                        name: '삐삐 - (BBIBBI)',
+                        singer: 'IU',
+                        album: '삐삐 - (BBIBBI)'
+                    },
+                    {
+                        id: 3,
+                        name: '除了春天 爱情和樱花',
+                        singer: 'IU',
+                        album: '밤편지'
+                    },
+                    {
+                        id: 4,
+                        name: '팔레트 - (Palette)',
+                        singer: 'IU',
+                        album: 'Palette'
+                    },
+                    {
+                        id: 5,
+                        name: '좋은 날 - (好日子)',
+                        singer: 'IU',
+                        album: 'Real'
+                    },
+                    {
+                        id: 6,
+                        name: '囍帖街 (Live) - (原唱:谢安琪)',
+                        singer: 'IU',
+                        album: 'Covers & Unreleased Songs'
+                    }
                 ]
             }
         },
@@ -112,7 +158,8 @@
             }
         },
         components: {
-            slider
+            slider,
+            SongList
         }
     }
 </script>
@@ -134,21 +181,34 @@
 
     .search-wrap {
         display: flex;
-        justify-content: center;
+        justify-content: space-between;
         align-items: center;
         width: 100%;
         height: 1rem;
+        padding-left: .3rem;
+        padding-right: .3rem;
 
         .search {
+            flex-grow: 1;
             display: block;
             padding-left: .2rem;
             padding-right: .2rem;
-            width: 4.4rem;
             height: .6rem;
             border-radius: 3rem;
             border: none;
             outline: none;
             background-color: $color-search-background;
+        }
+
+        .logo {
+            margin-left: .3rem;
+            flex-shrink: 0;
+            width: 1rem;
+            height: 1rem;
+            padding: .1rem;
+            background-origin: content-box;
+            background-clip: content-box;
+            @include bg-cover('../../static/images/logo.png');
         }
 
         input::-webkit-input-placeholder {

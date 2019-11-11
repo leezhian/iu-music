@@ -4,18 +4,18 @@
         <keep-alive>
             <router-view></router-view>
         </keep-alive>
-        <mini-player></mini-player>
+<!--        <Player></Player>-->
     </div>
 </template>
 
 <script>
     import BottomNav from 'components/bottom-nav/bottom-nav';
-    import MiniPlayer from 'common/mini-player/mini-player';
+    import Player from 'components/player/player';
 
     export default {
         components: {
-            MiniPlayer,
-            BottomNav
+            BottomNav,
+            Player
         }
     }
 </script>

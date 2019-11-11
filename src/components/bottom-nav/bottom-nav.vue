@@ -10,6 +10,8 @@
                 <p class="title">{{item.title}}</p>
             </router-link>
         </div>
+
+        <mini-player></mini-player>
     </div>
 </template>
 

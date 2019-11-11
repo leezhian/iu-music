@@ -1,5 +1,5 @@
 <template>
-    <transition name="page">
+    <transition name="player">
         <div class="record-page">
             <cover :hasBack="true">
                 <div class="cover-container">
@@ -90,12 +90,11 @@
         background-color: $color-background;
     }
 
-    .page-enter-active, .page-leave-active {
+    .player-enter-active, .player-leave-active {
         transition: all .3s;
     }
 
-    .page-enter, .page-leave-to {
+    .player-enter, .player-leave-to {
         transform: translateX(100%);
     }
-
 </style>
