@@ -1,14 +1,22 @@
 <template>
-    <!--    <div class="mini-player" :style="{'background-image': `url(${https://y.gtimg.cn/music/photo_new/T002R90x90M000003HmTZY2CV5yp.jpg?max_age=2592000})`}">-->
-    <div class="mini-player play"
-         :style="{'background-image': `url(https://y.gtimg.cn/music/photo_new/T002R90x90M000003HmTZY2CV5yp.jpg?max_age=2592000)`}">
+    <div class="mini-wrap">
+        <div class="mini-player play" @click="handlePlayer">
+            <img class="mini-cover" :src="`https://y.gtimg.cn/music/photo_new/T002R90x90M000003HmTZY2CV5yp.jpg?max_age=2592000)`" alt="">
+        </div>
 
+        <router-view></router-view>
     </div>
 </template>
 
 <script>
     export default {
-        name: "mini-player"
+        methods: {
+            handlePlayer() {
+                this.$router.push({
+                    path: `/player`
+                });
+            }
+        }
     }
 </script>
 
@@ -16,16 +24,27 @@
     @import "static/scss/variable.scss";
     @import "static/scss/mixin.scss";
 
-    .mini-player {
+    .mini-wrap {
         position: fixed;
         right: .3rem;
         bottom: 2rem;
         width: 1rem;
         height: 1rem;
+        background-color: $color-background;
+    }
+
+    .mini-player {
+        width: 100%;
+        height: 100%;
         border: .04rem solid rgba(147, 112, 219, .5);
         border-radius: 50%;
-        transform: rotate(0deg);
-        @include bg-coverAndCenter();
+
+        .mini-cover {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            @include bg-coverAndCenter();
+        }
 
         &.play {
             animation: playerRotate 10s linear infinite;

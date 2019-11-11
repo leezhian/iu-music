@@ -40,16 +40,16 @@
 
     export default {
         mounted() {
+            const self = this;
             if (this.playList.length) {
-                this.coverImgH = this.$refs.coverItem[0].clientWidth;
+                this._resetCoverH();
 
-                window.addEventListener('resize', () => {
-                    this.coverImgH = this.$refs.coverItem[0].clientWidth;
-                });
+                window.addEventListener('resize', self._resetCoverH);
             }
         },
         beforeDestroy() {
-            window.removeEventListener('resize');
+            const self = this;
+            window.removeEventListener('resize', self._resetCoverH);
         },
         data() {
             return {
@@ -105,6 +105,12 @@
                 ]
             }
         },
+        methods: {
+            // 重置推荐歌单图片高度
+            _resetCoverH() {
+                this.coverImgH = this.$refs.coverItem[0].clientWidth;
+            }
+        },
         components: {
             slider
         }
@@ -114,7 +120,8 @@
 <style scoped rel="stylesheet" lang="scss">
     @import "static/scss/variable.scss";
     @import "static/scss/mixin.scss";
-    .recommend-page{
+
+    .recommend-page {
         position: fixed;
         width: 100%;
         top: 0;
