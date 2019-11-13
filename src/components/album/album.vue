@@ -10,7 +10,7 @@
             </div>
         </cover>
 
-        <record></record>
+        <record :recordList="recordList" @handleClickRecord="handleClickRecord" v-if="recordList.length"></record>
 
         <router-view></router-view>
     </div>
@@ -19,10 +19,52 @@
 <script>
     import cover from 'common/cover/cover';
     import record from 'common/record/record';
+    import _ from 'lodash';
+
+    import {getAblumList} from 'api/ablum';
 
     export default {
+        created() {
+            getAblumList(this.page, this.pageSize).then(res => {
+                if (res.code == 200) {
+                    // 处理singer
+                    _.forEach(res.data.list, item => {
+                        let singer = '';
+                        if (item.singerList.length > 1) {
+                            _.forEach(item.singerList, value => {
+                                singer += value.singerName + '/';
+                            });
+                        } else {
+                            singer = item.singerList[0].singerName + '/';
+                        }
+                        item.singer = singer.substring(0, singer.length - 1);
+                    });
+
+                    this.page += 1;
+                    this.recordList = this.recordList.concat(res.data.list);
+                    this.hasNextPage = res.data.hasNextPage;
+                }
+            });
+        },
         data() {
-            return {}
+            return {
+                page: 1,
+                pageSize: 6,
+                hasNextPage: true, // 是否有下一页
+                recordList: [], // 唱片列表
+            }
+        },
+        methods: {
+            handleClickRecord(index) {
+                // const self = this;
+                const recordId = this.recordList[index].id;
+                this.$router.push({
+                    path: `/album/${recordId}`,
+                    params: {
+                        songIds: this.recordList[index].songIds
+                    }
+                });
+            }
         },
         components: {
             cover,
@@ -32,7 +74,7 @@
 </script>
 
 <style scoped lang="scss" rel="stylesheet">
-    .album-page{
+    .album-page {
         position: fixed;
         width: 100%;
         top: 0;

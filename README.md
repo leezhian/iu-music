@@ -6,7 +6,7 @@
 
 # 使用技术
 1. webpack
-2. vue + vue-router + vuex
+2. vue + vue-router + vuex + vue-lazyload
 3. axios
 4. lodash库
 5. better-scroll

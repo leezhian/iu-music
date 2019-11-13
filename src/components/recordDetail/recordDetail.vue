@@ -20,7 +20,17 @@
     import cover from 'common/cover/cover';
     import songList from 'common/song-list/song-list';
 
+    import {getSongList} from 'api/ablum';
+
     export default {
+        created() {
+            getSongList('15,16,17,18,19,20').then(res => {
+                console.log(res);
+                if (res.code == 200) {
+
+                }
+            });
+        },
         data() {
             return {
                 songList: [
@@ -78,7 +88,8 @@
 
 <style scoped rel="stylesheet" lang="scss">
     @import "static/scss/variable.scss";
-    .record-page{
+
+    .record-page {
         position: fixed;
         z-index: 50;
         left: 0;

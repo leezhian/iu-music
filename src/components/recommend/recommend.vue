@@ -23,7 +23,8 @@
             <ul class="cover-item-box" v-if="playList.length">
                 <li class="cover-item" v-for="item in playList" :key="item.id" ref="coverItem">
                     <div class="cover-img"
-                         :style="{'background-image': `url(${item.cover})`, 'height': coverImgH + 'px'}">
+                         v-lazy:background-image="item.cover"
+                         :style="{'height': coverImgH + 'px'}">
                         <div class="cover-label">
                             <i class="icon icon-smallPlay"></i>
                             <span class="num">{{item.listenTotal}}</span>
@@ -100,7 +101,7 @@
         },
         data() {
             return {
-                coverImgH: 1,
+                coverImgH: 1, // 歌单海报高度
                 swiperList: [], // 轮播图
                 playList: [], // 推荐歌单
                 songList: [], // 推荐单曲
