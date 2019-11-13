@@ -8,8 +8,8 @@
                     <span class="num" v-if="showNum">{{index +1}}</span>
                 </div>
                 <div class="container">
-                    <h2 class="name">{{item.name}}</h2>
-                    <p class="singer">{{item.singer | getDesc(item.album)}}</p>
+                    <h2 class="name">{{item.songName}}</h2>
+                    <p class="singer">{{item.singer | getDesc(item.ablumName)}}</p>
                 </div>
                 <div class="tools" v-if="hasDownload">
                     <i class="download icon-download"></i>

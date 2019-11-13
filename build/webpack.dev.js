@@ -12,7 +12,7 @@ const devConfig = module.exports = {
         port: 3000,
         hot: true,
         historyApiFallback: true,
-        host: '0.0.0.0'
+        // host: '0.0.0.0'
     },
     plugins: [
         new webpack.HotModuleReplacementPlugin()

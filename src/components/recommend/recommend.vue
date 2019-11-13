@@ -6,10 +6,10 @@
         </div>
 
         <div class="swiper-wrap">
-            <slider>
+            <slider v-if="swiperList.length">
                 <div v-for="item in swiperList" :key="item.id">
-                    <a :href="item.linkUrl">
-                        <img :src="item.imgUrl" alt="">
+                    <a :href="item.link">
+                        <img :src="item.poster" alt="">
                     </a>
                 </div>
             </slider>
@@ -20,16 +20,16 @@
                 <p class="title">推荐歌单</p>
                 <div class="btn">歌单广场</div>
             </div>
-            <ul class="cover-item-box">
+            <ul class="cover-item-box" v-if="playList.length">
                 <li class="cover-item" v-for="item in playList" :key="item.id" ref="coverItem">
                     <div class="cover-img"
-                         :style="{'background-image': `url(${item.imgUrl})`, 'height': coverImgH + 'px'}">
+                         :style="{'background-image': `url(${item.cover})`, 'height': coverImgH + 'px'}">
                         <div class="cover-label">
                             <i class="icon icon-smallPlay"></i>
-                            <span class="num">11万</span>
+                            <span class="num">{{item.listenTotal}}</span>
                         </div>
                     </div>
-                    <p class="cover-content">{{item.title}}</p>
+                    <p class="cover-content">{{item.name}}</p>
                 </li>
             </ul>
 
@@ -37,7 +37,7 @@
                 <p class="title">推荐单曲</p>
             </div>
 
-            <song-list :songList="songList"></song-list>
+            <song-list :songList="songList" v-if="songList.length"></song-list>
         </div>
     </div>
 </template>
@@ -46,14 +46,53 @@
     import slider from 'common/slider/slider';
     import SongList from 'common/song-list/song-list';
 
+    import {getSwiperList, getRecommendPlayerList, getRecommendSongs} from 'api/recommend';
+    import _ from 'lodash';
+
     export default {
+        created() {
+            // 获取轮播图
+            getSwiperList().then(res => {
+                if (res.code == 200) {
+                    _.forEach(res.data, item => {
+                        if (item.linkType == 1) {
+                            item.link = `/playlist/${item.id}`;
+                        } else if (item.linkType == 2) {
+                            item.link = `/ablum/${item.id}`;
+                        }
+                    });
+                    this.swiperList = res.data;
+                }
+            });
+
+            // 推荐歌单
+            getRecommendPlayerList().then(res => {
+                if (res.code == 200) {
+                    this.playList = res.data;
+                }
+            });
+
+            // 推荐单曲
+            getRecommendSongs().then(res => {
+                if (res.code == 200) {
+                    _.forEach(res.data, item => {
+                        let singer = '';
+                        if (item.singerList.length > 1) {
+                            _.forEach(item.singerList, value => {
+                                singer += value.singerName + '/';
+                            });
+                        } else {
+                            singer = item.singerList[0].singerName + '/';
+                        }
+                        item.singer = singer.substring(0, singer.length - 1);
+                    });
+                    this.songList = res.data;
+                }
+            });
+        },
         mounted() {
             const self = this;
-            if (this.playList.length) {
-                this._resetCoverH();
-
-                window.addEventListener('resize', self._resetCoverH);
-            }
+            window.addEventListener('resize', self._resetCoverH);
         },
         beforeDestroy() {
             const self = this;
@@ -62,104 +101,32 @@
         data() {
             return {
                 coverImgH: 1,
-                swiperList: [
-                    {
-                        id: '1',
-                        imgUrl: 'http://p1.music.126.net/SL_Mb2UlPzIf1qLa-pdvZQ==/109951164473070267.jpg?imageView&quality=89',
-                        linkUrl: 'aa'
-                    },
-                    {
-                        id: '2',
-                        imgUrl: 'http://p1.music.126.net/EKY0qBxMWxqsZDMK6NE8OA==/109951164472787221.jpg?imageView&quality=89',
-                        linkUrl: 'aa'
-                    },
-                    {
-                        id: '3',
-                        imgUrl: 'http://p1.music.126.net/QxlWiwTaS-Q_X-Ab16oaMg==/109951164472793774.jpg?imageView&quality=89',
-                        linkUrl: 'aa'
-                    }
-                ],
-                playList: [
-                    {
-                        id: 1,
-                        imgUrl: 'https://p.qpic.cn/music_cover/CWicWfBTb9hhZU7ia18JvSxHia9ECbVIWjnWlN4SXqMODqK7splEZFOyg/300?n=1',
-                        title: '「国语」越苦的情歌，越要敢唱'
-                    },
-                    {
-                        id: 2,
-                        imgUrl: 'https://p.qpic.cn/music_cover/4R8XfMNqF63nu0rAgricJR6AVsDn053CqP3JYl4676kf2Fib3OD2BPIQ/300?n=1',
-                        title: '一生太长，我只想对你说五个字'
-                    },
-                    {
-                        id: 3,
-                        imgUrl: 'https://p.qpic.cn/music_cover/R8unPZMA4Vp5v2Ms96bst9Ovu8dH3yFr4sugVudVJ9tOUoxCGKJZLQ/300?n=1',
-                        title: '致前任：何来亏欠，我敢给就敢心碎'
-                    },
-                    {
-                        id: 4,
-                        imgUrl: 'https://p.qpic.cn/music_cover/ezXpob9biaedyoUWFJDttESkgXCPptb7kLQSsL2wCf4aJP9MEUP5ZCg/300?n=1',
-                        title: '粤语回忆录：曾经让你伤感流泪的歌声'
-                    },
-                    {
-                        id: 5,
-                        imgUrl: 'https://p.qpic.cn/music_cover/jXFicBvicUcfIWSoCNT1OrbGDexDlNTnj22TSQd0wvfIrsYCethQqa1w/300?n=1',
-                        title: '华语：明明你也很爱我，没理由爱不到结果'
-                    },
-                    {
-                        id: 6,
-                        imgUrl: 'https://p.qpic.cn/music_cover/X9lmt3gQ1KkaezXF13jX3yDqG1XgKQrnMOYq7I7ialLL5CicPmyRBABw/300?n=1',
-                        title: '致前任：你以为我不会走，我以为你会留'
-                    }
-                ],
-                songList: [
-                    {
-                        id: 1,
-                        name: '夜信',
-                        singer: 'IU',
-                        album: '밤편지'
-                    },
-                    {
-                        id: 2,
-                        name: '삐삐 - (BBIBBI)',
-                        singer: 'IU',
-                        album: '삐삐 - (BBIBBI)'
-                    },
-                    {
-                        id: 3,
-                        name: '除了春天 爱情和樱花',
-                        singer: 'IU',
-                        album: '밤편지'
-                    },
-                    {
-                        id: 4,
-                        name: '팔레트 - (Palette)',
-                        singer: 'IU',
-                        album: 'Palette'
-                    },
-                    {
-                        id: 5,
-                        name: '좋은 날 - (好日子)',
-                        singer: 'IU',
-                        album: 'Real'
-                    },
-                    {
-                        id: 6,
-                        name: '囍帖街 (Live) - (原唱:谢安琪)',
-                        singer: 'IU',
-                        album: 'Covers & Unreleased Songs'
-                    }
-                ]
+                swiperList: [], // 轮播图
+                playList: [], // 推荐歌单
+                songList: [], // 推荐单曲
             }
         },
         methods: {
             // 重置推荐歌单图片高度
             _resetCoverH() {
+                if (!this.$refs.coverItem) {
+                    return;
+                }
                 this.coverImgH = this.$refs.coverItem[0].clientWidth;
             }
         },
         components: {
             slider,
             SongList
+        },
+        watch: {
+            'playList': function () {
+                setTimeout(() => {
+                    if (this.playList.length) {
+                        this._resetCoverH();
+                    }
+                }, 20)
+            }
         }
     }
 </script>
