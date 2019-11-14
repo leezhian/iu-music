@@ -1,49 +1,56 @@
 <template>
     <div class="recommend-page">
-        <div class="search-wrap">
-            <input class="search" type="search" placeholder="搜索">
-            <div class="logo"></div>
-        </div>
+        <scroll class="recommend-content" :data="songList">
+            <div>
 
-        <div class="swiper-wrap">
-            <slider v-if="swiperList.length">
-                <div v-for="item in swiperList" :key="item.id">
-                    <a :href="item.link">
-                        <img :src="item.poster" alt="">
-                    </a>
+                <div class="search-wrap">
+                    <input class="search" type="search" placeholder="搜索">
+                    <div class="logo"></div>
                 </div>
-            </slider>
-        </div>
 
-        <div class="playList-container">
-            <div class="playList-header">
-                <p class="title">推荐歌单</p>
-                <div class="btn">歌单广场</div>
-            </div>
-            <ul class="cover-item-box" v-if="playList.length">
-                <li class="cover-item" v-for="item in playList" :key="item.id" ref="coverItem">
-                    <div class="cover-img"
-                         v-lazy:background-image="item.cover"
-                         :style="{'height': coverImgH + 'px'}">
-                        <div class="cover-label">
-                            <i class="icon icon-smallPlay"></i>
-                            <span class="num">{{item.listenTotal}}</span>
+                <div class="swiper-wrap">
+                    <slider v-if="swiperList.length">
+                        <div v-for="item in swiperList" :key="item.id">
+                            <a :href="item.link">
+                                <img :src="item.poster" alt="">
+                            </a>
                         </div>
+                    </slider>
+                </div>
+
+                <div class="playList-container">
+                    <div class="playList-header">
+                        <p class="title">推荐歌单</p>
+                        <div class="btn">歌单广场</div>
                     </div>
-                    <p class="cover-content">{{item.name}}</p>
-                </li>
-            </ul>
+                    <ul class="cover-item-box" v-if="playList.length">
+                        <li class="cover-item" v-for="item in playList" :key="item.id" ref="coverItem">
+                            <div class="cover-img"
+                                 v-lazy:background-image="item.cover"
+                                 :style="{'height': coverImgH + 'px'}">
+                                <div class="cover-label">
+                                    <i class="icon icon-smallPlay"></i>
+                                    <span class="num">{{item.listenTotal}}</span>
+                                </div>
+                            </div>
+                            <p class="cover-content">{{item.name}}</p>
+                        </li>
+                    </ul>
 
-            <div class="playList-header">
-                <p class="title">推荐单曲</p>
+                    <div class="playList-header">
+                        <p class="title">推荐单曲</p>
+                    </div>
+
+                    <song-list :songList="songList" v-if="songList.length"></song-list>
+                </div>
             </div>
-
-            <song-list :songList="songList" v-if="songList.length"></song-list>
-        </div>
+        </scroll>
     </div>
 </template>
 
 <script>
+    // 固定区域滚动
+    import Scroll from 'common/scroll/scroll';
     import slider from 'common/slider/slider';
     import SongList from 'common/song-list/song-list';
 
@@ -118,7 +125,8 @@
         },
         components: {
             slider,
-            SongList
+            SongList,
+            Scroll
         },
         watch: {
             'playList': function () {
@@ -143,8 +151,12 @@
         left: 0;
         right: 0;
         bottom: 1.2rem;
-        overflow-x: hidden;
-        overflow-y: auto;
+        /*overflow: hidden;*/
+
+        .recommend-content {
+            height: 100%;
+            overflow: hidden;
+        }
     }
 
     .search-wrap {
@@ -238,13 +250,14 @@
                 }
 
                 .cover-content {
-                    display: -webkit-box;
+                    /*display: -webkit-box;*/
                     overflow: hidden;
                     margin-top: .1rem;
                     width: 100%;
-                    text-overflow: ellipsis;
-                    -webkit-line-clamp: 2;
-                    -webkit-box-orient: vertical;
+                    @include nth-lines(2);
+                    /*text-overflow: ellipsis;*/
+                    /*-webkit-line-clamp: 2;*/
+                    /*-webkit-box-orient: vertical;*/
                 }
 
                 .cover-label {

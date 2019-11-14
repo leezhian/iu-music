@@ -9,7 +9,8 @@ module.exports = {
     ],
     "globals": {
         "Atomics": "readonly",
-        "SharedArrayBuffer": "readonly"
+        "SharedArrayBuffer": "readonly",
+        "process": true // 允许使用process全局变量
     },
     "parserOptions": {
         "ecmaVersion": 2018,

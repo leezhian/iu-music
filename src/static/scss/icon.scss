@@ -112,18 +112,48 @@
     }
 }
 
+.icon-search {
+    &:before {
+        content: "\e65f";
+    }
+}
+
+// 购物车
+.icon-cart {
+    &:before {
+        content: "\e600";
+    }
+}
+
+// 数字专辑
+.icon-digitalAlbum {
+    &:before {
+        content: "\e672";
+    }
+}
+
+// vip
 .icon-vip {
     &:before {
         content: "\e670";
     }
 }
 
+// 试听
 .icon-audition {
     &:before {
         content: "\e671";
     }
 }
 
+// 已购
+.icon-bought {
+    &:before {
+        content: "\e673";
+    }
+}
+
+// 播放不带圈
 .icon-smallPlay {
     &:before {
         content: "\e612";

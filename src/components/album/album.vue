@@ -1,31 +1,40 @@
 <template>
     <div class="album-page">
-        <cover>
-            <div class="cover-container">
-                <div class="title">专辑</div>
-                <div class="play-btn">
-                    <i class="icon icon-smallPlay"></i>
-                    <span class="btn-text">播放</span>
-                </div>
+        <scroll class="album-content" :data="recordList" :isPullUpLoad="true">
+            <div>
+                <cover>
+                    <div class="cover-container">
+                        <div class="title">专辑</div>
+                        <div class="play-btn">
+                            <i class="icon icon-smallPlay"></i>
+                            <span class="btn-text">播放</span>
+                        </div>
+                    </div>
+                </cover>
+
+                <record :recordList="recordList" @handleClickRecord="handleClickRecord"
+                        v-if="recordList.length"></record>
+
+                <router-view></router-view>
             </div>
-        </cover>
-
-        <record :recordList="recordList" @handleClickRecord="handleClickRecord" v-if="recordList.length"></record>
-
-        <router-view></router-view>
+        </scroll>
     </div>
 </template>
 
 <script>
+    import Scroll from 'common/scroll/scroll';
     import cover from 'common/cover/cover';
     import record from 'common/record/record';
     import _ from 'lodash';
 
-    import {getAblumList} from 'api/ablum';
+    import {mapMutations} from 'vuex';
+    import {SET_RECORD_DETAIL} from 'store/mutation-types';
+
+    import {getAlbumList} from 'api/album';
 
     export default {
         created() {
-            getAblumList(this.page, this.pageSize).then(res => {
+            getAlbumList(this.page, this.pageSize).then(res => {
                 if (res.code == 200) {
                     // 处理singer
                     _.forEach(res.data.list, item => {
@@ -56,19 +65,21 @@
         },
         methods: {
             handleClickRecord(index) {
-                // const self = this;
                 const recordId = this.recordList[index].id;
                 this.$router.push({
-                    path: `/album/${recordId}`,
-                    params: {
-                        songIds: this.recordList[index].songIds
-                    }
+                    path: `/album/${recordId}`
                 });
-            }
+                // 修改store的数据
+                this.setRecordDetail(this.recordList[index]);
+            },
+            ...mapMutations({
+                setRecordDetail: SET_RECORD_DETAIL
+            })
         },
         components: {
             cover,
-            record
+            record,
+            Scroll
         }
     }
 </script>
@@ -81,7 +92,11 @@
         left: 0;
         right: 0;
         bottom: 1.2rem;
-        overflow-x: hidden;
-        overflow-y: auto;
+        overflow: hidden;
+
+        .album-content {
+            height: 100%;
+            overflow: hidden;
+        }
     }
 </style>

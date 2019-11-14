@@ -1,0 +1,1 @@
+export const SET_RECORD_DETAIL = 'set_record_detail';

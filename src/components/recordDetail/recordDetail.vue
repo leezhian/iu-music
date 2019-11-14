@@ -1,87 +1,76 @@
 <template>
     <transition name="player">
         <div class="record-page">
-            <cover :hasBack="true">
-                <div class="cover-container">
-                    <div class="title">专辑</div>
-                    <div class="play-btn">
-                        <i class="icon icon-smallPlay"></i>
-                        <span class="btn-text">播放</span>
-                    </div>
-                </div>
+            <cover :hasBack="true"
+                   :type="album"
+                   :coverImg="this.recordDetail.cover"
+                   :recordName="this.recordDetail.albumName"
+                   :recordSinger="this.recordDetail.singer"
+                   :desc="this.recordDetail.description">
             </cover>
 
-            <song-list :songList="songList"></song-list>
+            <scroll class="song-wrap" :data="songList">
+                <div>
+                    <song-list :songList="songList" v-if="songList.length"></song-list>
+                </div>
+            </scroll>
+            <!--            <loading v-else></loading>-->
         </div>
     </transition>
 </template>
 
 <script>
+    import Scroll from 'common/scroll/scroll';
     import cover from 'common/cover/cover';
     import songList from 'common/song-list/song-list';
+    import {mapGetters} from 'vuex';
 
-    import {getSongList} from 'api/ablum';
+    import {getSongList} from 'api/album';
 
     export default {
         created() {
-            getSongList('15,16,17,18,19,20').then(res => {
-                console.log(res);
-                if (res.code == 200) {
-
-                }
-            });
+            this._getSongList();
+        },
+        mounted() {
         },
         data() {
             return {
-                songList: [
-                    {
-                        id: 1,
-                        name: '夜信',
-                        singer: 'IU',
-                        album: '밤편지'
-                    },
-                    {
-                        id: 2,
-                        name: '삐삐 - (BBIBBI)',
-                        singer: 'IU',
-                        album: '삐삐 - (BBIBBI)'
-                    },
-                    {
-                        id: 3,
-                        name: '除了春天 爱情和樱花',
-                        singer: 'IU',
-                        album: '밤편지'
-                    },
-                    {
-                        id: 4,
-                        name: '팔레트 - (Palette)',
-                        singer: 'IU',
-                        album: 'Palette'
-                    },
-                    {
-                        id: 5,
-                        name: '좋은 날 - (好日子)',
-                        singer: 'IU',
-                        album: 'Real'
-                    },
-                    {
-                        id: 6,
-                        name: '囍帖街 (Live) - (原唱:谢安琪)',
-                        singer: 'IU',
-                        album: 'Covers & Unreleased Songs'
-                    },
-                    {
-                        id: 7,
-                        name: '喜欢你 - (原唱：Beyond)',
-                        singer: 'IU',
-                        album: 'Covers & Unreleased Songs'
-                    }
-                ]
+                songList: []
             }
+        },
+        methods: {
+            _getSongList() {
+                console.log(this.recordDetail);
+                if (JSON.stringify(this.recordDetail) == {}) {
+                    this.$router.push('/album');
+                    return;
+                }
+                // 获取歌曲列表
+                getSongList(this.recordDetail.songIds).then(res => {
+                    if (res.code == 200) {
+                        _.forEach(res.data, item => {
+                            let singer = '';
+                            if (item.singerList.length > 1) {
+                                _.forEach(item.singerList, value => {
+                                    singer += value.singerName + '/';
+                                });
+                            } else {
+                                singer = item.singerList[0].singerName + '/';
+                            }
+                            item.singer = singer.substring(0, singer.length - 1);
+                        });
+                        this.songList = res.data;
+                    }
+                });
+            }
+        },
+        computed: {
+            ...mapGetters(['recordDetail'])
         },
         components: {
             cover,
-            songList
+            songList,
+            Scroll
         }
     }
 </script>
@@ -99,6 +88,11 @@
         width: 100%;
         height: 100%;
         background-color: $color-background;
+
+        .song-wrap {
+            height: 100%;
+            overflow: hidden;
+        }
     }
 
     .player-enter-active, .player-leave-active {

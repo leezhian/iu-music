@@ -11,7 +11,7 @@
             </router-link>
         </div>
 
-        <mini-player></mini-player>
+<!--        <mini-player></mini-player>-->
     </div>
 </template>
 

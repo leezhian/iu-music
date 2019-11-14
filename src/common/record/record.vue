@@ -15,7 +15,7 @@
                     </div>
                 </div>
                 <div class="record-info">
-                    <p class="title">{{item.ablumName}}</p>
+                    <p class="title">{{item.albumName}}</p>
                     <p class="owner">{{item.singer}}</p>
                 </div>
             </div>

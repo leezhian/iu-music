@@ -1,9 +1,21 @@
 <template>
     <div class="cover-wrap" :style="{'background-image': `url(${coverImg})`}">
-        <div class="top">
+        <div class="top" @click="goToBackHandle">
             <i class="goToBack icon-back" v-if="hasBack"></i>
         </div>
-        <slot></slot>
+        <slot>
+            <div class="container">
+                <div class="info">
+                    <h3 class="record-name">{{this.recordName}}</h3>
+                    <p class="record-singer" v-if="type == 'album'">—— {{this.recordSinger}}</p>
+                </div>
+                <div class="tools">
+                    <div class="btn"><i class="icon-pause"></i></div>
+                    <div class="btn"><i class="icon icon-cart"></i></div>
+                </div>
+                <p class="desc" v-if="type == 'album'">简介: {{this.desc}}</p>
+            </div>
+        </slot>
     </div>
 </template>
 
@@ -12,12 +24,32 @@
         props: {
             coverImg: {
                 type: String,
-                default: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1573155109011&di=166f970dce66954e35ce0bc158043cf8&imgtype=0&src=http%3A%2F%2Fhbimg.b0.upaiyun.com%2F16ad335896ad55cc03d0ed4a84ae96b7c0aaa52215c13-N681eW_fw658'
+                default: 'https://y.gtimg.cn/music/photo_new/T002R300x300M000003bSL0v4bpKAx_1.jpg?max_age=2592000'
+            },
+            recordName: {
+                type: String,
+                default: ''
+            },
+            recordSinger: {
+                type: String,
+                default: ''
+            },
+            desc: {
+                type: String,
+                default: ''
             },
             hasBack: {
                 type: Boolean,
-                // default: true
                 default: false
+            },
+            type: {
+                type: String,
+                default: 'album',
+            }
+        },
+        methods: {
+            goToBackHandle() {
+                this.$router.go(-1);
             }
         }
     }
@@ -30,7 +62,7 @@
     .cover-wrap {
         position: relative;
         width: 100%;
-        height: 4.2rem;
+        height: 5.2rem;
         overflow: hidden;
         @include bg-coverAndCenter();
     }
@@ -55,6 +87,7 @@
         }
     }
 
+    /*改为other-container*/
     .cover-container {
         position: relative;
         display: flex;
@@ -91,6 +124,57 @@
             .btn-text {
                 margin-left: .1rem;
             }
+        }
+    }
+
+    .container {
+        position: relative;
+        display: flex;
+        flex-flow: column;
+        justify-content: space-between;
+        width: 100%;
+        height: 100%;
+        padding: .8rem .3rem .3rem;
+        overflow: hidden;
+        color: $color-text-w;
+
+        .info {
+            flex-grow: 1;
+
+            .record-name {
+                font-size: .6rem;
+                font-weight: bold;
+                @include no-wrap();
+            }
+
+            .record-singer {
+                padding-left: .3rem;
+                font-size: $font-size-medium;
+            }
+        }
+
+        .tools {
+            flex-shrink: 0;
+            position: absolute;
+            bottom: .3rem;
+            right: .2rem;
+
+            .btn {
+                margin-top: .1rem;
+                font-size: $font-size-large-3x;
+
+                i {
+                    font-family: iconfont;
+                }
+            }
+        }
+
+        .desc {
+            overflow: hidden;
+            padding-right: .5rem;
+            font-size: $font-size-medium;
+            word-break: break-all;
+            @include nth-lines(2);
         }
     }
 </style>

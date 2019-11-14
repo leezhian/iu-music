@@ -85,8 +85,9 @@ module.exports = {
                     loader: 'url-loader',
                     options: {
                         name: '[name]_[hash].[ext]',
+                        // publicPath: '../',
                         outputPath: 'images/',
-                        limit: 10480
+                        limit: 10000
                     }
                 }
             },
@@ -151,7 +152,8 @@ module.exports = {
             'components': resolve('src/components'),
             'common': resolve('src/common'),
             'api': resolve('src/api'),
-            'static': resolve('src/static')
+            'static': resolve('src/static'),
+            'store': resolve('src/store'),
         }
     }
 };

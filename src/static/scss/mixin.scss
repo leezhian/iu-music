@@ -25,6 +25,13 @@
   white-space: nowrap;
 }
 
+@mixin nth-lines($num) {
+  display: -webkit-box;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: $num;
+  -webkit-box-orient: vertical;
+}
+
 // 扩展点击区域
 @mixin extend-click() {
   position: relative;
