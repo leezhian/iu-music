@@ -21,6 +21,14 @@
                 type: Number,
                 default: 20
             },
+            click: { // 手动派发点击事件
+                type: Boolean,
+                default: true
+            },
+            listenScroll: { // 要不要监听滚动事件
+                type: Boolean,
+                default: false
+            },
             watchData: {
                 type: Array,
                 default: null
@@ -51,6 +59,19 @@
                 if (this.isPullUpLoad) {
                     this.scroll.on('pullingUp', this.pullingUpHandler)
                 }
+            },
+            /**
+             * 代理better-scroll的方法
+             * 启用 better-scroll, 默认 开启。
+             */
+            enable() {
+                this.scroll && this.scroll.enable()
+            },
+            /**
+             * 启用 better-scroll, 默认 开启。
+             */
+            disable() {
+                this.scroll && this.scroll.disable()
             },
             /**
              * 重新计算 better-scroll，

@@ -88,7 +88,7 @@
     @import "static/scss/mixin.scss";
 
     .user-page {
-        position: fixed;
+        position: absolute;
         width: 100%;
         top: 0;
         left: 0;

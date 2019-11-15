@@ -1,6 +1,6 @@
 <template>
     <div class="album-page">
-        <scroll class="album-content" :data="recordList" :isPullUpLoad="true">
+        <scroll class="album-content" :watchData="recordList">
             <div>
                 <cover :coverImg="coverImg">
                     <div class="cover-container">
@@ -15,9 +15,9 @@
                 <record :recordList="recordList" @handleClickRecord="handleClickRecord"
                         v-if="recordList.length"></record>
 
-                <router-view></router-view>
             </div>
         </scroll>
+        <router-view></router-view>
     </div>
 </template>
 
@@ -98,9 +98,13 @@
 
 <style scoped lang="scss" rel="stylesheet">
     .album-page {
-        position: fixed;
+        /*position: fixed;*/
+        position: absolute;
+        z-index: 10;
         width: 100%;
         top: 0;
+        left: 0;
+        right: 0;
         bottom: 1.2rem;
         overflow: hidden;
 

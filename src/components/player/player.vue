@@ -1,9 +1,9 @@
 <template>
     <div class="player">
         <transition name="player">
-            <div class="player-page" v-if="false">
+            <div class="player-page" v-if="isBigPlayer">
                 <div class="player-header">
-                    <div class="goToBack icon-back"></div>
+                    <div class="goToBack icon-back" @click="changePlayer(false)"></div>
                     <div class="title-box">
                         <p class="sing-name">夜信</p>
                         <p class="singer">IU</p>
@@ -45,7 +45,7 @@
             </div>
         </transition>
 
-        <mini-player></mini-player>
+        <mini-player @changePlayer="changePlayer" v-if="!isBigPlayer"></mini-player>
     </div>
 </template>
 
@@ -53,6 +53,16 @@
     import MiniPlayer from 'common/mini-player/mini-player';
 
     export default {
+        data() {
+            return {
+                isBigPlayer: false
+            }
+        },
+        methods: {
+            changePlayer(show) {
+                this.isBigPlayer = show;
+            }
+        },
         components: {MiniPlayer}
     }
 </script>

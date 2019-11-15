@@ -11,10 +11,9 @@
 <script>
     export default {
         methods: {
+            // 点击mini播放器
             handlePlayer() {
-                // this.$router.push({
-                //     path: `/player`
-                // });
+                this.$emit('changePlayer', true);
             }
         }
     }
