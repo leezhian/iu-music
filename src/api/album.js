@@ -1,5 +1,11 @@
 import axios from "axios";
 
+export async function getCover(type = 1) {
+    const res = await axios.get('/api/cover/getCover.do', {params: {type}});
+    return res;
+}
+
+
 export async function getAlbumList(page = 1, pageSize = 6) {
     const res = await axios.get('/api/album/getAlbumList.do', {params: {page, pageSize}});
     return res;

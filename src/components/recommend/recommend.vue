@@ -1,6 +1,6 @@
 <template>
     <div class="recommend-page">
-        <scroll class="recommend-content" :data="songList">
+        <scroll class="recommend-content" :watchData="songList">
             <div>
 
                 <div class="search-wrap">
@@ -60,43 +60,11 @@
     export default {
         created() {
             // 获取轮播图
-            getSwiperList().then(res => {
-                if (res.code == 200) {
-                    _.forEach(res.data, item => {
-                        if (item.linkType == 1) {
-                            item.link = `/playlist/${item.id}`;
-                        } else if (item.linkType == 2) {
-                            item.link = `/ablum/${item.id}`;
-                        }
-                    });
-                    this.swiperList = res.data;
-                }
-            });
-
+            this._getSwiperList();
             // 推荐歌单
-            getRecommendPlayerList().then(res => {
-                if (res.code == 200) {
-                    this.playList = res.data;
-                }
-            });
-
+            this._getRecommendPlayerList();
             // 推荐单曲
-            getRecommendSongs().then(res => {
-                if (res.code == 200) {
-                    _.forEach(res.data, item => {
-                        let singer = '';
-                        if (item.singerList.length > 1) {
-                            _.forEach(item.singerList, value => {
-                                singer += value.singerName + '/';
-                            });
-                        } else {
-                            singer = item.singerList[0].singerName + '/';
-                        }
-                        item.singer = singer.substring(0, singer.length - 1);
-                    });
-                    this.songList = res.data;
-                }
-            });
+            this._getRecommendSongs();
         },
         mounted() {
             const self = this;
@@ -121,6 +89,45 @@
                     return;
                 }
                 this.coverImgH = this.$refs.coverItem[0].clientWidth;
+            },
+            _getSwiperList() {
+                getSwiperList().then(res => {
+                    if (res.code == 200) {
+                        _.forEach(res.data, item => {
+                            if (item.linkType == 1) {
+                                item.link = `/playlist/${item.id}`;
+                            } else if (item.linkType == 2) {
+                                item.link = `/ablum/${item.id}`;
+                            }
+                        });
+                        this.swiperList = res.data;
+                    }
+                });
+            },
+            _getRecommendPlayerList() {
+                getRecommendPlayerList().then(res => {
+                    if (res.code == 200) {
+                        this.playList = res.data;
+                    }
+                });
+            },
+            _getRecommendSongs() {
+                getRecommendSongs().then(res => {
+                    if (res.code == 200) {
+                        _.forEach(res.data, item => {
+                            let singer = '';
+                            if (item.singerList.length > 1) {
+                                _.forEach(item.singerList, value => {
+                                    singer += value.singerName + '/';
+                                });
+                            } else {
+                                singer = item.singerList[0].singerName + '/';
+                            }
+                            item.singer = singer.substring(0, singer.length - 1);
+                        });
+                        this.songList = res.data;
+                    }
+                });
             }
         },
         components: {

@@ -6,7 +6,7 @@ import RankingList from 'components/rankingList/rankingList';
 import User from 'components/user/user';
 
 import recordDetail from 'components/recordDetail/recordDetail';
-import Player from 'components/player/player';
+// import Player from 'components/player/player';
 
 Vue.use(Router);
 
@@ -38,10 +38,10 @@ export default new Router({
             path: '/user',
             component: User
         },
-        {
-            path: '/player',
-            component: Player
-        }
+        // {
+        //     path: '/player',
+        //     component: Player
+        // }
     ],
     mode: 'history'
 });

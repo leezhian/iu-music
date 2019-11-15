@@ -21,7 +21,7 @@
                 type: Number,
                 default: 20
             },
-            data: {
+            watchData: {
                 type: Array,
                 default: null
             },
@@ -69,7 +69,7 @@
         },
         watch: {
             // 当数据改变的时候，scroll需要刷新重新计算
-            data() {
+            watchData() {
                 setTimeout(() => {
                     this.refresh()
                 }, this.refreshDelay)

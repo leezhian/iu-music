@@ -12,9 +12,9 @@
     export default {
         methods: {
             handlePlayer() {
-                this.$router.push({
-                    path: `/player`
-                });
+                // this.$router.push({
+                //     path: `/player`
+                // });
             }
         }
     }

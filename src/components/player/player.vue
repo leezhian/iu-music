@@ -1,7 +1,7 @@
 <template>
     <div class="player">
         <transition name="player">
-            <div class="player-page">
+            <div class="player-page" v-if="false">
                 <div class="player-header">
                     <div class="goToBack icon-back"></div>
                     <div class="title-box">
@@ -66,7 +66,7 @@
         align-items: center;
         flex-flow: column;
         position: fixed;
-        z-index: 50;
+        z-index: 999;
         left: 0;
         top: 0;
         bottom: 0;

@@ -11,7 +11,7 @@
             </router-link>
         </div>
 
-<!--        <mini-player></mini-player>-->
+        <!--        <mini-player></mini-player>-->
     </div>
 </template>
 
@@ -55,10 +55,11 @@
     @import "static/scss/variable.scss";
 
     .nav-container {
-        position: fixed;
+        position: absolute;
+        /*position: fixed;*/
         bottom: 0;
         left: 0;
-        right: 0;
+        /*right: 0;*/
         width: 100%;
         height: 1.2rem;
 

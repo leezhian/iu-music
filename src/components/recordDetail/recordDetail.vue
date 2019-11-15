@@ -9,7 +9,7 @@
                    :desc="this.recordDetail.description">
             </cover>
 
-            <scroll class="song-wrap" :data="songList">
+            <scroll class="song-wrap" :watchData="songList">
                 <div>
                     <song-list :songList="songList" v-if="songList.length"></song-list>
                 </div>
@@ -59,6 +59,10 @@
                             }
                             item.singer = singer.substring(0, singer.length - 1);
                         });
+
+                        // 测试
+                        res.data = res.data.concat([{"id":13,"songName":"Love poem","albumId":3,"albumName":"Love poem","link":"11","singerList":[{"id":6,"singerName":"IU"}],"singer":"IU"},{"id":14,"songName":"Love poem","albumId":3,"albumName":"Love poem","link":"11","singerList":[{"id":6,"singerName":"IU"}],"singer":"IU"},{"id":15,"songName":"Love poem","albumId":3,"albumName":"Love poem","link":"11","singerList":[{"id":6,"singerName":"IU"}],"singer":"IU"},{"id":16,"songName":"Love poem","albumId":3,"albumName":"Love poem","link":"11","singerList":[{"id":6,"singerName":"IU"}],"singer":"IU"},{"id":17,"songName":"Love poem","albumId":3,"albumName":"Love poem","link":"11","singerList":[{"id":6,"singerName":"IU"}],"singer":"IU"},{"id":18,"songName":"Love poem","albumId":3,"albumName":"Love poem","link":"11","singerList":[{"id":6,"singerName":"IU"}],"singer":"IU"},{"id":19,"songName":"Love poem","albumId":3,"albumName":"Love poem","link":"11","singerList":[{"id":6,"singerName":"IU"}],"singer":"IU"},{"id":20,"songName":"Love poem","albumId":3,"albumName":"Love poem","link":"11","singerList":[{"id":6,"singerName":"IU"}],"singer":"IU"},{"id":21,"songName":"Love poem","albumId":3,"albumName":"Love poem","link":"11","singerList":[{"id":6,"singerName":"IU"}],"singer":"IU"},{"id":22,"songName":"Love poem","albumId":3,"albumName":"Love poem","link":"11","singerList":[{"id":6,"singerName":"IU"}],"singer":"IU"},{"id":23,"songName":"Love poem","albumId":3,"albumName":"Love poem","link":"11","singerList":[{"id":6,"singerName":"IU"}],"singer":"IU"},{"id":24,"songName":"Love poem","albumId":3,"albumName":"Love poem","link":"11","singerList":[{"id":6,"singerName":"IU"}],"singer":"IU"}]);
+
                         this.songList = res.data;
                     }
                 });
@@ -90,7 +94,11 @@
         background-color: $color-background;
 
         .song-wrap {
-            height: 100%;
+            position: absolute;
+            width: 100%;
+            top: 5.2rem;
+            bottom: 0;
+            background-color: $color-background;
             overflow: hidden;
         }
     }

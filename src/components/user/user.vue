@@ -20,6 +20,8 @@
     import songList from "common/song-list/song-list";
 
     export default {
+        created() {
+        },
         data() {
             return {
                 currentIndex: 0,
