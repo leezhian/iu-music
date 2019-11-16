@@ -1,9 +1,9 @@
 <template>
     <div class="album-page">
-        <scroll class="album-content" :watchData="recordList">
+        <scroll class="album-content" :watch-data="recordList" :bounce-top="false">
             <div>
-                <cover :coverImg="coverImg">
-                    <div class="cover-container">
+                <cover :cover-img="coverImg">
+                    <div class="container cover-container" :style="{'background-image': `url(${coverImg})`}">
                         <div class="title">专辑</div>
                         <div class="play-btn">
                             <i class="icon icon-smallPlay"></i>
@@ -12,7 +12,7 @@
                     </div>
                 </cover>
 
-                <record :recordList="recordList" @handleClickRecord="handleClickRecord"
+                <record :record-list="recordList" @handleClickRecord="handleClickRecord"
                         v-if="recordList.length"></record>
 
             </div>

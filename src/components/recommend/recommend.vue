@@ -1,8 +1,7 @@
 <template>
     <div class="recommend-page">
-        <scroll class="recommend-content" :watchData="songList">
+        <scroll class="recommend-content" :watch-data="songList" :bounce-top="false" :bounce-bottom="false">
             <div>
-
                 <div class="search-wrap">
                     <input class="search" type="search" placeholder="搜索">
                     <div class="logo"></div>

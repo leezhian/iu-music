@@ -37,11 +37,7 @@ export default new Router({
         {
             path: '/user',
             component: User
-        },
-        // {
-        //     path: '/player',
-        //     component: Player
-        // }
+        }
     ],
     mode: 'history'
 });

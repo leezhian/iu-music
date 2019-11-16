@@ -13,11 +13,19 @@
 
     export default {
         props: {
+            bounceTop: { // 弹动动画
+                type: Boolean,
+                default: true
+            },
+            bounceBottom: {
+                type: Boolean,
+                default: true
+            },
             probeType: {
                 type: Number,
                 default: 1
             },
-            refreshDelay: {
+            refreshDelay: { // 刷新时间
                 type: Number,
                 default: 20
             },
@@ -29,11 +37,11 @@
                 type: Boolean,
                 default: false
             },
-            watchData: {
+            watchData: { // 监听时间
                 type: Array,
                 default: null
             },
-            isPullUpLoad: {
+            isPullUpLoad: { // 是否可以上拉加载更多
                 type: Boolean,
                 default: false
             }
@@ -54,7 +62,22 @@
                     probeType: this.probeType,
                     click: this.click,
                     pullUpLoad: this.isPullUpLoad, // 是否开启上拉加载更多
+                    bounce: {
+                        top: this.bounceTop,
+                        bottom: this.bounceBottom,
+                        left: true,
+                        right: true
+                    }
                 });
+
+                // 是否监听滑动事件
+                if (this.listenScroll) {
+                    // pos:{Object} {x, y} 滚动的实时坐标
+                    this.scroll.on('scroll', (pos) => {
+                        // 派发一个scroll事件
+                        this.$emit('scroll', pos)
+                    })
+                }
 
                 if (this.isPullUpLoad) {
                     this.scroll.on('pullingUp', this.pullingUpHandler)

@@ -20,7 +20,7 @@ fastclick.attach(document.body);
 import axios from 'axios';
 
 axios.interceptors.request.use(function (config) {
-    const CONFIG_HTTP = 'http://localhost:3001';
+    const CONFIG_HTTP = 'http://192.168.3.7:3001';
     config.url = CONFIG_HTTP + config.url;
     return config;
 }, function (error) {

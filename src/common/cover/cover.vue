@@ -1,20 +1,20 @@
 <template>
-    <div class="cover-wrap" :style="{'background-image': `url(${coverImg})`}">
-        <div class="top" @click="goToBackHandle">
-            <i class="goToBack icon-back" v-if="hasBack"></i>
+    <div class="cover-wrap">
+        <div class="top" @click="goToBackHandle" :style="{'background-image': `url(${coverImg})`}" v-if="hasBack">
+            <i class="goToBack icon-back"></i>
         </div>
         <slot>
-            <div class="container">
-                <div class="info">
-                    <h3 class="record-name">{{this.recordName}}</h3>
-                    <p class="record-singer" v-if="type == 'album'">—— {{this.recordSinger}}</p>
-                </div>
-                <div class="tools">
-                    <div class="btn"><i class="icon-pause"></i></div>
-                    <div class="btn"><i class="icon icon-cart"></i></div>
-                </div>
-                <p class="desc" v-if="type == 'album'">简介: {{this.desc}}</p>
-            </div>
+            <!--            <div class="container">-->
+            <!--                <div class="info">-->
+            <!--                    <h3 class="record-name">{{this.recordName}}</h3>-->
+            <!--                    <p class="record-singer" v-if="type == 'album'">—— {{this.recordSinger}}</p>-->
+            <!--                </div>-->
+            <!--                <div class="tools">-->
+            <!--                    <div class="btn"><i class="icon-pause"></i></div>-->
+            <!--                    <div class="btn"><i class="icon icon-cart"></i></div>-->
+            <!--                </div>-->
+            <!--                <p class="desc" v-if="type == 'album'">简介: {{this.desc}}</p>-->
+            <!--            </div>-->
         </slot>
     </div>
 </template>
@@ -26,26 +26,10 @@
                 type: String,
                 default: 'https://y.gtimg.cn/music/photo_new/T002R300x300M000003bSL0v4bpKAx_1.jpg?max_age=2592000'
             },
-            recordName: {
-                type: String,
-                default: ''
-            },
-            recordSinger: {
-                type: String,
-                default: ''
-            },
-            desc: {
-                type: String,
-                default: ''
-            },
             hasBack: {
                 type: Boolean,
                 default: false
             },
-            type: {
-                type: String,
-                default: 'album',
-            }
         },
         methods: {
             goToBackHandle() {
@@ -62,9 +46,10 @@
     .cover-wrap {
         position: relative;
         width: 100%;
-        height: 5.2rem;
+        /*height: 5.2rem;*/
         overflow: hidden;
         @include bg-coverAndCenter();
+        background-position: top;
     }
 
     .top {
@@ -73,7 +58,9 @@
         top: 0;
         width: 100%;
         height: .8rem;
-        z-index: 100;
+        z-index: 50;
+        @include bg-coverAndCenter();
+        background-position: top;
 
         .goToBack {
             display: block;
@@ -95,48 +82,59 @@
         justify-content: center;
         width: 100%;
         height: 100%;
-
-        .title {
-            font-size: .6rem;
-            font-weight: bold;
-            text-align: center;
-            color: $color-text-w;
-        }
-
-        .play-btn {
-            position: absolute;
-            left: 50%;
-            bottom: .4rem;
-            transform: translateX(-50%);
-            width: 2rem;
-            height: .6rem;
-            border-radius: .3rem;
-            font-size: $font-size-medium;
-            text-align: center;
-            line-height: .6rem;
-            color: $color-text-w;
-            background-color: rgba(147, 112, 219, .8);
-
-            .icon {
-                font-family: iconfont;
-            }
-
-            .btn-text {
-                margin-left: .1rem;
-            }
-        }
     }
 
+    // 详情样式
     .container {
         position: relative;
         display: flex;
         flex-flow: column;
         justify-content: space-between;
         width: 100%;
-        height: 100%;
+        height: 5.2rem;
+        /*height: 100%;*/
         padding: .8rem .3rem .3rem;
         overflow: hidden;
         color: $color-text-w;
+
+        @include bg-coverAndCenter();
+        background-position: top;
+
+        // 歌单广场和专辑封面样式
+        &.cover-container {
+            align-items: center;
+            justify-content: center;
+
+            .title {
+                font-size: .6rem;
+                font-weight: bold;
+                text-align: center;
+                color: $color-text-w;
+            }
+
+            .play-btn {
+                position: absolute;
+                left: 50%;
+                bottom: .4rem;
+                transform: translateX(-50%);
+                width: 2rem;
+                height: .6rem;
+                border-radius: .3rem;
+                font-size: $font-size-medium;
+                text-align: center;
+                line-height: .6rem;
+                color: $color-text-w;
+                background-color: rgba(147, 112, 219, .8);
+
+                .icon {
+                    font-family: iconfont;
+                }
+
+                .btn-text {
+                    margin-left: .1rem;
+                }
+            }
+        }
 
         .info {
             flex-grow: 1;
