@@ -48,8 +48,6 @@
         width: 100%;
         /*height: 5.2rem;*/
         overflow: hidden;
-        @include bg-coverAndCenter();
-        background-position: top;
     }
 
     .top {
@@ -59,7 +57,8 @@
         width: 100%;
         height: .8rem;
         z-index: 50;
-        @include bg-coverAndCenter();
+        background-size: cover;
+        background-repeat: no-repeat;
         background-position: top;
 
         .goToBack {

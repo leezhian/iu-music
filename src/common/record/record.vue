@@ -11,11 +11,11 @@
                      :style="{'height': `${recordH}px`}">
                     <div class="listen-info">
                         <i class="icon icon-smallPlay"></i>
-                        <span class="num">{{item.buyTotal}}</span>
+                        <span class="num">{{item.total}}</span>
                     </div>
                 </div>
                 <div class="record-info">
-                    <p class="title">{{item.albumName}}</p>
+                    <p class="title">{{item.recordName}}</p>
                     <p class="owner">{{item.singer}}</p>
                 </div>
             </div>
@@ -29,9 +29,6 @@
             recordList: {
                 type: Array,
                 default: []
-            },
-            handleClickRecord: {
-                type: Function
             }
         },
         mounted() {

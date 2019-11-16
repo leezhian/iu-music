@@ -2,16 +2,16 @@
     <transition name="player">
         <div class="record-page">
             <cover :has-back="true" :cover-img="this.recordDetail.cover">
-                <div class="container" :style="{'background-image': `url(${this.recordDetail.cover})`}" ref="bgImage" >
+                <div class="container" :style="{'background-image': `url(${this.recordDetail.cover})`}" ref="bgImage">
                     <div class="info">
-                        <h3 class="record-name">{{this.recordDetail.albumName}}</h3>
-                        <p class="record-singer" v-if="type == 'album'">—— {{this.recordDetail.singer}}</p>
+                        <h3 class="record-name">{{this.recordDetail.recordName}}</h3>
+                        <p class="record-singer" v-if="recordType == 1">—— {{this.recordDetail.singer}}</p>
                     </div>
                     <div class="tools">
                         <div class="btn"><i class="icon-pause"></i></div>
-                        <div class="btn"><i class="icon icon-cart"></i></div>
+                        <div class="btn" v-if="recordType == 1"><i class="icon icon-cart"></i></div>
                     </div>
-                    <p class="desc" v-if="type == 'album'">简介: {{this.recordDetail.description}}</p>
+                    <p class="desc" v-if="recordType == 1">简介: {{this.recordDetail.description}}</p>
                 </div>
             </cover>
 
@@ -44,6 +44,13 @@
 
     export default {
         created() {
+            if (this.$route.query.recordtype == 1) {
+
+            } else if (this.$route.query.recordtype == 2) {
+                this.recordType = 2;
+            } else {
+                // 跳转到错误页
+            }
             this.listenScroll = true;
             this.probeType = 3;
             this._getSongList();
@@ -55,7 +62,7 @@
         },
         data() {
             return {
-                type: 'album',
+                recordType: 1, // 1 album 2 playlist
                 songList: [],
                 scrollY: 0
             }
@@ -70,8 +77,13 @@
             },
             _getSongList() {
                 if (JSON.stringify(this.recordDetail) == {}) {
-                    this.$router.push('/album');
-                    return;
+                    if (this.recordType == 1) {
+                        this.$router.push('/album');
+                        return;
+                    } else {
+                        this.$router.push('/recommend/playlist');
+                        return;
+                    }
                 }
                 // 获取歌曲列表
                 getSongList(this.recordDetail.songIds).then(res => {
@@ -89,175 +101,175 @@
                         });
 
                         // 测试
-                        res.data = res.data.concat([{
-                            "id": 13,
-                            "songName": "Love poem",
-                            "albumId": 3,
-                            "albumName": "Love poem",
-                            "link": "11",
-                            "singerList": [{"id": 6, "singerName": "IU"}],
-                            "singer": "IU"
-                        }, {
-                            "id": 14,
-                            "songName": "Love poem",
-                            "albumId": 3,
-                            "albumName": "Love poem",
-                            "link": "11",
-                            "singerList": [{"id": 6, "singerName": "IU"}],
-                            "singer": "IU"
-                        }, {
-                            "id": 15,
-                            "songName": "Love poem",
-                            "albumId": 3,
-                            "albumName": "Love poem",
-                            "link": "11",
-                            "singerList": [{"id": 6, "singerName": "IU"}],
-                            "singer": "IU"
-                        }, {
-                            "id": 16,
-                            "songName": "Love poem",
-                            "albumId": 3,
-                            "albumName": "Love poem",
-                            "link": "11",
-                            "singerList": [{"id": 6, "singerName": "IU"}],
-                            "singer": "IU"
-                        }, {
-                            "id": 17,
-                            "songName": "Love poem",
-                            "albumId": 3,
-                            "albumName": "Love poem",
-                            "link": "11",
-                            "singerList": [{"id": 6, "singerName": "IU"}],
-                            "singer": "IU"
-                        }, {
-                            "id": 18,
-                            "songName": "Love poem",
-                            "albumId": 3,
-                            "albumName": "Love poem",
-                            "link": "11",
-                            "singerList": [{"id": 6, "singerName": "IU"}],
-                            "singer": "IU"
-                        }, {
-                            "id": 19,
-                            "songName": "Love poem",
-                            "albumId": 3,
-                            "albumName": "Love poem",
-                            "link": "11",
-                            "singerList": [{"id": 6, "singerName": "IU"}],
-                            "singer": "IU"
-                        }, {
-                            "id": 20,
-                            "songName": "Love poem",
-                            "albumId": 3,
-                            "albumName": "Love poem",
-                            "link": "11",
-                            "singerList": [{"id": 6, "singerName": "IU"}],
-                            "singer": "IU"
-                        }, {
-                            "id": 21,
-                            "songName": "Love poem",
-                            "albumId": 3,
-                            "albumName": "Love poem",
-                            "link": "11",
-                            "singerList": [{"id": 6, "singerName": "IU"}],
-                            "singer": "IU"
-                        }, {
-                            "id": 22,
-                            "songName": "Love poem",
-                            "albumId": 3,
-                            "albumName": "Love poem",
-                            "link": "11",
-                            "singerList": [{"id": 6, "singerName": "IU"}],
-                            "singer": "IU"
-                        }, {
-                            "id": 23,
-                            "songName": "Love poem",
-                            "albumId": 3,
-                            "albumName": "Love poem",
-                            "link": "11",
-                            "singerList": [{"id": 6, "singerName": "IU"}],
-                            "singer": "IU"
-                        }, {
-                            "id": 24,
-                            "songName": "Love poem",
-                            "albumId": 3,
-                            "albumName": "Love poem",
-                            "link": "11",
-                            "singerList": [{"id": 6, "singerName": "IU"}],
-                            "singer": "IU"
-                        }, {
-                            "id": 25,
-                            "songName": "Love poem",
-                            "albumId": 3,
-                            "albumName": "Love poem",
-                            "link": "11",
-                            "singerList": [{"id": 6, "singerName": "IU"}],
-                            "singer": "IU"
-                        }, {
-                            "id": 26,
-                            "songName": "Love poem",
-                            "albumId": 3,
-                            "albumName": "Love poem",
-                            "link": "11",
-                            "singerList": [{"id": 6, "singerName": "IU"}],
-                            "singer": "IU"
-                        }, {
-                            "id": 27,
-                            "songName": "Love poem",
-                            "albumId": 3,
-                            "albumName": "Love poem",
-                            "link": "11",
-                            "singerList": [{"id": 6, "singerName": "IU"}],
-                            "singer": "IU"
-                        }, {
-                            "id": 28,
-                            "songName": "Love poem",
-                            "albumId": 3,
-                            "albumName": "Love poem",
-                            "link": "11",
-                            "singerList": [{"id": 6, "singerName": "IU"}],
-                            "singer": "IU"
-                        }, {
-                            "id": 29,
-                            "songName": "Love poem",
-                            "albumId": 3,
-                            "albumName": "Love poem",
-                            "link": "11",
-                            "singerList": [{"id": 6, "singerName": "IU"}],
-                            "singer": "IU"
-                        }, {
-                            "id": 30,
-                            "songName": "Love poem",
-                            "albumId": 3,
-                            "albumName": "Love poem",
-                            "link": "11",
-                            "singerList": [{"id": 6, "singerName": "IU"}],
-                            "singer": "IU"
-                        }, {
-                            "id": 31,
-                            "songName": "Love poem",
-                            "albumId": 3,
-                            "albumName": "Love poem",
-                            "link": "11",
-                            "singerList": [{"id": 6, "singerName": "IU"}],
-                            "singer": "IU"
-                        }, {
-                            "id": 32,
-                            "songName": "Love poem",
-                            "albumId": 3,
-                            "albumName": "Love poem",
-                            "link": "11",
-                            "singerList": [{"id": 6, "singerName": "IU"}],
-                            "singer": "IU"
-                        }, {
-                            "id": 33,
-                            "songName": "Love poem",
-                            "albumId": 3,
-                            "albumName": "Love poem",
-                            "link": "11",
-                            "singerList": [{"id": 6, "singerName": "IU"}],
-                            "singer": "IU"
-                        }]);
+                        // res.data = res.data.concat([{
+                        //     "id": 13,
+                        //     "songName": "Love poem",
+                        //     "albumId": 3,
+                        //     "albumName": "Love poem",
+                        //     "link": "11",
+                        //     "singerList": [{"id": 6, "singerName": "IU"}],
+                        //     "singer": "IU"
+                        // }, {
+                        //     "id": 14,
+                        //     "songName": "Love poem",
+                        //     "albumId": 3,
+                        //     "albumName": "Love poem",
+                        //     "link": "11",
+                        //     "singerList": [{"id": 6, "singerName": "IU"}],
+                        //     "singer": "IU"
+                        // }, {
+                        //     "id": 15,
+                        //     "songName": "Love poem",
+                        //     "albumId": 3,
+                        //     "albumName": "Love poem",
+                        //     "link": "11",
+                        //     "singerList": [{"id": 6, "singerName": "IU"}],
+                        //     "singer": "IU"
+                        // }, {
+                        //     "id": 16,
+                        //     "songName": "Love poem",
+                        //     "albumId": 3,
+                        //     "albumName": "Love poem",
+                        //     "link": "11",
+                        //     "singerList": [{"id": 6, "singerName": "IU"}],
+                        //     "singer": "IU"
+                        // }, {
+                        //     "id": 17,
+                        //     "songName": "Love poem",
+                        //     "albumId": 3,
+                        //     "albumName": "Love poem",
+                        //     "link": "11",
+                        //     "singerList": [{"id": 6, "singerName": "IU"}],
+                        //     "singer": "IU"
+                        // }, {
+                        //     "id": 18,
+                        //     "songName": "Love poem",
+                        //     "albumId": 3,
+                        //     "albumName": "Love poem",
+                        //     "link": "11",
+                        //     "singerList": [{"id": 6, "singerName": "IU"}],
+                        //     "singer": "IU"
+                        // }, {
+                        //     "id": 19,
+                        //     "songName": "Love poem",
+                        //     "albumId": 3,
+                        //     "albumName": "Love poem",
+                        //     "link": "11",
+                        //     "singerList": [{"id": 6, "singerName": "IU"}],
+                        //     "singer": "IU"
+                        // }, {
+                        //     "id": 20,
+                        //     "songName": "Love poem",
+                        //     "albumId": 3,
+                        //     "albumName": "Love poem",
+                        //     "link": "11",
+                        //     "singerList": [{"id": 6, "singerName": "IU"}],
+                        //     "singer": "IU"
+                        // }, {
+                        //     "id": 21,
+                        //     "songName": "Love poem",
+                        //     "albumId": 3,
+                        //     "albumName": "Love poem",
+                        //     "link": "11",
+                        //     "singerList": [{"id": 6, "singerName": "IU"}],
+                        //     "singer": "IU"
+                        // }, {
+                        //     "id": 22,
+                        //     "songName": "Love poem",
+                        //     "albumId": 3,
+                        //     "albumName": "Love poem",
+                        //     "link": "11",
+                        //     "singerList": [{"id": 6, "singerName": "IU"}],
+                        //     "singer": "IU"
+                        // }, {
+                        //     "id": 23,
+                        //     "songName": "Love poem",
+                        //     "albumId": 3,
+                        //     "albumName": "Love poem",
+                        //     "link": "11",
+                        //     "singerList": [{"id": 6, "singerName": "IU"}],
+                        //     "singer": "IU"
+                        // }, {
+                        //     "id": 24,
+                        //     "songName": "Love poem",
+                        //     "albumId": 3,
+                        //     "albumName": "Love poem",
+                        //     "link": "11",
+                        //     "singerList": [{"id": 6, "singerName": "IU"}],
+                        //     "singer": "IU"
+                        // }, {
+                        //     "id": 25,
+                        //     "songName": "Love poem",
+                        //     "albumId": 3,
+                        //     "albumName": "Love poem",
+                        //     "link": "11",
+                        //     "singerList": [{"id": 6, "singerName": "IU"}],
+                        //     "singer": "IU"
+                        // }, {
+                        //     "id": 26,
+                        //     "songName": "Love poem",
+                        //     "albumId": 3,
+                        //     "albumName": "Love poem",
+                        //     "link": "11",
+                        //     "singerList": [{"id": 6, "singerName": "IU"}],
+                        //     "singer": "IU"
+                        // }, {
+                        //     "id": 27,
+                        //     "songName": "Love poem",
+                        //     "albumId": 3,
+                        //     "albumName": "Love poem",
+                        //     "link": "11",
+                        //     "singerList": [{"id": 6, "singerName": "IU"}],
+                        //     "singer": "IU"
+                        // }, {
+                        //     "id": 28,
+                        //     "songName": "Love poem",
+                        //     "albumId": 3,
+                        //     "albumName": "Love poem",
+                        //     "link": "11",
+                        //     "singerList": [{"id": 6, "singerName": "IU"}],
+                        //     "singer": "IU"
+                        // }, {
+                        //     "id": 29,
+                        //     "songName": "Love poem",
+                        //     "albumId": 3,
+                        //     "albumName": "Love poem",
+                        //     "link": "11",
+                        //     "singerList": [{"id": 6, "singerName": "IU"}],
+                        //     "singer": "IU"
+                        // }, {
+                        //     "id": 30,
+                        //     "songName": "Love poem",
+                        //     "albumId": 3,
+                        //     "albumName": "Love poem",
+                        //     "link": "11",
+                        //     "singerList": [{"id": 6, "singerName": "IU"}],
+                        //     "singer": "IU"
+                        // }, {
+                        //     "id": 31,
+                        //     "songName": "Love poem",
+                        //     "albumId": 3,
+                        //     "albumName": "Love poem",
+                        //     "link": "11",
+                        //     "singerList": [{"id": 6, "singerName": "IU"}],
+                        //     "singer": "IU"
+                        // }, {
+                        //     "id": 32,
+                        //     "songName": "Love poem",
+                        //     "albumId": 3,
+                        //     "albumName": "Love poem",
+                        //     "link": "11",
+                        //     "singerList": [{"id": 6, "singerName": "IU"}],
+                        //     "singer": "IU"
+                        // }, {
+                        //     "id": 33,
+                        //     "songName": "Love poem",
+                        //     "albumId": 3,
+                        //     "albumName": "Love poem",
+                        //     "link": "11",
+                        //     "singerList": [{"id": 6, "singerName": "IU"}],
+                        //     "singer": "IU"
+                        // }]);
 
                         this.songList = res.data;
                     }

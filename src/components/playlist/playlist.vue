@@ -1,25 +1,27 @@
 <template>
-    <div :class="['album-page']">
-        <scroll class="album-content" :watch-data="recordList"
-                :bounce-top="false">
-            <div>
-                <cover :cover-img="coverImg">
-                    <div class="container cover-container" :style="{'background-image': `url(${coverImg})`}">
-                        <div class="title">专辑</div>
-                        <div class="play-btn">
-                            <i class="icon icon-smallPlay"></i>
-                            <span class="btn-text">播放</span>
+    <transition name="playlist">
+        <div :class="['album-page', 'playlist-page']">
+            <scroll class="album-content" :watch-data="recordList"
+                    :bounce-top="false">
+                <div>
+                    <cover :cover-img="coverImg" :has-back="true">
+                        <div class="container cover-container" :style="{'background-image': `url(${coverImg})`}">
+                            <div class="title">歌单广场</div>
+                            <div class="play-btn">
+                                <i class="icon icon-smallPlay"></i>
+                                <span class="btn-text">播放</span>
+                            </div>
                         </div>
-                    </div>
-                </cover>
+                    </cover>
 
-                <record :record-list="recordList" @handleClickRecord="handleClickRecord"
-                        v-if="recordList.length"></record>
+                    <record :record-list="recordList" @handleClickRecord="handleClickRecord"
+                            v-if="recordList.length"></record>
 
-            </div>
-        </scroll>
-        <router-view></router-view>
-    </div>
+                </div>
+            </scroll>
+            <router-view></router-view>
+        </div>
+    </transition>
 </template>
 
 <script>
@@ -35,13 +37,12 @@
 
     export default {
         created() {
-            // 因为歌单广场和专辑公用页面，所以使用this.$route.name来判断类别
             this._getCover(this.coverType);
-            this._getAlbumList(this.coverType, this.page, this.pageSize);
+            this._getPlayList(this.coverType, this.page, this.pageSize);
         },
         data() {
             return {
-                coverType: 1, // 封面图的类型 1 album  2 playlist
+                coverType: 2, // 封面图的类型 1 album  2 playlist
                 coverImg: '',
                 page: 1,
                 pageSize: 6,
@@ -50,22 +51,10 @@
             }
         },
         methods: {
-            _getAlbumList(type, page, pageSize) {
+            _getPlayList(type, page, pageSize) {
                 getRecordList(type, page, pageSize).then(res => {
                     if (res.code == 200) {
                         // 处理singer
-                        _.forEach(res.data.list, item => {
-                            let singer = '';
-                            if (item.singerList.length > 1) {
-                                _.forEach(item.singerList, value => {
-                                    singer += value.singerName + '/';
-                                });
-                            } else {
-                                singer = item.singerList[0].singerName + '/';
-                            }
-                            item.singer = singer.substring(0, singer.length - 1);
-                        });
-
                         this.page += 1;
                         this.recordList = this.recordList.concat(res.data.list);
                         this.hasNextPage = res.data.hasNextPage;
@@ -82,7 +71,7 @@
             handleClickRecord(index) {
                 const recordId = this.recordList[index].id;
                 this.$router.push({
-                    path: `/album/${recordId}`,
+                    path: `/recommend/playlist/${recordId}`,
                     query: {
                         recordtype: this.coverType
                     }

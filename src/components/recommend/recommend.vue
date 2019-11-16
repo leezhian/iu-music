@@ -20,7 +20,7 @@
                 <div class="playList-container">
                     <div class="playList-header">
                         <p class="title">推荐歌单</p>
-                        <div class="btn">歌单广场</div>
+                        <router-link to="/recommend/playlist" class="btn" tag="div">歌单广场</router-link>
                     </div>
                     <ul class="cover-item-box" v-if="playList.length">
                         <li class="cover-item" v-for="item in playList" :key="item.id" ref="coverItem">
@@ -32,7 +32,7 @@
                                     <span class="num">{{item.listenTotal}}</span>
                                 </div>
                             </div>
-                            <p class="cover-content">{{item.name}}</p>
+                            <p class="cover-content">{{item.playListName}}</p>
                         </li>
                     </ul>
 
@@ -44,6 +44,8 @@
                 </div>
             </div>
         </scroll>
+
+        <router-view></router-view>
     </div>
 </template>
 
