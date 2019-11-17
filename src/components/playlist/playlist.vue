@@ -1,8 +1,11 @@
 <template>
     <transition name="playlist">
         <div :class="['album-page', 'playlist-page']">
-            <scroll class="album-content" :watch-data="recordList"
-                    :bounce-top="false">
+            <scroll class="album-content"
+                    :watch-data="recordList"
+                    :bounce-top="false"
+                    @pullUpMore="pullUpMore"
+                    :is-pull-up="true">
                 <div>
                     <cover :cover-img="coverImg" :has-back="true">
                         <div class="container cover-container" :style="{'background-image': `url(${coverImg})`}">
@@ -28,7 +31,6 @@
     import Scroll from 'common/scroll/scroll';
     import cover from 'common/cover/cover';
     import record from 'common/record/record';
-    import _ from 'lodash';
 
     import {mapMutations} from 'vuex';
     import {SET_RECORD_DETAIL} from 'store/mutation-types';
@@ -51,22 +53,22 @@
             }
         },
         methods: {
-            _getPlayList(type, page, pageSize) {
-                getRecordList(type, page, pageSize).then(res => {
-                    if (res.code == 200) {
-                        // 处理singer
-                        this.page += 1;
-                        this.recordList = this.recordList.concat(res.data.list);
-                        this.hasNextPage = res.data.hasNextPage;
-                    }
-                });
+            async pullUpMore(finish) {
+                if (!this.hasNextPage) {
+                    finish();
+                    return;
+                }
+                await this._getPlayList(this.coverType, this.page, this.pageSize);
+                finish();
             },
-            _getCover(type) {
-                getCover(type).then(res => {
-                    if (res.code == 200) {
-                        this.coverImg = res.data.cover;
-                    }
-                });
+            async _getPlayList(type, page, pageSize) {
+                const res = await getRecordList(type, page, pageSize);
+                if (res.code == 200) {
+                    // 处理singer
+                    this.page += 1;
+                    this.recordList = this.recordList.concat(res.data.list);
+                    this.hasNextPage = res.data.hasNextPage;
+                }
             },
             handleClickRecord(index) {
                 const recordId = this.recordList[index].id;
@@ -78,6 +80,13 @@
                 });
                 // 修改store的数据
                 this.setRecordDetail(this.recordList[index]);
+            },
+            _getCover(type) {
+                getCover(type).then(res => {
+                    if (res.code == 200) {
+                        this.coverImg = res.data.cover;
+                    }
+                });
             },
             ...mapMutations({
                 setRecordDetail: SET_RECORD_DETAIL
@@ -120,6 +129,16 @@
             height: 100%;
             overflow: hidden;
         }
+    }
+
+    .pullup-wrapper {
+        width: 100%;
+        height: .8rem;
+        line-height: .8rem;
+        font-size: $font-size-medium;
+        text-align: center;
+        color: $color-grey-background;
+        background-color: $color-search-background;
     }
 
     .playlist-enter-active, .playlist-leave-active {

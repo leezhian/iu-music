@@ -5,7 +5,6 @@ export async function getCover(type = 1) {
     return res;
 }
 
-
 export async function getRecordList(type = 1, page = 1, pageSize = 6) {
     const res = await axios.get('/api/album/getRecordList.do', {params: {type, page, pageSize}});
     return res;

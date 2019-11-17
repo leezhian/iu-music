@@ -41,7 +41,7 @@
                 type: Array,
                 default: null
             },
-            isPullUpLoad: { // 是否可以上拉加载更多
+            isPullUp: { // 是否可以上拉加载更多
                 type: Boolean,
                 default: false
             }
@@ -61,7 +61,7 @@
                 this.scroll = new BScroll(this.$refs.wrapper, {
                     probeType: this.probeType,
                     click: this.click,
-                    pullUpLoad: this.isPullUpLoad, // 是否开启上拉加载更多
+                    pullUpLoad: this.isPullUp, // 是否开启上拉加载更多
                     bounce: {
                         top: this.bounceTop,
                         bottom: this.bounceBottom,
@@ -79,7 +79,7 @@
                     })
                 }
 
-                if (this.isPullUpLoad) {
+                if (this.isPullUp) {
                     this.scroll.on('pullingUp', this.pullingUpHandler)
                 }
             },
@@ -107,8 +107,12 @@
                 this.scroll && this.scroll.finishPullUp();
             },
             pullingUpHandler() {
-                // this.finishPullUp();
-                // this.refresh();
+                this.$emit('pullUpMore', this.pullUpFinish);
+            },
+            // 结束这次下拉
+            pullUpFinish() {
+                this.finishPullUp();
+                this.refresh();
             }
         },
         watch: {

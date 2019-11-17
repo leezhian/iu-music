@@ -66,6 +66,7 @@
     .record {
         position: relative;
         width: 100%;
+        background-color: $color-background;
     }
 
     .record-box {

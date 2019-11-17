@@ -23,16 +23,20 @@
                         <router-link to="/recommend/playlist" class="btn" tag="div">歌单广场</router-link>
                     </div>
                     <ul class="cover-item-box" v-if="playList.length">
-                        <li class="cover-item" v-for="item in playList" :key="item.id" ref="coverItem">
+                        <li class="cover-item"
+                            v-for="(item, index) in playList"
+                            :key="item.id"
+                            @click="handleClickRecord(index)"
+                            ref="coverItem">
                             <div class="cover-img"
                                  v-lazy:background-image="item.cover"
                                  :style="{'height': coverImgH + 'px'}">
                                 <div class="cover-label">
                                     <i class="icon icon-smallPlay"></i>
-                                    <span class="num">{{item.listenTotal}}</span>
+                                    <span class="num">{{item.total}}</span>
                                 </div>
                             </div>
-                            <p class="cover-content">{{item.playListName}}</p>
+                            <p class="cover-content">{{item.recordName}}</p>
                         </li>
                     </ul>
 
@@ -57,6 +61,9 @@
 
     import {getSwiperList, getRecommendPlayerList, getRecommendSongs} from 'api/recommend';
     import _ from 'lodash';
+
+    import {mapMutations} from 'vuex';
+    import {SET_RECORD_DETAIL} from 'store/mutation-types';
 
     export default {
         created() {
@@ -84,6 +91,17 @@
             }
         },
         methods: {
+            handleClickRecord(index) {
+                const recordId = this.playList[index].id;
+                this.$router.push({
+                    path: `/recommend/playlist/${recordId}`,
+                    query: {
+                        recordtype: 2
+                    }
+                });
+                // 修改store的数据
+                this.setRecordDetail(this.playList[index]);
+            },
             // 重置推荐歌单图片高度
             _resetCoverH() {
                 if (!this.$refs.coverItem) {
@@ -91,6 +109,9 @@
                 }
                 this.coverImgH = this.$refs.coverItem[0].clientWidth;
             },
+            /**
+             * 轮播图
+             */
             _getSwiperList() {
                 getSwiperList().then(res => {
                     if (res.code == 200) {
@@ -105,6 +126,9 @@
                     }
                 });
             },
+            /**
+             * 推荐歌单
+             */
             _getRecommendPlayerList() {
                 getRecommendPlayerList().then(res => {
                     if (res.code == 200) {
@@ -112,6 +136,9 @@
                     }
                 });
             },
+            /**
+             * 推荐单曲
+             */
             _getRecommendSongs() {
                 getRecommendSongs().then(res => {
                     if (res.code == 200) {
@@ -129,7 +156,10 @@
                         this.songList = res.data;
                     }
                 });
-            }
+            },
+            ...mapMutations({
+                setRecordDetail: SET_RECORD_DETAIL
+            })
         },
         components: {
             slider,
@@ -160,6 +190,7 @@
         left: 0;
         right: 0;
         bottom: 1.2rem;
+        background-color: $color-background;
         /*overflow: hidden;*/
 
         .recommend-content {

@@ -1,21 +1,24 @@
 <template>
     <div :class="['album-page']">
-        <scroll class="album-content" :watch-data="recordList"
-                :bounce-top="false">
+        <scroll class="album-content"
+                :watch-data="recordList"
+                :bounce-top="false"
+                @pullUpMore="pullUpMore"
+                :is-pull-up="true">
             <div>
                 <cover :cover-img="coverImg">
                     <div class="container cover-container" :style="{'background-image': `url(${coverImg})`}">
                         <div class="title">专辑</div>
                         <div class="play-btn">
                             <i class="icon icon-smallPlay"></i>
-                            <span class="btn-text">播放</span>
+                            <span class="btn-text" v-show="recordList.length">播放</span>
                         </div>
                     </div>
                 </cover>
 
-                <record :record-list="recordList" @handleClickRecord="handleClickRecord"
+                <record :record-list="recordList"
+                        @handleClickRecord="handleClickRecord"
                         v-if="recordList.length"></record>
-
             </div>
         </scroll>
         <router-view></router-view>
@@ -44,40 +47,19 @@
                 coverType: 1, // 封面图的类型 1 album  2 playlist
                 coverImg: '',
                 page: 1,
-                pageSize: 6,
+                pageSize: 2,
                 hasNextPage: true, // 是否有下一页
                 recordList: [], // 唱片列表
             }
         },
         methods: {
-            _getAlbumList(type, page, pageSize) {
-                getRecordList(type, page, pageSize).then(res => {
-                    if (res.code == 200) {
-                        // 处理singer
-                        _.forEach(res.data.list, item => {
-                            let singer = '';
-                            if (item.singerList.length > 1) {
-                                _.forEach(item.singerList, value => {
-                                    singer += value.singerName + '/';
-                                });
-                            } else {
-                                singer = item.singerList[0].singerName + '/';
-                            }
-                            item.singer = singer.substring(0, singer.length - 1);
-                        });
-
-                        this.page += 1;
-                        this.recordList = this.recordList.concat(res.data.list);
-                        this.hasNextPage = res.data.hasNextPage;
-                    }
-                });
-            },
-            _getCover(type) {
-                getCover(type).then(res => {
-                    if (res.code == 200) {
-                        this.coverImg = res.data.cover;
-                    }
-                });
+            async pullUpMore(finish) {
+                if (!this.hasNextPage) {
+                    finish();
+                    return;
+                }
+                await this._getAlbumList(this.coverType, this.page, this.pageSize);
+                finish();
             },
             handleClickRecord(index) {
                 const recordId = this.recordList[index].id;
@@ -89,6 +71,35 @@
                 });
                 // 修改store的数据
                 this.setRecordDetail(this.recordList[index]);
+            },
+            async _getAlbumList(type, page, pageSize) {
+                const res = await getRecordList(type, page, pageSize);
+                if (res.code == 200) {
+                    // 处理singer
+                    _.forEach(res.data.list, item => {
+                        let singer = '';
+                        if (item.singerList.length > 1) {
+                            _.forEach(item.singerList, value => {
+                                singer += value.singerName + '/';
+                            });
+                        } else {
+                            singer = item.singerList[0].singerName + '/';
+                        }
+                        item.singer = singer.substring(0, singer.length - 1);
+                    });
+
+                    this.page += 1;
+                    this.recordList = this.recordList.concat(res.data.list);
+                    this.hasNextPage = res.data.hasNextPage;
+                }
+                return;
+            },
+            _getCover(type) {
+                getCover(type).then(res => {
+                    if (res.code == 200) {
+                        this.coverImg = res.data.cover;
+                    }
+                });
             },
             ...mapMutations({
                 setRecordDetail: SET_RECORD_DETAIL
