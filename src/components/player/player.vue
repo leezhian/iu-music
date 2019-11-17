@@ -1,69 +1,201 @@
 <template>
-    <div class="player">
+    <div class="player" v-show="playlist.length > 0">
+        <!--全屏播放器 start-->
         <transition name="player">
-            <div class="player-page" v-if="isBigPlayer">
+            <div class="player-page" v-show="fullPlayer">
                 <div class="player-header">
-                    <div class="goToBack icon-back" @click="changePlayer(false)"></div>
+                    <div class="goToBack icon-back" @click="back"></div>
                     <div class="title-box">
-                        <p class="sing-name">夜信</p>
-                        <p class="singer">IU</p>
+                        <p class="sing-name">{{currentSong.songName}}</p>
+                        <p class="singer">{{currentSong.singer}}</p>
                     </div>
-                    <div class="like-btn icon-noLike"></div>
+                    <div class="like-btn icon-like"></div>
                 </div>
-
+                <!--专辑封面 start-->
                 <div class="player-container">
                     <div class="cd-wrapper">
-                        <div class="cd play">
+                        <div :class="['cd', cdCls]">
                             <img class="cd-img"
-                                 src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1573478362532&di=f88ceb288ac93bc766849914a3bf310b&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201506%2F21%2F20150621222230_KieHX.thumb.700_0.jpeg"
+                                 :src="currentSong.cover"
                                  alt="">
                             <div class="wave"></div>
                             <div class="wave"></div>
                         </div>
                     </div>
                 </div>
-
+                <!--专辑封面 end-->
                 <div class="player-footer">
                     <div class="progressBar-box">
-                        <div class="time">00:00</div>
+                        <div class="time">{{formatTime(currentTime)}}</div>
 
-                        <div class="progressBar">
-                            <div class="progress">
+                        <div class="bar-inner" ref="progressBar">
+                            <div class="progress"></div>
+                            <div class="progress-btn-wrap" ref="progress">
+                                <div class="progress-btn"></div>
                             </div>
                         </div>
 
-                        <div class="time">03:38</div>
+                        <div class="time">{{formatTime(currentSong.duration)}}</div>
                     </div>
                     <div class="tools">
                         <div class="btn icon-loop"></div>
-                        <div class="btn icon-prev"></div>
-                        <div class="btn playBtn icon-play"></div>
-                        <div class="btn icon-next"></div>
+                        <div :class="['btn', 'icon-prev', disableCls]" @click="prev"></div>
+                        <div :class="['btn','playBtn', playIcon]" @click="togglePlay"></div>
+                        <div :class="['btn', 'icon-next', disableCls]" @click="next"></div>
                         <div class="btn icon-menu"></div>
                     </div>
                 </div>
             </div>
         </transition>
+        <!--mini播放器 end-->
 
-        <mini-player @changePlayer="changePlayer" v-if="!isBigPlayer"></mini-player>
+        <!--mini播放器 start-->
+        <transition name="miniPlayer" mode="out-in">
+            <div class="mini-wrap" @click.stop="open" v-show="!fullPlayer">
+                <div :class="['mini-player', cdCls]">
+                    <img class="mini-cover" :src="currentSong.cover" alt="">
+                </div>
+            </div>
+        </transition>
+        <!--mini播放器 end-->
+
+        <audio :src="currentSong.link" ref="audio" @canplay="canReady" @error="error" @timeupdate="updateTime"></audio>
     </div>
 </template>
 
 <script>
-    import MiniPlayer from 'common/mini-player/mini-player';
+    import {mapGetters, mapMutations} from 'vuex';
+    import * as types from 'store/mutation-types';
 
     export default {
         data() {
             return {
-                isBigPlayer: false
+                songReady: false, // 歌曲是否准备好播放
+                currentTime: 0, // 当前音乐播放进度时间
             }
         },
         methods: {
-            changePlayer(show) {
-                this.isBigPlayer = show;
-            }
+            // 退出全屏播放器
+            back() {
+                this.setFullScreen(false);
+            },
+            // 打开全屏播放器
+            open() {
+                this.setFullScreen(true);
+            },
+            // 切换播放状态
+            togglePlay() {
+                this.updatePlayState(!this.isPlay);
+            },
+            // 下一首
+            next() {
+                // 只有准备好才可以切下一首歌
+                if (!this.songReady) {
+                    return;
+                }
+
+                let index = this.currentIndex + 1;
+                if (index === this.playlist.length) {
+                    index = 0;
+                }
+                this.setCurrentIndex(index);
+                // 因为暂停状态下，切换歌曲会自动播放，所以要改变播放状态isPlay
+                if (!this.isPlay) {
+                    this.togglePlay();
+                }
+                this.songReady = false;
+            },
+            // 上一首
+            prev() {
+                if (!this.songReady) {
+                    return;
+                }
+
+                let index = this.currentIndex - 1;
+                if (index < 0) {
+                    index = this.playlist.length - 1;
+                }
+                this.setCurrentIndex(index);
+                this.songReady = false;
+            },
+            // 当音乐准备好会自动触发
+            canReady(e) {
+                this.songReady = true;
+            },
+            // 歌曲加载失败自动触发
+            error() {
+                this.songReady = true;
+            },
+            // 当歌曲的进度时间更新时自动触发
+            updateTime(e) {
+                this.currentTime = e.target.currentTime;
+            },
+            // 处理显示时间格式
+            formatTime(interval) {
+                interval = interval | 0; // 向下取整
+                const minute = this._pad(interval / 60 | 0);
+                const second = this._pad(interval % 60);
+                return `${minute}:${second}`;
+            },
+            // 补0
+            _pad(num, n = 2) {
+                let len = num.toString().length;
+                while (len < n) {
+                    num = '0' + num;
+                    len++
+                }
+                return num;
+            },
+            ...mapMutations({
+                setFullScreen: types.SET_FULL_SCREEN,
+                updatePlayState: types.UPDATE_PLAY_STATE,
+                setCurrentIndex: types.SET_CURRENT_INDEX
+            })
         },
-        components: {MiniPlayer}
+        computed: {
+            // 播放图标修改
+            playIcon() {
+                return this.isPlay ? 'icon-play' : 'icon-pause'
+            },
+            // 上下曲不可点击样式
+            disableCls() {
+                return this.songReady ? '' : 'disable'
+            },
+            // cd封面样式
+            cdCls() {
+                return this.isPlay ? 'play' : 'play pause'
+            },
+            ...mapGetters([
+                'fullPlayer', // 是否全屏
+                'playlist', // 播放列表
+                'currentSong', // 当前播放歌曲
+                'currentIndex', // 当前播放歌曲的索引
+                'isPlay' // 播放状态
+            ])
+        },
+        watch: {
+            // 当歌曲改变的时候自动播放
+            currentSong() {
+                this.$nextTick(() => {
+                    this.$refs.audio.play();
+                });
+            },
+            // 监听播放状态
+            isPlay(newPlaying) {
+                const audio = this.$refs.audio;
+                this.$nextTick(() => {
+                    newPlaying ? audio.play() : audio.pause();
+                });
+            },
+            currentTime(newTime) {
+                if (newTime > 0) {
+                    const percent = this.currentTime / this.currentSong.duration;
+                    const barWidth = this.$refs.progressBar.clientWidth;
+                    const offsetWidth = percent * barWidth;
+                    this.$refs.progress.style.width = `${offsetWidth}px`;
+                }
+            }
+        }
     }
 </script>
 
@@ -84,6 +216,7 @@
         width: 100%;
         height: 100%;
         background: linear-gradient(to top, #3a2f54, #544a40, #38363c);;
+        transform-origin: 90% 80%;
     }
 
     .player-header {
@@ -123,6 +256,10 @@
             width: 1rem;
             height: 100%;
             line-height: 1rem;
+
+            &.icon-like {
+                color: $color-font-theme;
+            }
         }
     }
 
@@ -177,6 +314,18 @@
                     }
                 }
 
+                &.pause {
+                    animation-play-state: paused;
+
+                    .wave:nth-of-type(1) {
+                        animation-play-state: paused;
+                    }
+
+                    .wave:nth-of-type(2) {
+                        animation-play-state: paused;
+                    }
+                }
+
                 .cd-img {
                     width: 100%;
                     height: 100%;
@@ -209,7 +358,8 @@
             align-items: center;
             margin-bottom: .3rem;
 
-            .progressBar {
+            .bar-inner {
+                position: relative;
                 /*margin: 0 auto;*/
                 margin-left: .2rem;
                 margin-right: .2rem;
@@ -218,13 +368,28 @@
                 border-radius: 1px;
                 background-color: $color-progress-background;
 
+
                 .progress {
-                    position: relative;
-                    width: 90%;
+                    position: absolute;
+                    width: 100%;
+                    height: 100%;
+                    top: 0;
+                    left: 0;
+                    border-radius: 1px;
+                    background-color: $color-progress-background;
+                }
+
+                .progress-btn-wrap {
+                    /*position: relative;*/
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 0;
                     height: 2px;
+                    border-radius: 1px;
                     background-color: $color-font-theme;
 
-                    &::after {
+                    .progress-btn {
                         position: absolute;
                         content: '';
                         right: 0;
@@ -239,6 +404,7 @@
             }
 
             .time {
+                width: .6rem;
                 color: $color-progress-background;
                 font-weight: lighter;
                 font-size: $font-size-small-s;
@@ -263,6 +429,10 @@
                 font-family: iconfont;
                 color: $color-text-w;
 
+                &.disable {
+                    color: $color-progress-background;
+                }
+
                 &.playBtn {
                     font-size: .9rem;
                 }
@@ -271,10 +441,54 @@
     }
 
     .player-enter-active, .player-leave-active {
-        transition: all .3s;
+        transition: all .4s;
     }
 
     .player-enter, .player-leave-to {
-        transform: translateX(100%);
+        /*transform: translateX(100%);*/
+        transform: scale(0);
+    }
+
+    .mini-wrap {
+        z-index: 200;
+        position: fixed;
+        right: .3rem;
+        bottom: 2rem;
+        width: 1rem;
+        height: 1rem;
+        border-radius: 50%;
+        background-color: $color-background;
+    }
+
+    .mini-player {
+        width: 100%;
+        height: 100%;
+        border: .04rem solid rgba(147, 112, 219, .5);
+        border-radius: 50%;
+
+        .mini-cover {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            @include bg-coverAndCenter();
+        }
+
+        &.play {
+            animation: playerRotate 20s linear infinite;
+        }
+
+        // 动画暂停
+        &.pause {
+            animation-play-state: paused;
+        }
+    }
+
+    .miniPlayer-enter-active, .miniPlayer-leave-active {
+        transition: all 1s;
+    }
+
+    .miniPlayer-enter, .miniPlayer-leave-to {
+        /*transform: translateX(100%);*/
+        opacity: 0;
     }
 </style>

@@ -2,6 +2,7 @@
     <div class="song-list">
         <ul>
             <li :class="['song-item', {'active': index==0}]"
+                @click="selectItem(item,index)"
                 v-for="(item, index) in songList"
                 :key="item.id">
                 <div class="rank">
@@ -33,6 +34,11 @@
             showNum: {
                 type: Boolean,
                 default: true
+            }
+        },
+        methods: {
+            selectItem(item, index) {
+                this.$emit('select', item, index);
             }
         },
         filters: {

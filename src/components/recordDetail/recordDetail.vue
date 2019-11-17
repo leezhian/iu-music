@@ -23,7 +23,9 @@
                     :probe-type="probeType"
                     ref="list">
                 <div>
-                    <song-list :song-list="songList" v-if="songList.length"></song-list>
+                    <song-list @select="selectItem"
+                               :song-list="songList"
+                               v-if="songList.length"></song-list>
                 </div>
             </scroll>
             <!--            <loading v-else></loading>-->
@@ -35,7 +37,8 @@
     import Scroll from 'common/scroll/scroll';
     import cover from 'common/cover/cover';
     import songList from 'common/song-list/song-list';
-    import {mapGetters} from 'vuex';
+
+    import {mapGetters, mapActions} from 'vuex';
 
     import {getSongList} from 'api/album';
 
@@ -75,6 +78,15 @@
             scroll(position) {
                 this.scrollY = position.y;
             },
+            selectItem(item, index) {
+                this.selectPlay({
+                    list: this.songList,
+                    index
+                })
+            },
+            /**
+             * 获取歌曲列表
+             */
             _getSongList() {
                 if (JSON.stringify(this.recordDetail) == {}) {
                     if (this.recordType == 1) {
@@ -103,7 +115,10 @@
                         this.songList = res.data;
                     }
                 });
-            }
+            },
+            ...mapActions([
+                'selectPlay'
+            ])
         },
         computed: {
             ...mapGetters(['recordDetail'])
