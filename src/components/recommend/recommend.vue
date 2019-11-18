@@ -44,7 +44,7 @@
                         <p class="title">推荐单曲</p>
                     </div>
 
-                    <song-list :songList="songList" v-if="songList.length"></song-list>
+                    <song-list @select="selectItem" :songList="songList" v-if="songList.length"></song-list>
                 </div>
             </div>
         </scroll>
@@ -58,11 +58,11 @@
     import Scroll from 'common/scroll/scroll';
     import slider from 'common/slider/slider';
     import SongList from 'common/song-list/song-list';
+    import {mapActions, mapMutations} from 'vuex';
 
     import {getSwiperList, getRecommendPlayerList, getRecommendSongs} from 'api/recommend';
     import _ from 'lodash';
 
-    import {mapMutations} from 'vuex';
     import {SET_RECORD_DETAIL} from 'store/mutation-types';
 
     export default {
@@ -91,6 +91,7 @@
             }
         },
         methods: {
+            // 点击推荐歌单
             handleClickRecord(index) {
                 const recordId = this.playList[index].id;
                 this.$router.push({
@@ -101,6 +102,13 @@
                 });
                 // 修改store的数据
                 this.setRecordDetail(this.playList[index]);
+            },
+            // 点击单曲
+            selectItem(item, index) {
+                this.selectPlay({
+                    list: this.songList,
+                    index
+                })
             },
             // 重置推荐歌单图片高度
             _resetCoverH() {
@@ -159,7 +167,10 @@
             },
             ...mapMutations({
                 setRecordDetail: SET_RECORD_DETAIL
-            })
+            }),
+            ...mapActions([
+                'selectPlay'
+            ])
         },
         components: {
             slider,

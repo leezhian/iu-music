@@ -1,7 +1,7 @@
 <template>
     <div class="song-list">
         <ul>
-            <li :class="['song-item', {'active': index==0}]"
+            <li :class="['song-item', {'active': item.id == currentSong.id}]"
                 @click="selectItem(item,index)"
                 v-for="(item, index) in songList"
                 :key="item.id">
@@ -21,6 +21,7 @@
 </template>
 
 <script>
+    import {mapGetters} from 'vuex';
     export default {
         props: {
             songList: {
@@ -40,6 +41,11 @@
             selectItem(item, index) {
                 this.$emit('select', item, index);
             }
+        },
+        computed: {
+            ...mapGetters([
+                'currentSong'
+            ])
         },
         filters: {
             'getDesc': (val, album) => {
