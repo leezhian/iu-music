@@ -11,6 +11,7 @@
                     </div>
                     <div class="like-btn icon-like"></div>
                 </div>
+
                 <!--专辑封面 start-->
                 <div class="player-container">
                     <div class="cd-wrapper">
@@ -24,21 +25,25 @@
                     </div>
                 </div>
                 <!--专辑封面 end-->
+
                 <div class="player-footer">
                     <div class="progressBar-box">
                         <div class="time">{{formatTime(currentTime)}}</div>
 
-                        <div class="bar-inner" ref="progressBar">
-                            <div class="progress"></div>
-                            <div class="progress-btn-wrap" ref="progress">
-                                <div class="progress-btn"></div>
+                        <div class="bar-inner" ref="progressBar" @click="progressClick">
+                            <div class="progress" ref="progress">
+                                <div class="progress-btn"
+                                     ref="progressBtn"
+                                     @touchstart.prevent="progressTouchStart"
+                                     @touchmove.prevent="progressTouchMove"
+                                     @touchend="progressTouchEnd"></div>
                             </div>
                         </div>
 
                         <div class="time">{{formatTime(currentSong.duration)}}</div>
                     </div>
                     <div class="tools">
-                        <div class="btn icon-loop"></div>
+                        <div :class="['btn', modeIcon]" @click="changeMode"></div>
                         <div :class="['btn', 'icon-prev', disableCls]" @click="prev"></div>
                         <div :class="['btn','playBtn', playIcon]" @click="togglePlay"></div>
                         <div :class="['btn', 'icon-next', disableCls]" @click="next"></div>
@@ -59,15 +64,25 @@
         </transition>
         <!--mini播放器 end-->
 
-        <audio :src="currentSong.link" ref="audio" @canplay="canReady" @error="error" @timeupdate="updateTime"></audio>
+        <audio :src="currentSong.link"
+               ref="audio"
+               @canplay="canReady"
+               @error="error"
+               @timeupdate="updateTime"
+               @ended="end"></audio>
     </div>
 </template>
 
 <script>
     import {mapGetters, mapMutations} from 'vuex';
     import * as types from 'store/mutation-types';
+    import {playMode} from 'static/js/config';
 
     export default {
+        created() {
+            // 进度条数据
+            this.touch = {}
+        },
         data() {
             return {
                 songReady: false, // 歌曲是否准备好播放
@@ -94,7 +109,18 @@
                     return;
                 }
 
+                // 判断是否播放列表中只有一首歌
+                if (this.playlist.length == 1) {
+                    this.loop();
+                    return;
+                }
+
                 let index = this.currentIndex + 1;
+
+                if (this.mode == playMode.random) {
+                    index = this.randomIndex();
+                }
+
                 if (index === this.playlist.length) {
                     index = 0;
                 }
@@ -111,16 +137,49 @@
                     return;
                 }
 
+                // 判断是否播放列表中只有一首歌
+                if (this.playlist.length == 1) {
+                    this.loop();
+                    return;
+                }
+
                 let index = this.currentIndex - 1;
+
+                if (this.mode == playMode.random) {
+                    index = this.randomIndex();
+                }
+
                 if (index < 0) {
                     index = this.playlist.length - 1;
                 }
                 this.setCurrentIndex(index);
                 this.songReady = false;
             },
+            // 切换模式
+            changeMode() {
+                const mode = (this.mode + 1) % 3;
+                this.setPlayMode(mode);
+            },
             // 当音乐准备好会自动触发
             canReady(e) {
                 this.songReady = true;
+            },
+            // 音乐播放完自动触发
+            end() {
+                if (this.mode === playMode.single || this.playlist.length == 1) {
+                    this.loop();
+                } else {
+                    this.next();
+                }
+            },
+            // 循环
+            loop() {
+                this.$refs.audio.currentTime = 0;
+                this.$refs.audio.play();
+            },
+            // 随机获取一个index(随机播放的时候使用)
+            randomIndex() {
+                return Math.floor(Math.random() * (this.playlist.length - 0));
             },
             // 歌曲加载失败自动触发
             error() {
@@ -146,16 +205,59 @@
                 }
                 return num;
             },
+            // 拖动开始
+            progressTouchStart(e) {
+                this.touch.initiated = true; // 是否初始化
+                this.touch.startX = e.touches[0].pageX; // 点击时的横坐标
+                this.touch.left = this.$refs.progress.clientWidth; // 当前进度条的长度
+            },
+            // 拖动时
+            progressTouchMove(e) {
+                if (!this.touch.initiated) {
+                    return;
+                }
+                const deltaX = e.touches[0].pageX - this.touch.startX; // 算出手指的偏移量
+                const offsetWidth = Math.min(this.$refs.progressBar.clientWidth, Math.max(0, this.touch.left + deltaX));
+                this._setProgress(offsetWidth);
+            },
+            // 拖动结束时
+            progressTouchEnd(e) {
+                this.touch.initiated = false;
+                const barWidth = this.$refs.progressBar.clientWidth;
+                const percent = this.$refs.progress.clientWidth / barWidth;
+                this.$refs.audio.currentTime = this.currentSong.duration * percent; // 修改播放进度
+                if (!this.isPlay) {
+                    this.togglePlay();
+                }
+            },
+            // 点击进度条的时候
+            progressClick(e) {
+                const rect = this.$refs.progressBar.getBoundingClientRect();
+                const offsetWidth = e.pageX - rect.left;
+                this._setProgress(offsetWidth);
+                const barWidth = this.$refs.progressBar.clientWidth;
+                const percent = this.$refs.progress.clientWidth / barWidth;
+                this.$refs.audio.currentTime = this.currentSong.duration * percent;
+            },
+            // 设置进度条长度
+            _setProgress(offsetWidth) {
+                this.$refs.progress.style.width = `${offsetWidth}px`;
+            },
             ...mapMutations({
                 setFullScreen: types.SET_FULL_SCREEN,
                 updatePlayState: types.UPDATE_PLAY_STATE,
-                setCurrentIndex: types.SET_CURRENT_INDEX
+                setCurrentIndex: types.SET_CURRENT_INDEX,
+                setPlayMode: types.SET_PLAY_MODE
             })
         },
         computed: {
             // 播放图标修改
             playIcon() {
                 return this.isPlay ? 'icon-play' : 'icon-pause'
+            },
+            modeIcon() {
+                const modeCls = ['icon-loop', 'icon-single', 'icon-random'];
+                return this.mode > modeCls.length ? '' : modeCls[this.mode];
             },
             // 上下曲不可点击样式
             disableCls() {
@@ -170,7 +272,8 @@
                 'playlist', // 播放列表
                 'currentSong', // 当前播放歌曲
                 'currentIndex', // 当前播放歌曲的索引
-                'isPlay' // 播放状态
+                'isPlay', // 播放状态
+                'mode', // 模式
             ])
         },
         watch: {
@@ -188,11 +291,13 @@
                 });
             },
             currentTime(newTime) {
-                if (newTime > 0) {
+                if (newTime > 0 && !this.touch.initiated) {
+                    // 求出比值
                     const percent = this.currentTime / this.currentSong.duration;
+                    // 获取进度条总长
                     const barWidth = this.$refs.progressBar.clientWidth;
                     const offsetWidth = percent * barWidth;
-                    this.$refs.progress.style.width = `${offsetWidth}px`;
+                    this._setProgress(offsetWidth);
                 }
             }
         }
@@ -368,22 +473,11 @@
                 border-radius: 1px;
                 background-color: $color-progress-background;
 
-
                 .progress {
-                    position: absolute;
-                    width: 100%;
-                    height: 100%;
-                    top: 0;
-                    left: 0;
-                    border-radius: 1px;
-                    background-color: $color-progress-background;
-                }
-
-                .progress-btn-wrap {
                     /*position: relative;*/
-                    position: absolute;
-                    top: 0;
-                    left: 0;
+                    position: relative;
+                    /*top: 0;*/
+                    /*left: 0;*/
                     width: 0;
                     height: 2px;
                     border-radius: 1px;
