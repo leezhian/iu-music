@@ -77,6 +77,7 @@
     import {mapGetters, mapMutations} from 'vuex';
     import * as types from 'store/mutation-types';
     import {playMode} from 'static/js/config';
+    import {randomIndex} from 'static/js/utils';
 
     export default {
         created() {
@@ -118,7 +119,7 @@
                 let index = this.currentIndex + 1;
 
                 if (this.mode == playMode.random) {
-                    index = this.randomIndex();
+                    index = randomIndex(0, this.playlist.length - 1);
                 }
 
                 if (index === this.playlist.length) {
@@ -146,7 +147,7 @@
                 let index = this.currentIndex - 1;
 
                 if (this.mode == playMode.random) {
-                    index = this.randomIndex();
+                    index = randomIndex(0, this.playlist.length - 1);
                 }
 
                 if (index < 0) {
@@ -176,10 +177,6 @@
             loop() {
                 this.$refs.audio.currentTime = 0;
                 this.$refs.audio.play();
-            },
-            // 随机获取一个index(随机播放的时候使用)
-            randomIndex() {
-                return Math.floor(Math.random() * (this.playlist.length - 0));
             },
             // 歌曲加载失败自动触发
             error() {

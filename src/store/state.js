@@ -5,7 +5,7 @@ const state = {
     isPlay: false, // 是否处于播放
     fullPlayer: false, // 是否处于全屏播放器
     playlist: [], // 播放列表
-    loopList: [],
+    // loopList: [],
     mode: playMode.sequence, // 当前播放模式
     currentIndex: -1, // 播放歌曲索引
 };
