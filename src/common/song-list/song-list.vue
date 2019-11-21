@@ -1,6 +1,6 @@
 <template>
     <div class="song-list">
-        <ul>
+        <ul v-if="songList.length">
             <li :class="['song-item', {'active': item.id == currentSong.id}]"
                 @click="selectItem(item,index)"
                 v-for="(item, index) in songList"
@@ -17,6 +17,7 @@
                 </div>
             </li>
         </ul>
+        <p class="no-more" v-else>暂无歌曲</p>
     </div>
 </template>
 
@@ -63,6 +64,13 @@
     @import "static/scss/mixin.scss";
 
     .song-list {
+        .no-more {
+            margin: 1rem 0;
+            text-align: center;
+            font-size: $font-size-medium;
+            color: $color-text-g;
+        }
+
         ul {
             display: block;
             width: 100%;

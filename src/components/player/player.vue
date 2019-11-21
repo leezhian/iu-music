@@ -164,6 +164,7 @@
             // 当音乐准备好会自动触发
             canReady(e) {
                 this.songReady = true;
+                // console.log(this.$refs.audio.duration);
             },
             // 音乐播放完自动触发
             end() {

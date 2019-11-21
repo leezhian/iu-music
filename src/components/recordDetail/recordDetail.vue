@@ -23,9 +23,9 @@
                     :probe-type="probeType"
                     ref="list">
                 <div>
+                <!--v-if="songList.length"-->
                     <song-list @select="selectItem"
-                               :song-list="songList"
-                               v-if="songList.length"></song-list>
+                               :song-list="songList"></song-list>
                 </div>
             </scroll>
             <!--            <loading v-else></loading>-->
