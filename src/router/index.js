@@ -5,6 +5,7 @@ import Album from 'components/album/album.vue';
 import Playlist from 'components/playlist/playlist.vue';
 import RankingList from 'components/rankingList/rankingList';
 import User from 'components/user/user';
+import Login from 'components/login/login';
 
 import recordDetail from 'components/recordDetail/recordDetail';
 import Error from 'components/error/error';
@@ -54,7 +55,14 @@ export default new Router({
             path: '/user',
             component: User
         },
-        {path: '*', component: Error}
+        {
+            path: '/login',
+            component: Login
+        },
+        {
+            path: '*',
+            component: Error
+        }
     ],
     mode: 'history'
 });

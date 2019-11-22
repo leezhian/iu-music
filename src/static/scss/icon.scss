@@ -159,3 +159,15 @@
         content: "\e612";
     }
 }
+
+.icon-circleRight {
+    &:before {
+        content: "\e633";
+    }
+}
+
+.icon-circleLeft {
+    &:before {
+        content: "\e68e";
+    }
+}
