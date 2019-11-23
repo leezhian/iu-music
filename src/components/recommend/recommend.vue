@@ -297,6 +297,7 @@
                 .cover-img {
                     display: block;
                     width: 100%;
+                    border-radius: .1rem;
                     @include bg-coverAndCenter()
                 }
 

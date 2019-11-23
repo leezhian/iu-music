@@ -1,5 +1,6 @@
 <template>
     <div class="record">
+        <p class="record-title">本周热销</p>
         <div class="record-box">
             <div class="record-item"
                  v-for="(item, index) in recordList"
@@ -69,6 +70,15 @@
         background-color: $color-background;
     }
 
+    .record-title {
+        padding-top: .3rem;
+        padding-left: .3rem;
+        padding-right: .3rem;
+        font-size: $font-size-large;
+        font-weight: bold;
+
+    }
+
     .record-box {
         position: relative;
         display: flex;
@@ -80,7 +90,7 @@
 
     .record-item {
         overflow: hidden;
-        margin-bottom: .1rem;
+        margin-bottom: .3rem;
         width: 48%;
 
         .record-cover {
@@ -117,7 +127,7 @@
 
             .title {
                 font-weight: bold;
-                font-size: $font-size-small;
+                font-size: $font-size-medium-s;
                 @include no-wrap();
             }
 

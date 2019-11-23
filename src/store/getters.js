@@ -6,7 +6,7 @@ export const fullPlayer = state => state.fullPlayer;
 
 export const playlist = state => state.playlist;
 
-export const loopList = state => state.loopList;
+// export const loopList = state => state.loopList;
 
 export const mode = state => state.mode;
 

@@ -2,7 +2,7 @@
     <div class="rank-wrap">
         <div class="song-wrap">
             <ul>
-                <li class="title">流行指数榜</li>
+                <li class="title">热歌榜</li>
                 <!--                <li class="song-item" v-for="(item, index) in 3" :key="index"></li>-->
                 <li class="song-item">
                     <span class="num">1.</span>
