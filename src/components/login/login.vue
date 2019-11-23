@@ -6,7 +6,7 @@
         </div>
         <!--        http://sjbz.fd.zol-img.com.cn/t_s768x1280c/g5/M00/00/02/ChMkJlfJU6qIZvmRAD-T1_szgssAAU9rwGwTdYAP5Pv071.jpg-->
         <div class="login-bg"
-             :style="{backgroundImage: 'url(http://imgsrc.baidu.com/forum/pic/item/5e4f4aed2e738bd4ab44effcaf8b87d6257ff995.jpg)'}">
+             :style="{backgroundImage: 'url(http://img5.imgtn.bdimg.com/it/u=3291950307,2572563606&fm=26&gp=0.jpg)'}">
         </div>
 
         <div :class="['container']">
