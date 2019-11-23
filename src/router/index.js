@@ -13,16 +13,22 @@ import Error from 'components/error/error';
 
 Vue.use(Router);
 
-export default new Router({
+const router = new Router({
     routes: [
         {
             path: '/',
-            redirect: '/recommend'
+            redirect: '/recommend',
+            meta: {
+                title: '推荐',
+            }
         },
         {
             name: 'recommend',
             path: '/recommend',
             component: Recommend,
+            meta: {
+                title: '推荐',
+            },
             children: [
                 {
                     name: 'playlist',
@@ -41,6 +47,9 @@ export default new Router({
             name: 'album',
             path: '/album',
             component: Album,
+            meta: {
+                title: '专辑',
+            },
             children: [
                 {
                     path: ':id',
@@ -51,12 +60,18 @@ export default new Router({
         {
             name: 'rankinglist',
             path: '/rankinglist',
-            component: RankingList
+            component: RankingList,
+            meta: {
+                title: '排行榜',
+            }
         },
         {
             name: 'user',
             path: '/user',
             component: User,
+            meta: {
+                title: '我的',
+            },
             children: [
                 {
                     path: ':type',
@@ -67,12 +82,27 @@ export default new Router({
         {
             name: 'login',
             path: '/login',
-            component: Login
+            component: Login,
+            meta: {
+                title: '登录与注册',
+            }
         },
         {
             path: '*',
-            component: Error
+            component: Error,
+            meta: {
+                title: 'error',
+            }
         }
     ],
     mode: 'history'
 });
+
+router.beforeEach((to, from, next) => {
+    if (to.meta.title) {
+        document.title = 'IU music -' +to.meta.title;
+    }
+    next();
+});
+
+export default router;
