@@ -8,8 +8,8 @@ import User from 'components/user/user';
 import Login from 'components/login/login';
 
 import recordDetail from 'components/recordDetail/recordDetail';
+import RecentList from 'components/recentList/recentList';
 import Error from 'components/error/error';
-// import Player from 'components/player/player';
 
 Vue.use(Router);
 
@@ -20,6 +20,7 @@ export default new Router({
             redirect: '/recommend'
         },
         {
+            name: 'recommend',
             path: '/recommend',
             component: Recommend,
             children: [
@@ -48,14 +49,23 @@ export default new Router({
             ]
         },
         {
+            name: 'rankinglist',
             path: '/rankinglist',
             component: RankingList
         },
         {
+            name: 'user',
             path: '/user',
-            component: User
+            component: User,
+            children: [
+                {
+                    path: ':type',
+                    component: RecentList
+                }
+            ]
         },
         {
+            name: 'login',
             path: '/login',
             component: Login
         },

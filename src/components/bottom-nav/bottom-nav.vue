@@ -24,7 +24,7 @@
                         id: 1,
                         title: '推荐',
                         route: 'recommend',
-                        icon: 'icon-music'
+                        icon: 'icon-iu'
                     },
                     {
                         id: 2,

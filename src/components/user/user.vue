@@ -1,85 +1,56 @@
 <template>
     <div class="user-page">
-        <div class="switches-wrapper">
-            <switchs :switches="switches" :currentIndex="currentIndex"></switchs>
+        <div class="header">
+            <div class="avatar"></div>
+            <div class="info" v-show="false">
+                <p class="name">IU</p>
+                <p class="vip icon-vip"></p>
+            </div>
+            <router-link to="/login" tag="div" class="login-btn">未登录</router-link>
         </div>
 
-        <div ref="playBtn" class="play-btn">
-            <i class="icon-smallPlay"></i>
-            <span class="title">随机播放全部</span>
+        <div class="vip-wrapper">
+            <div class="tips"><i class="icon-vip"></i></div>
+            <div class="btn">开通</div>
         </div>
 
-        <div class="list-wrap">
-            <songList :songList="songList" :showNum="false"></songList>
+        <div class="container">
+            <div class="item" @click="handleJump('like')">
+                <div class="icon icon-noLike"></div>
+                <p class="title">我喜欢的</p>
+                <div class="icon icon-rightBack"></div>
+            </div>
+            <div class="item" @click="handleJump('lately')">
+                <div class="icon icon-lately"></div>
+                <p class="title">最近播放</p>
+                <div class="icon icon-rightBack"></div>
+            </div>
+            <div class="item">
+                <div class="icon icon-lately"></div>
+                <p class="title">关于</p>
+                <div class="icon icon-rightBack"></div>
+            </div>
         </div>
+
+        <router-view></router-view>
     </div>
 </template>
 
 <script>
-    import Switchs from "common/switchs/switchs";
-    import songList from "common/song-list/song-list";
 
     export default {
         created() {
         },
         data() {
-            return {
-                currentIndex: 0,
-                switches: [
-                    {
-                        name: '我喜欢的'
-                    },
-                    {
-                        name: '最近听的'
-                    }
-                ],
-                songList: [
-                    {
-                        id: 1,
-                        name: '夜信',
-                        singer: 'IU',
-                        album: '밤편지'
-                    },
-                    {
-                        id: 2,
-                        name: '삐삐 - (BBIBBI)',
-                        singer: 'IU',
-                        album: '삐삐 - (BBIBBI)'
-                    },
-                    {
-                        id: 3,
-                        name: '除了春天 爱情和樱花',
-                        singer: 'IU',
-                        album: '밤편지'
-                    },
-                    {
-                        id: 4,
-                        name: '팔레트 - (Palette)',
-                        singer: 'IU',
-                        album: 'Palette'
-                    },
-                    {
-                        id: 5,
-                        name: '좋은 날 - (好日子)',
-                        singer: 'IU',
-                        album: 'Real'
-                    },
-                    {
-                        id: 6,
-                        name: '囍帖街 (Live) - (原唱:谢安琪)',
-                        singer: 'IU',
-                        album: 'Covers & Unreleased Songs'
-                    },
-                    {
-                        id: 7,
-                        name: '喜欢你 - (原唱：Beyond)',
-                        singer: 'IU',
-                        album: 'Covers & Unreleased Songs'
-                    }
-                ]
-            }
+            return {}
         },
-        components: {Switchs, songList}
+        methods: {
+            handleJump(route) {
+                this.$router.push({
+                    path: `/user/${route}`
+                });
+            }
+        }
     }
 </script>
 
@@ -89,41 +60,112 @@
 
     .user-page {
         position: absolute;
+        z-index: 10;
         width: 100%;
         top: 0;
         left: 0;
         right: 0;
         bottom: 1.2rem;
-        overflow-x: hidden;
-        overflow-y: auto;
-    }
+        overflow: hidden;
 
-    .switches-wrapper {
-        margin: .2rem 0 .6rem 0;
-    }
+        .header {
+            display: flex;
+            align-items: center;
+            padding: .3rem;
 
-    .play-btn {
-        width: 3rem;
-        padding: .14rem;
-        margin: 0 auto;
-        border: 1px solid $color-font-theme;
-        border-radius: 1rem;
-        line-height: $font-size-small;
-        text-align: center;
-        color: $color-font-theme;
+            .avatar {
+                flex-shrink: 0;
+                width: 1rem;
+                height: 1rem;
+                border-radius: 50%;
+                background-color: $color-text-g;
+            }
 
-        .icon-smallPlay {
-            font-size: $font-size-small;
-            font-family: iconfont;
+            .info {
+                flex-grow: 1;
+                margin-left: .3rem;
+
+                .name {
+                    font-size: $font-size-medium;
+                    @include no-wrap();
+                }
+
+                .vip {
+                    font-size: $font-size-large-x;
+                    font-family: iconfont;
+                }
+            }
+
+            .login-btn {
+                margin-left: .3rem;
+                font-size: $font-size-medium;
+            }
         }
 
-        .title {
-            font-size: $font-size-small;
+        .vip-wrapper {
+            padding: .2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: .2rem auto 0;
+            width: 6rem;
+            height: 1rem;
+            border-top-left-radius: .2rem;
+            border-top-right-radius: .2rem;
+            background-color: $color-font-theme;
+            background-image: url(../../static/images/logo.png);
+            background-repeat: no-repeat;
+            background-position: top center;
+
+            .tips {
+                font-family: iconfont;
+                color: $color-text-w;
+
+                i {
+                    font-size: .5rem;
+                }
+            }
+
+            .btn {
+                font-size: $font-size-medium;
+                color: $color-text-w;
+            }
+        }
+
+        .container {
+            border-top: 1px solid $color-nav-background;
+
+            .item {
+                display: flex;
+                width: 100%;
+                height: 1rem;
+
+                .icon {
+                    flex-shrink: 0;
+                    width: 1rem;
+                    height: 1rem;
+                    line-height: 1rem;
+                    text-align: center;
+                    font-size: .5rem;
+                    font-family: iconfont;
+
+                    &.icon-rightBack {
+                        border-bottom: 1px solid $color-nav-background;
+                        font-size: $font-size-large;
+                    }
+                }
+
+                .title {
+                    flex-grow: 1;
+                    line-height: 1rem;
+                    font-size: $font-size-medium;
+                    border-bottom: 1px solid $color-nav-background;
+                    @include no-wrap();
+                }
+            }
+
         }
     }
 
-    .list-wrap {
-
-    }
 
 </style>

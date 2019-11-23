@@ -225,9 +225,5 @@
         input::-webkit-input-placeholder {
             color: $color-text-g;
         }
-
-        .register-wrapper {
-
-        }
     }
 </style>

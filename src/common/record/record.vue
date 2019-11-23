@@ -86,7 +86,7 @@
         .record-cover {
             position: relative;
             width: 100%;
-            border-radius: .2rem;
+            border-radius: .14rem;
             @include bg-coverAndCenter();
 
             .listen-info {
