@@ -13,24 +13,32 @@
                 </div>
 
                 <!--专辑封面 start-->
-                <div class="player-container">
-                    <div class="cd-wrapper">
-                        <div :class="['cd', cdCls]">
-                            <img class="cd-img"
-                                 :src="currentSong.cover"
-                                 alt="">
-                            <div class="wave"></div>
-                            <div class="wave"></div>
-                        </div>
-                    </div>
-                </div>
+                <!--                <div class="player-container">-->
+                <!--                    <div class="cd-wrapper">-->
+                <!--                        <div :class="['cd', cdCls]">-->
+                <!--                            <img class="cd-img"-->
+                <!--                                 :src="currentSong.cover"-->
+                <!--                                 alt="">-->
+                <!--                            <div class="wave"></div>-->
+                <!--                            <div class="wave"></div>-->
+                <!--                        </div>-->
+                <!--                    </div>-->
+                <!--                </div>-->
                 <!--专辑封面 end-->
 
-                <div class="lyric-wrapper">
-                    <div class="current-lyric">
-                        <p class="text"></p>
+                <scroll class="lyric-wrapper"
+                        ref="lyricList"
+                        :watch-data="currentLyric && currentLyric.lines">
+                    <div class="lyric-box">
+                        <div v-if="currentLyric">
+                            <p :class="['text', {'active': currentLineNum == index}]"
+                               ref="lyricLine"
+                               v-for="(item,index) in currentLyric.lines">
+                                {{item.txt}}
+                            </p>
+                        </div>
                     </div>
-                </div>
+                </scroll>
 
                 <div class="player-footer">
                     <div class="progressBar-box">
@@ -85,7 +93,8 @@
     import {playMode} from 'static/js/config';
     import {randomIndex} from 'static/js/utils';
 
-    import Lyric from 'lyric-parser';
+    import Lyric from 'static/js/lyrics-parser'
+    import Scroll from 'common/scroll/scroll';
 
     export default {
         created() {
@@ -96,8 +105,9 @@
             return {
                 songReady: false, // 歌曲是否准备好播放
                 currentTime: 0, // 当前音乐播放进度时间
-                currentLyric: [] // 歌词
-            }
+                currentLyric: null, // 歌词
+                currentLineNum: 0 // 当前歌词第几行
+            };
         },
         methods: {
             // 退出全屏播放器
@@ -251,8 +261,26 @@
                 if (!this.currentSong.lyric) {
                     await this.setCurrentLyric({id: this.currentSong.id});
                 }
-                this.currentLyric = new Lyric(this.currentSong.lyric);
+
+                const str = this.currentSong.lyric;
+                this.currentLyric = new Lyric(str, this.handleLyric);
+                
+                if (this.isPlay) {
+                    this.currentLyric.play();
+                }
                 console.log(this.currentLyric);
+            },
+            // 歌词回调
+            handleLyric({lineNum, txt}) {
+                // 记录当前歌词index
+                this.currentLineNum = lineNum;
+                // 当index大于5的时候，保存在中间
+                if (lineNum > 5) {
+                    let lineEl = this.$refs.lyricLine[lineNum - 5];
+                    this.$refs.lyricList.scrollToElement(lineEl, 1000);
+                } else {
+                    this.$refs.lyricList.scrollTo(0, 0, 1000);
+                }
             },
             // 设置进度条长度
             _setProgress(offsetWidth) {
@@ -319,6 +347,9 @@
                     this._setProgress(offsetWidth);
                 }
             }
+        },
+        components: {
+            Scroll
         }
     }
 </script>
@@ -466,6 +497,26 @@
                     height: 100%;
                     border-radius: 50%;
                     border: 2px solid #9a8192;
+                }
+            }
+        }
+    }
+
+    .lyric-wrapper {
+        flex-grow: 1;
+        margin-top: .6rem;
+        margin-bottom: .6rem;
+        overflow: hidden;
+
+        .lyric-box {
+            .text {
+                font-size: $font-size-small;
+                text-align: center;
+                line-height: .64rem;
+                color: $color-progress-background;
+
+                &.active {
+                    color: $color-text-w;
                 }
             }
         }

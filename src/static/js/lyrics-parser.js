@@ -49,7 +49,8 @@ export default class Lyric {
 
     _initLines() {
         // 通过换行符，拆解歌词
-        const lines = this.lrc.split('\n');
+        // \n
+        const lines = this.lrc.split('\\n');
         for (let i = 0; i < lines.length; i++) {
             const line = lines[i];
             // 匹配时间戳
