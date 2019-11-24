@@ -26,6 +26,12 @@
                 </div>
                 <!--专辑封面 end-->
 
+                <div class="lyric-wrapper">
+                    <div class="current-lyric">
+                        <p class="text"></p>
+                    </div>
+                </div>
+
                 <div class="player-footer">
                     <div class="progressBar-box">
                         <div class="time">{{formatTime(currentTime)}}</div>
@@ -74,10 +80,12 @@
 </template>
 
 <script>
-    import {mapGetters, mapMutations} from 'vuex';
+    import {mapGetters, mapMutations, mapActions} from 'vuex';
     import * as types from 'store/mutation-types';
     import {playMode} from 'static/js/config';
     import {randomIndex} from 'static/js/utils';
+
+    import Lyric from 'lyric-parser';
 
     export default {
         created() {
@@ -88,6 +96,7 @@
             return {
                 songReady: false, // 歌曲是否准备好播放
                 currentTime: 0, // 当前音乐播放进度时间
+                currentLyric: [] // 歌词
             }
         },
         methods: {
@@ -164,7 +173,7 @@
             // 当音乐准备好会自动触发
             canReady(e) {
                 this.songReady = true;
-                console.log(this.$refs.audio.duration);
+                // console.log(this.$refs.audio.duration);
             },
             // 音乐播放完自动触发
             end() {
@@ -237,10 +246,21 @@
                 const percent = this.$refs.progress.clientWidth / barWidth;
                 this.$refs.audio.currentTime = this.currentSong.duration * percent;
             },
+            // 解析歌词
+            async getLyric() {
+                if (!this.currentSong.lyric) {
+                    await this.setCurrentLyric({id: this.currentSong.id});
+                }
+                this.currentLyric = new Lyric(this.currentSong.lyric);
+                console.log(this.currentLyric);
+            },
             // 设置进度条长度
             _setProgress(offsetWidth) {
                 this.$refs.progress.style.width = `${offsetWidth}px`;
             },
+            ...mapActions({
+                setCurrentLyric: 'setLyric'
+            }),
             ...mapMutations({
                 setFullScreen: types.SET_FULL_SCREEN,
                 updatePlayState: types.UPDATE_PLAY_STATE,
@@ -279,6 +299,7 @@
             currentSong() {
                 this.$nextTick(() => {
                     this.$refs.audio.play();
+                    this.getLyric();
                 });
             },
             // 监听播放状态
@@ -344,10 +365,11 @@
             flex-grow: 1;
 
             .sing-name {
-
+                @include no-wrap;
             }
 
             .singer {
+                @include no-wrap;
                 font-size: $font-size-small;
                 font-weight: lighter;
             }

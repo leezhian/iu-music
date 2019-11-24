@@ -14,3 +14,8 @@ export async function getSongList(songIds) {
     const res = await post({url: '/api/album/getSongList.do', data: {songIds: songIds}});
     return res;
 }
+
+export async function getLyric(songId) {
+    const res = await get({url: '/api/album/getLyric.do', data: {id: songId}});
+    return res;
+}

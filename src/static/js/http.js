@@ -10,8 +10,7 @@ const devMode = process.env.NODE_ENV !== 'production';
 const baseURL = devMode ? 'http://192.168.3.7:3001' : '';
 
 const service = axios.create({
-    baseURL: baseURL,
-    timeout: 1000,
+    baseURL: baseURL
 });
 
 axios.interceptors.request.use(function (config) {

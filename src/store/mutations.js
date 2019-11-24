@@ -21,7 +21,10 @@ const mutations = {
     },
     [types.SET_CURRENT_INDEX](state, index) {
         state.currentIndex = index;
-    }
+    },
+    [types.SET_CURRENT_LYRIC](state, lyricObj) {
+        state.playlist[lyricObj.index].lyric = lyricObj.data.lyric;
+    },
 };
 
 export default mutations;
