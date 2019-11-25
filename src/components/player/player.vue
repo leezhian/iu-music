@@ -12,33 +12,38 @@
                     <div class="like-btn icon-like"></div>
                 </div>
 
-                <!--专辑封面 start-->
-                <!--                <div class="player-container">-->
-                <!--                    <div class="cd-wrapper">-->
-                <!--                        <div :class="['cd', cdCls]">-->
-                <!--                            <img class="cd-img"-->
-                <!--                                 :src="currentSong.cover"-->
-                <!--                                 alt="">-->
-                <!--                            <div class="wave"></div>-->
-                <!--                            <div class="wave"></div>-->
-                <!--                        </div>-->
-                <!--                    </div>-->
-                <!--                </div>-->
-                <!--专辑封面 end-->
-
-                <scroll class="lyric-wrapper"
-                        ref="lyricList"
-                        :watch-data="currentLyric && currentLyric.lines">
-                    <div class="lyric-box">
-                        <div v-if="currentLyric">
-                            <p :class="['text', {'active': currentLineNum == index}]"
-                               ref="lyricLine"
-                               v-for="(item,index) in currentLyric.lines">
-                                {{item.txt}}
-                            </p>
+                <div class="player-container"
+                     @touchstart.preventt="middleTouchStart"
+                     @touchmove.prevent="middleTouchMove"
+                     @touchend="middleTouchEnd">
+                    <!--专辑封面 start-->
+                    <div class="middle-l" ref="middleL">
+                        <div class="cd-wrapper">
+                            <div :class="['cd', cdCls]">
+                                <img class="cd-img"
+                                     :src="currentSong.cover"
+                                     alt="">
+                                <div class="wave"></div>
+                                <div class="wave"></div>
+                            </div>
                         </div>
                     </div>
-                </scroll>
+                    <!--专辑封面 end-->
+
+                    <scroll class="middle-r"
+                            ref="lyricList"
+                            :watch-data="currentLyric && currentLyric.lines">
+                        <div class="lyric-wrapper">
+                            <div v-if="currentLyric">
+                                <p :class="['text', {'active': currentLineNum == index}]"
+                                   ref="lyricLine"
+                                   v-for="(item,index) in currentLyric.lines">
+                                    {{item.txt}}
+                                </p>
+                            </div>
+                        </div>
+                    </scroll>
+                </div>
 
                 <div class="player-footer">
                     <div class="progressBar-box">
@@ -99,14 +104,17 @@
     export default {
         created() {
             // 进度条数据
-            this.touch = {}
+            this.touchBar = {};
+            // 触摸cd图数据
+            this.touchCD = {};
         },
         data() {
             return {
                 songReady: false, // 歌曲是否准备好播放
                 currentTime: 0, // 当前音乐播放进度时间
                 currentLyric: null, // 歌词
-                currentLineNum: 0 // 当前歌词第几行
+                currentLineNum: 0, // 当前歌词第几行
+                currentShow: 'cd', // cd 专辑图，lyric歌词
             };
         },
         methods: {
@@ -120,7 +128,13 @@
             },
             // 切换播放状态
             togglePlay() {
+                if (!this.songReady) {
+                    return;
+                }
                 this.updatePlayState(!this.isPlay);
+                if (this.currentLyric) {
+                    this.currentLyric.togglePlay();
+                }
             },
             // 下一首
             next() {
@@ -224,22 +238,22 @@
             },
             // 拖动开始
             progressTouchStart(e) {
-                this.touch.initiated = true; // 是否初始化
-                this.touch.startX = e.touches[0].pageX; // 点击时的横坐标
-                this.touch.left = this.$refs.progress.clientWidth; // 当前进度条的长度
+                this.touchBar.initiated = true; // 是否初始化
+                this.touchBar.startX = e.touches[0].pageX; // 点击时的横坐标
+                this.touchBar.left = this.$refs.progress.clientWidth; // 当前进度条的长度
             },
             // 拖动时
             progressTouchMove(e) {
-                if (!this.touch.initiated) {
+                if (!this.touchBar.initiated) {
                     return;
                 }
-                const deltaX = e.touches[0].pageX - this.touch.startX; // 算出手指的偏移量
-                const offsetWidth = Math.min(this.$refs.progressBar.clientWidth, Math.max(0, this.touch.left + deltaX));
+                const deltaX = e.touches[0].pageX - this.touchBar.startX; // 算出手指的偏移量
+                const offsetWidth = Math.min(this.$refs.progressBar.clientWidth, Math.max(0, this.touchBar.left + deltaX));
                 this._setProgress(offsetWidth);
             },
             // 拖动结束时
             progressTouchEnd(e) {
-                this.touch.initiated = false;
+                this.touchBar.initiated = false;
                 const barWidth = this.$refs.progressBar.clientWidth;
                 const percent = this.$refs.progress.clientWidth / barWidth;
                 this.$refs.audio.currentTime = this.currentSong.duration * percent; // 修改播放进度
@@ -282,7 +296,70 @@
                     this.$refs.lyricList.scrollTo(0, 0, 1000);
                 }
             },
-            // 设置进度条长度
+            // 触摸cd开始
+            middleTouchStart(e) {
+                this.touchCD.initiated = true;
+                const touch = e.touches[0];
+                // 记录起始点
+                this.touchCD.startX = touch.pageX;
+                this.touchCD.startY = touch.pageY;
+            },
+            // 触摸cd移动
+            middleTouchMove(e) {
+                if (!this.touchCD.initiated) {
+                    return;
+                }
+                const touch = e.touches[0];
+                // 求出滑动x轴y轴的距离
+                const deltaX = touch.pageX - this.touchCD.startX;
+                const deltaY = touch.pageY - this.touchCD.startY;
+                if (Math.abs(deltaY) > Math.abs(deltaX)) {
+                    return;
+                }
+                // 记录歌词模块起始位置
+                const left = this.currentShow === 'cd' ? 0 : -window.innerWidth;
+                // 求出滑动后歌词模块距离屏幕左边距距离
+                const offsetWidth = Math.min(0, Math.max(-window.innerWidth, left + deltaX));
+                // 求出滑动的比例
+                this.touchCD.percent = Math.abs(offsetWidth / window.innerWidth);
+                this.$refs.lyricList.$el.style.transform = `translate3d(${offsetWidth}px, 0, 0)`;
+                this.$refs.lyricList.$el.style.transitionDuration = 0;
+                this.$refs.middleL.style.opacity = 1 - this.touchCD.percent;
+                this.$refs.middleL.style.transitionDuration = 0;
+            },
+            // 触摸cd结束
+            middleTouchEnd() {
+                let offsetWidth;
+                let opacity;
+                if (this.currentShow === 'cd') {
+                    // 从右向左滑
+                    if (this.touchCD.percent > 0.1) {
+                        // 当活动比例大于0.1，就直接滑到另一边,否则复原
+                        offsetWidth = -window.innerWidth;
+                        opacity = 0;
+                        this.currentShow = 'lyric';
+                    } else {
+                        offsetWidth = 0;
+                        opacity = 1;
+                    }
+                } else {
+                    // 从左向右滑，同理
+                    if (this.touchCD.percent < 0.9) {
+                        offsetWidth = 0;
+                        opacity = 1;
+                        this.currentShow = 'cd';
+                    } else {
+                        offsetWidth = -window.innerWidth;
+                        opacity = 0;
+                    }
+                }
+                const time = 300;
+                this.$refs.lyricList.$el.style.transform = `translate3d(${offsetWidth}px, 0, 0)`;
+                this.$refs.lyricList.$el.style.transitionDuration = `${time}ms`;
+                this.$refs.middleL.style.opacity = opacity;
+                this.$refs.middleL.style.transitionDuration = `${time}ms`;
+            },
+            // 手动设置进度条长度
             _setProgress(offsetWidth) {
                 this.$refs.progress.style.width = `${offsetWidth}px`;
             },
@@ -301,6 +378,7 @@
             playIcon() {
                 return this.isPlay ? 'icon-play' : 'icon-pause'
             },
+            // 模式图标修改
             modeIcon() {
                 const modeCls = ['icon-loop', 'icon-single', 'icon-random'];
                 return this.mode > modeCls.length ? '' : modeCls[this.mode];
@@ -325,6 +403,9 @@
         watch: {
             // 当歌曲改变的时候自动播放
             currentSong() {
+                if (this.currentLyric) {
+                    this.currentLyric.stop();
+                }
                 this.$nextTick(() => {
                     this.$refs.audio.play();
                     this.getLyric();
@@ -338,7 +419,7 @@
                 });
             },
             currentTime(newTime) {
-                if (newTime > 0 && !this.touch.initiated) {
+                if (newTime > 0 && !this.touchBar.initiated) {
                     // 求出比值
                     const percent = this.currentTime / this.currentSong.duration;
                     // 获取进度条总长
@@ -440,19 +521,32 @@
 
     .player-container {
         flex-grow: 1;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        /*display: flex;*/
         width: 100%;
-        padding-top: .2rem;
-        padding-bottom: .2rem;
+        min-height: 5rem;
+        min-width: 5rem;
+        padding-top: .6rem;
+        padding-bottom: .6rem;
+        white-space: nowrap;
+    }
+
+    .middle-l {
+        position: relative;
+        display: inline-block;
+        width: 100%;
+        height: 100%;
+        vertical-align: top;
+        overflow: hidden;
 
         .cd-wrapper {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             width: 5rem;
             height: 5rem;
 
             .cd {
-                position: relative;
                 width: 100%;
                 height: 100%;
                 border: 4px solid $color-progress-background;
@@ -502,13 +596,15 @@
         }
     }
 
-    .lyric-wrapper {
-        flex-grow: 1;
-        margin-top: .6rem;
-        margin-bottom: .6rem;
+    .middle-r {
+        position: relative;
+        display: inline-block;
+        width: 100%;
+        height: 100%;
+        vertical-align: top;
         overflow: hidden;
 
-        .lyric-box {
+        .lyric-wrapper {
             .text {
                 font-size: $font-size-small;
                 text-align: center;
@@ -519,9 +615,9 @@
                     color: $color-text-white;
                 }
             }
+
         }
     }
-
 
     .player-footer {
         flex-shrink: 0;
