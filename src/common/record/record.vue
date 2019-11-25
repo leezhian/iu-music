@@ -108,7 +108,7 @@
                 height: .36rem;
                 line-height: .36rem;
                 border-radius: .18rem;
-                color: $color-text-w;
+                color: $color-text-white;
                 font-size: $font-size-small-s;
                 background-color: rgba(0, 0, 0, .3);
 

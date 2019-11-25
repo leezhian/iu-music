@@ -181,7 +181,7 @@
                 width: .16rem;
                 height: .16rem;
                 border-radius: 50%;
-                background-color: $color-text-g;
+                background-color: $color-text-grey;
 
                 &.active {
                     width: .4rem;

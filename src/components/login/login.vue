@@ -164,20 +164,20 @@
                     background: none;
                     border: none;
                     outline: none;
-                    color: $color-text-w;
+                    color: $color-text-white;
                 }
 
                 .btn {
                     flex-shrink: 0;
                     line-height: .6rem;
                     font-size: $font-size-medium-x;
-                    color: $color-text-w;
+                    color: $color-text-white;
                 }
             }
 
             .forget {
                 font-size: $font-size-small;
-                color: $color-text-w;
+                color: $color-text-white;
             }
         }
 
@@ -207,8 +207,8 @@
                     border-top-left-radius: .8rem;
                     border-bottom-left-radius: .8rem;
                     font-size: $font-size-medium-x;
-                    color: $color-text-w;
-                    background-color: $color-font-theme;
+                    color: $color-text-white;
+                    background-color: $color-text-theme;
 
                     .icon-circleLeft, .icon-circleRight {
                         font-size: .6rem;
@@ -223,7 +223,7 @@
         }
 
         input::-webkit-input-placeholder {
-            color: $color-text-g;
+            color: $color-text-grey;
         }
     }
 </style>

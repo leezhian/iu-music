@@ -264,7 +264,7 @@
 
                 const str = this.currentSong.lyric;
                 this.currentLyric = new Lyric(str, this.handleLyric);
-                
+
                 if (this.isPlay) {
                     this.currentLyric.play();
                 }
@@ -382,7 +382,7 @@
         height: 1rem;
         font-size: $font-size-medium;
         text-align: center;
-        color: $color-text-w;
+        color: $color-text-white;
 
         .goToBack {
             font-family: iconfont;
@@ -414,7 +414,7 @@
             line-height: 1rem;
 
             &.icon-like {
-                color: $color-font-theme;
+                color: $color-text-theme;
             }
         }
     }
@@ -516,7 +516,7 @@
                 color: $color-progress-background;
 
                 &.active {
-                    color: $color-text-w;
+                    color: $color-text-white;
                 }
             }
         }
@@ -552,7 +552,7 @@
                     width: 0;
                     height: 2px;
                     border-radius: 1px;
-                    background-color: $color-font-theme;
+                    background-color: $color-text-theme;
 
                     .progress-btn {
                         position: absolute;
@@ -592,7 +592,7 @@
                 line-height: .9rem;
                 font-size: $font-size-large-x;
                 font-family: iconfont;
-                color: $color-text-w;
+                color: $color-text-white;
 
                 &.disable {
                     color: $color-progress-background;

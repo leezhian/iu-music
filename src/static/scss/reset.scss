@@ -9,6 +9,11 @@ html {
     -webkit-overflow-scrolling: touch;
 }
 
+html, body {
+    height: 100%;
+    background-color: $color-html-background;
+}
+
 /* 禁止缩放表单 */
 input[type="submit"], input[type="reset"], input[type="button"], input {
     resize: none;
@@ -44,8 +49,7 @@ body, div, ul, li, ol, h1, h2, h3, h4, h5, h6, input, textarea, select, p, dl, d
 
 body {
     font: .24rem/1.5 'Microsoft YaHei', '宋体', Tahoma, Arial, sans-serif;
-    color: #333;
-    background-color: #F7F7F7;
+    color: $color-text-default;
 }
 
 em, i {

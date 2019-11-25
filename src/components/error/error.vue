@@ -37,7 +37,7 @@
             font-size: 1.6rem;
             font-weight: bold;
             text-align: right;
-            color: $color-font-theme;
+            color: $color-text-theme;
         }
 
         .error-wrapper {
@@ -55,7 +55,7 @@
         .error-text {
             font-size: $font-size-large-x;
             font-weight: bold;
-            color: $color-font-theme;
+            color: $color-text-theme;
         }
     }
 </style>

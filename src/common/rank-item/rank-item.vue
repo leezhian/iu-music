@@ -18,7 +18,7 @@
                 </li>
             </ul>
         </div>
-        <!--        <div class="rank-img" :style="{'backgroud-image': `url(${aa})`}"></div>-->
+<!--        <div class="rank-img" :style="{'backgroud-image': `url(${aa})`}"></div>-->
         <div class="rank-img"
              :style="{'background-image': `url(https://y.gtimg.cn/music/photo_new/T002R90x90M000003qOjYQ2TlNFt.jpg?max_age=2592000)`}">
             <i class="icon-pause"></i>
@@ -46,8 +46,9 @@
         height: 2rem;
         margin: .3rem .2rem 0;
         border-radius: .2rem;
+        box-shadow: 0 0 10px $color-search-background;
         overflow: hidden;
-        background-color: $color-font-theme2;
+        background-color: $color-background;
     }
 
     .song-wrap {
@@ -58,8 +59,6 @@
         .title {
             font-weight: bold;
             font-size: $font-size-medium;
-
-            color: $color-font-theme;
         }
 
         .song-item {
@@ -86,7 +85,7 @@
             right: .1rem;
             font-family: iconfont;
             font-size: $font-size-medium;
-            color: $color-text-w;
+            color: $color-text-white;
         }
     }
 </style>

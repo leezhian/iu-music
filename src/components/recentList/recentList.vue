@@ -129,7 +129,7 @@
             overflow: hidden;
 
             &.active {
-                color: $color-font-theme;
+                color: $color-text-theme;
 
                 &::before {
                     content: "";
@@ -140,7 +140,7 @@
                     width: 30%;
                     height: 2px;
                     border-radius: 2px;
-                    background-color: $color-font-theme;
+                    background-color: $color-text-theme;
                 }
             }
         }
@@ -152,7 +152,7 @@
         .play-btn {
             display: flex;
             align-items: center;
-            color: $color-font-theme;
+            color: $color-text-theme;
 
             .icon-pause {
                 font-family: iconfont;

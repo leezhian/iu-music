@@ -38,7 +38,7 @@
         align-items: center;
         width: 4.8rem;
         margin: 0 auto;
-        border: 1px solid $color-font-theme;
+        border: 1px solid $color-text-theme;
         border-radius: .1rem;
 
         .switch-item {
@@ -46,11 +46,11 @@
             padding: .08rem;
             text-align: center;
             font-size: $font-size-medium;
-            color: $color-font-theme;
+            color: $color-text-theme;
 
             &.active {
-                background: $color-font-theme;
-                color: $color-text-w
+                background: $color-text-theme;
+                color: $color-text-white
             }
         }
     }

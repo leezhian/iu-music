@@ -68,7 +68,7 @@
             margin: 1rem 0;
             text-align: center;
             font-size: $font-size-medium;
-            color: $color-text-g;
+            color: $color-text-grey;
         }
 
         ul {
@@ -93,18 +93,18 @@
                     width: .08rem;
                     height: 90%;
                     border-radius: .08rem;
-                    background-color: $color-font-theme;
+                    background-color: $color-text-theme;
                 }
 
-                color: $color-font-theme !important;
+                color: $color-text-theme !important;
 
                 .rank {
-                    color: $color-font-theme !important;
+                    color: $color-text-theme !important;
                 }
 
                 .container {
                     .singer {
-                        color: $color-font-theme !important;
+                        color: $color-text-theme !important;
                     }
                 }
             }

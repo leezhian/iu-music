@@ -89,7 +89,7 @@
                 }
 
                 &.router-link-active {
-                    color: $color-font-theme;
+                    color: $color-text-theme;
                 }
             }
         }

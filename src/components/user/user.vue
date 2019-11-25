@@ -78,7 +78,7 @@
                 width: 1rem;
                 height: 1rem;
                 border-radius: 50%;
-                background-color: $color-text-g;
+                background-color: $color-text-grey;
             }
 
             .info {
@@ -112,14 +112,14 @@
             height: 1rem;
             border-top-left-radius: .2rem;
             border-top-right-radius: .2rem;
-            background-color: $color-font-theme;
+            background-color: $color-text-theme;
             background-image: url(../../static/images/logo.png);
             background-repeat: no-repeat;
             background-position: top center;
 
             .tips {
                 font-family: iconfont;
-                color: $color-text-w;
+                color: $color-text-white;
 
                 i {
                     font-size: .5rem;
@@ -128,7 +128,7 @@
 
             .btn {
                 font-size: $font-size-medium;
-                color: $color-text-w;
+                color: $color-text-white;
             }
         }
 

@@ -29,7 +29,5 @@
         left: 0;
         right: 0;
         bottom: 1.2rem;
-        overflow-x: hidden;
-        overflow-y: auto;
     }
 </style>

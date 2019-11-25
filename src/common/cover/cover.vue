@@ -94,7 +94,7 @@
         /*height: 100%;*/
         padding: .8rem .3rem .3rem;
         overflow: hidden;
-        color: $color-text-w;
+        color: $color-text-white;
 
         @include bg-coverAndCenter();
         background-position: top;
@@ -108,7 +108,7 @@
                 font-size: .6rem;
                 font-weight: bold;
                 text-align: center;
-                color: $color-text-w;
+                color: $color-text-white;
             }
 
             .play-btn {
@@ -122,7 +122,7 @@
                 font-size: $font-size-medium;
                 text-align: center;
                 line-height: .6rem;
-                color: $color-text-w;
+                color: $color-text-white;
                 background-color: rgba(147, 112, 219, .8);
 
                 .icon {

@@ -201,7 +201,6 @@
         left: 0;
         right: 0;
         bottom: 1.2rem;
-        background-color: $color-background;
         /*overflow: hidden;*/
 
         .recommend-content {
@@ -243,7 +242,7 @@
         }
 
         input::-webkit-input-placeholder {
-            color: $color-text-g;
+            color: $color-text-grey;
         }
     }
 
@@ -276,7 +275,7 @@
                 height: .5rem;
                 padding-left: .2rem;
                 padding-right: .2rem;
-                border: 1px solid $color-text-g;
+                border: 1px solid $color-text-grey;
                 border-radius: .25rem;
                 line-height: .5rem;
             }
@@ -315,7 +314,7 @@
                 .cover-label {
                     padding: .1rem;
                     text-align: right;
-                    color: $color-text-w;
+                    color: $color-text-white;
 
                     .icon {
                         font-family: iconfont;
