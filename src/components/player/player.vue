@@ -148,9 +148,9 @@
                     this.loop();
                     return;
                 }
-
+                // 反之，下一首的索引
                 let index = this.currentIndex + 1;
-
+                // 如果是随机播放的话，算出随机index
                 if (this.mode == playMode.random) {
                     index = randomIndex(0, this.playlist.length - 1);
                 }
@@ -211,6 +211,9 @@
             loop() {
                 this.$refs.audio.currentTime = 0;
                 this.$refs.audio.play();
+                if (this.currentLyric) {
+                    this.currentLyric.seek(0);
+                }
             },
             // 歌曲加载失败自动触发
             error() {
@@ -265,10 +268,18 @@
             progressClick(e) {
                 const rect = this.$refs.progressBar.getBoundingClientRect();
                 const offsetWidth = e.pageX - rect.left;
-                this._setProgress(offsetWidth);
+                this._setProgress(offsetWidth); // 设置进度条长度
                 const barWidth = this.$refs.progressBar.clientWidth;
-                const percent = this.$refs.progress.clientWidth / barWidth;
-                this.$refs.audio.currentTime = this.currentSong.duration * percent;
+                const percent = this.$refs.progress.clientWidth / barWidth; // 求出进度条当前比值
+                const currentTime = this.currentSong.duration * percent; // 求出快进到哪里
+                this.$refs.audio.currentTime = currentTime;
+                if (!this.isPlay) {
+                    this.togglePlay();
+                }
+                // 歌词快进
+                if (this.currentLyric) {
+                    this.currentLyric.seek(currentTime * 1000);
+                }
             },
             // 解析歌词
             async getLyric() {
@@ -282,7 +293,6 @@
                 if (this.isPlay) {
                     this.currentLyric.play();
                 }
-                console.log(this.currentLyric);
             },
             // 歌词回调
             handleLyric({lineNum, txt}) {
@@ -406,7 +416,8 @@
                 if (this.currentLyric) {
                     this.currentLyric.stop();
                 }
-                this.$nextTick(() => {
+                // 保证在微信端打开的时候，从后台切回到前台的时候不会播放的问题
+                setTimeout(() => {
                     this.$refs.audio.play();
                     this.getLyric();
                 });
