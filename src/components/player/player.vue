@@ -3,6 +3,8 @@
         <!--全屏播放器 start-->
         <transition name="player">
             <div class="player-page" v-show="fullPlayer">
+                <div class="bg" :style="{backgroundImage: `url(${currentSong.cover})`}"></div>
+                
                 <div class="player-header">
                     <div class="goToBack icon-back" @click="back"></div>
                     <div class="title-box">
@@ -462,11 +464,23 @@
         right: 0;
         width: 100%;
         height: 100%;
-        background: linear-gradient(to top, #3a2f54, #544a40, #38363c);;
+        background: $color-player-background;
         transform-origin: 90% 80%;
     }
 
+    .bg {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: -1;
+        background-position: center;
+        filter: blur(80px) opacity(30%);
+    }
+
     .player-header {
+        position: relative;
         display: flex;
         align-items: center;
         flex-shrink: 0;
@@ -531,6 +545,7 @@
     }
 
     .player-container {
+        position: relative;
         flex-grow: 1;
         /*display: flex;*/
         width: 100%;
@@ -631,6 +646,7 @@
     }
 
     .player-footer {
+        position: relative;
         flex-shrink: 0;
         width: 100%;
         padding-bottom: .6rem;
