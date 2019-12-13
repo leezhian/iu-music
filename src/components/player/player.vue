@@ -464,7 +464,7 @@
         right: 0;
         width: 100%;
         height: 100%;
-        background: $color-player-background;
+        background-color: #fff;
         transform-origin: 90% 80%;
     }
 
@@ -474,9 +474,10 @@
         bottom: 0;
         left: 0;
         right: 0;
-        z-index: -1;
         background-position: center;
-        filter: blur(80px) opacity(30%);
+        background-size: cover;
+        background-repeat: no-repeat;
+        filter: brightness(80%) blur(20px) opacity(0.8);
     }
 
     .player-header {
