@@ -7,10 +7,10 @@
 import axios from 'axios';
 
 const devMode = process.env.NODE_ENV !== 'production';
-const baseURL = devMode ? 'http://192.168.3.7:3001' : '';
+const baseURL = devMode ? 'http://localhost:3001' : '';
 
 const service = axios.create({
-    baseURL: baseURL
+    baseURL: `${baseURL}/api`
 });
 
 axios.interceptors.request.use(function (config) {

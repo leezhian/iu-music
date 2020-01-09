@@ -48,7 +48,7 @@
                 coverType: 1, // 封面图的类型 1 album  2 playlist
                 coverImg: '',
                 page: 1,
-                pageSize: 2,
+                pageSize: 6,
                 hasNextPage: true, // 是否有下一页
                 recordList: [], // 唱片列表
                 songList: [], // 点击播放的时候用来保存歌曲

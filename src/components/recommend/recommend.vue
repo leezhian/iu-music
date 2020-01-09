@@ -11,7 +11,7 @@
                     <slider v-if="swiperList.length">
                         <div v-for="item in swiperList" :key="item.id">
                             <a :href="item.link">
-                                <img :src="item.poster" alt="">
+                                <img :src="item.bannerUrl" alt="">
                             </a>
                         </div>
                     </slider>
