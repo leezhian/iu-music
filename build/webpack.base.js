@@ -18,7 +18,8 @@ function resolve(dir) {
 // webpack 插件
 const plugins = [
     new HtmlWebpackPlugin({
-        template: 'src/index.html' // 指定模板
+        template: 'src/index.html', // 指定模板
+        favicon: 'src/favicon.ico'
     }),
     new MiniCssExtractPlugin({
         filename: devMode ? '[name].css' : '[name].[hash:8].css',
