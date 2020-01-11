@@ -17,7 +17,9 @@
                         </div>
                     </cover>
 
-                    <record :record-list="recordList" @handleClickRecord="handleClickRecord"
+                    <record :record-list="recordList"
+                            :showListenTotal="true"
+                            @handleClickRecord="handleClickRecord"
                             v-if="recordList.length"></record>
 
                 </div>

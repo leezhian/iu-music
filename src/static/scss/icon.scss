@@ -189,9 +189,39 @@
         content: "\e68f";
     }
 }
-
-.icon-vip {
+//收音机
+.icon-radio {
     &:before {
-        content: "\e602";
+        content: "\e6b1";
+    }
+}
+
+.icon-star {
+    &:before {
+        content: "\e6bd";
+    }
+}
+//试听耳机
+.icon-audition {
+    &:before {
+        content: "\e7a2";
+    }
+}
+
+.icon-option {
+    &:before {
+        content: "\e669";
+    }
+}
+
+.icon-scan {
+    &:before {
+        content: "\e657";
+    }
+}
+
+.icon-add {
+    &:before {
+        content: "\e64f";
     }
 }
