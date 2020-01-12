@@ -17,7 +17,7 @@ export const setLyric = async function ({commit, state}, {id}) {
             return;
         }
         const index = state.playlist.findIndex(item => {
-            return item.id == res.data.id
+            return item.id == res.data.songId
         });
         if (index > -1) {
             res.data.lyric = Base64.decode(res.data.lyric);
