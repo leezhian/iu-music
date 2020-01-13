@@ -225,3 +225,21 @@
         content: "\e64f";
     }
 }
+
+.icon-about {
+    &:before {
+        content: "\e613";
+    }
+}
+
+.icon-set {
+    &:before {
+        content: "\e658";
+    }
+}
+
+.icon-share {
+    &:before {
+        content: "\e65b";
+    }
+}

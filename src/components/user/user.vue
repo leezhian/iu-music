@@ -1,118 +1,143 @@
 <template>
   <div class="user-page">
-    <div class="header">
-      <div class="avatar"></div>
-      <router-link to="/login" tag="div" class="login-btn">未登录</router-link>
-      <div class="info" v-show="false">
-        <p class="name">IU</p>
-      </div>
+    <scroll class="user-content" :bounce-top="false" :bounce-bottom="false" :watch-data="[1,2]">
+      <div>
+        <div class="header">
+          <div class="avatar"></div>
+          <router-link to="/login" tag="div" class="login-btn">未登录</router-link>
+          <div class="info" v-show="false">
+            <p class="name">IU</p>
+          </div>
 
-      <div class="vip-box">
-        <p class="open-vip">开通会员></p>
-      </div>
-    </div>
-
-    <div class="container">
-      <div class="me-wrapper">
-        <div class="head-box">
-          <p class="title">我的音乐</p>
+          <div class="vip-box">
+            <p class="open-vip">开通会员></p>
+          </div>
         </div>
 
-        <div class="me-scrollbar" ref="myScroller">
-          <ul class="me-box">
-            <li class="me-item">
-              <div class="shadow">
-                <div class="center">
-                  <div class="icon icon-audition"></div>
-                  <p>试听列表</p>
-                </div>
-              </div>
-            </li>
+        <div class="container">
+          <!--我的音乐 start-->
+          <div class="me-wrapper">
+            <div class="head-box">
+              <p class="title">我的音乐</p>
+            </div>
 
-            <li class="me-item"
-                :style="{backgroundImage: 'url(http://d.paper.i4.cn/max/2016/12/28/14/1482908345995_299323.jpeg)'}">
-              <div class="shadow">
-                <div class="center">
-                  <div class="icon icon-like"></div>
-                  <p>我喜欢的音乐</p>
-                </div>
-              </div>
-            </li>
+            <div class="me-scrollbar" ref="myScroller">
+              <ul class="me-box">
+                <li class="me-item">
+                  <div class="shadow">
+                    <div class="center">
+                      <div class="icon icon-audition"></div>
+                      <p>试听列表</p>
+                    </div>
+                  </div>
+                </li>
 
-            <li class="me-item"
-                :style="{backgroundImage: 'url(https://c-ssl.duitang.com/uploads/item/201802/05/20180205121721_lbmhl.thumb.700_0.jpg)'}">
-              <div class="shadow">
-                <div class="center">
-                  <div class="icon icon-radio"></div>
-                  <p>私人FM</p>
-                </div>
-                <div class="bottom">你的私人曲库</div>
-              </div>
-            </li>
+                <li class="me-item"
+                    :style="{backgroundImage: 'url(http://d.paper.i4.cn/max/2016/12/28/14/1482908345995_299323.jpeg)'}">
+                  <div class="shadow">
+                    <div class="center">
+                      <div class="icon icon-like"></div>
+                      <p>我喜欢的音乐</p>
+                    </div>
+                  </div>
+                </li>
 
-            <li class="me-item"
-                :style="{backgroundImage: 'url(http://b-ssl.duitang.com/uploads/item/201707/26/20170726215335_GXna8.thumb.700_0.jpeg)'}">
-              <div class="shadow">
-                <div class="center">
-                  <div class="icon icon-star"></div>
-                  <p>收藏</p>
+                <li class="me-item"
+                    :style="{backgroundImage: 'url(https://c-ssl.duitang.com/uploads/item/201802/05/20180205121721_lbmhl.thumb.700_0.jpg)'}">
+                  <div class="shadow">
+                    <div class="center">
+                      <div class="icon icon-radio"></div>
+                      <p>私人FM</p>
+                    </div>
+                    <div class="bottom">你的私人曲库</div>
+                  </div>
+                </li>
+
+                <li class="me-item"
+                    :style="{backgroundImage: 'url(http://b-ssl.duitang.com/uploads/item/201707/26/20170726215335_GXna8.thumb.700_0.jpeg)'}">
+                  <div class="shadow">
+                    <div class="center">
+                      <div class="icon icon-star"></div>
+                      <p>收藏</p>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <!--我的音乐 end-->
+          <!--歌单 start-->
+          <div class="playlist-wrapper">
+            <div class="head-box">
+              <p class="title">创建歌单<span>1</span></p>
+              <p class="title inactive">收藏歌单<span>0</span></p>
+            </div>
+
+            <ul class="playlist-box">
+              <li class="playlist-item">
+                <div class="item-img"></div>
+                <div class="info-box">
+                  <p class="name">IUUU~~~</p>
+                  <p class="total"><span>0</span> 首</p>
                 </div>
+              </li>
+
+              <li class="playlist-item">
+                <div class="item-img"></div>
+                <div class="info-box">
+                  <p class="name">IUUU~~~</p>
+                  <p class="total"><span>0</span> 首</p>
+                </div>
+              </li>
+
+              <li class="playlist-item">
+                <div class="item-img"></div>
+                <div class="info-box">
+                  <p class="name">IUUU~~~</p>
+                  <p class="total"><span>0</span> 首</p>
+                </div>
+              </li>
+
+              <li class="playlist-item">
+                <div class="item-img"></div>
+                <div class="info-box">
+                  <p class="name">IUUU~~~</p>
+                  <p class="total"><span>0</span> 首</p>
+                </div>
+              </li>
+
+              <li class="playlist-item">
+                <div class="item-img icon icon-add"></div>
+                <div class="info-box">
+                  <p class="name">新建歌单</p>
+                </div>
+              </li>
+            </ul>
+          </div>
+          <!--歌单 end-->
+          <div class="tool-wrapper">
+            <div class="tool-item">
+              <div class="icon icon-set"></div>
+              <p class="title">设置</p>
+              <div class="icon icon-rightBack">
               </div>
-            </li>
-          </ul>
+            </div>
+
+            <div class="tool-item">
+              <div class="icon icon-about"></div>
+              <p class="title">关于</p>
+              <div class="icon icon-rightBack">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="footer">
+          <div class="logout">退出登录</div>
         </div>
       </div>
+    </scroll>
 
-      <div class="playlist-wrapper">
-        <div class="head-box">
-          <p class="title">创建歌单<span>1</span></p>
-          <p class="title inactive">收藏歌单<span>0</span></p>
-        </div>
-
-        <ul class="playlist-box">
-          <li class="playlist-item">
-            <div class="item-img"></div>
-            <div class="info-box">
-              <p class="name">IUUU~~~</p>
-              <p class="total"><span>0</span> 首</p>
-            </div>
-          </li>
-
-          <li class="playlist-item">
-            <div class="item-img"></div>
-            <div class="info-box">
-              <p class="name">IUUU~~~</p>
-              <p class="total"><span>0</span> 首</p>
-            </div>
-          </li>
-
-          <li class="playlist-item">
-            <div class="item-img"></div>
-            <div class="info-box">
-              <p class="name">IUUU~~~</p>
-              <p class="total"><span>0</span> 首</p>
-            </div>
-          </li>
-
-          <li class="playlist-item">
-            <div class="item-img"></div>
-            <div class="info-box">
-              <p class="name">IUUU~~~</p>
-              <p class="total"><span>0</span> 首</p>
-            </div>
-          </li>
-
-          <li class="playlist-item">
-            <div class="item-img icon icon-add"></div>
-            <div class="info-box">
-              <p class="name">新建歌单</p>
-            </div>
-          </li>
-        </ul>
-      </div>
-    </div>
-
-    <!--        <div class="container">-->
     <!--            <div class="item" @click="handleJump('like')">-->
     <!--                <div class="icon icon-noLike"></div>-->
     <!--                <p class="title">我喜欢的</p>-->
@@ -123,12 +148,6 @@
     <!--                <p class="title">最近播放</p>-->
     <!--                <div class="icon icon-rightBack"></div>-->
     <!--            </div>-->
-    <!--            <div class="item">-->
-    <!--                <div class="icon icon-lately"></div>-->
-    <!--                <p class="title">关于</p>-->
-    <!--                <div class="icon icon-rightBack"></div>-->
-    <!--            </div>-->
-    <!--        </div>-->
 
     <router-view></router-view>
   </div>
@@ -137,6 +156,7 @@
 <script>
   import BScroll from '@better-scroll/core';
   import ScrollBar from '@better-scroll/scroll-bar';
+  import Scroll from 'common/scroll/scroll';
 
   BScroll.use(ScrollBar);
 
@@ -159,6 +179,9 @@
           path: `/user/${route}`
         });
       }
+    },
+    components: {
+      Scroll
     }
   }
 </script>
@@ -176,6 +199,11 @@
     right: 0;
     bottom: 1.2rem;
     overflow: hidden;
+
+    .user-content {
+      height: 100%;
+      overflow: hidden;
+    }
   }
 
 
@@ -316,6 +344,8 @@
   }
 
   .playlist-wrapper {
+    margin-bottom: .2rem;
+
     .playlist-box {
       display: flex;
       justify-content: space-between;
@@ -371,5 +401,61 @@
       }
     }
   }
+
+  .tool-wrapper {
+    border-top: 5px solid $color-html-background;
+
+    .tool-item {
+      position: relative;
+      display: flex;
+      width: 100%;
+      height: 1rem;
+
+      .icon {
+        flex-shrink: 0;
+        width: 1rem;
+        height: 1rem;
+        line-height: 1rem;
+        text-align: center;
+        font-size: .5rem;
+        font-family: iconfont;
+      }
+
+      .icon-rightBack {
+        position: absolute;
+        right: 0;
+        color: $color-text-grey;
+        font-size: $font-size-large;
+      }
+
+      .title {
+        flex-grow: 1;
+        line-height: 1rem;
+        font-size: $font-size-medium;
+        @include no-wrap();
+      }
+
+      + .tool-item {
+        .title {
+          border-top: 1px solid $color-search-background;
+        }
+      }
+    }
+  }
+
+  .footer {
+    margin-top: -.5rem;
+    border-top: 5px solid $color-html-background;
+
+    .logout {
+      height: 1rem;
+      text-align: center;
+      line-height: 1rem;
+      font-size: $font-size-medium;
+      color: $color-text-theme;
+      background-color: #fff;
+    }
+  }
+
 
 </style>

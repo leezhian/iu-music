@@ -44,7 +44,10 @@
                         <p class="title">推荐单曲</p>
                     </div>
 
-                    <song-list @select="selectItem" :songList="songList" v-if="songList.length"></song-list>
+                    <song-list @select="selectItem"
+                               :songList="songList"
+                               :showType="'cover'"
+                               v-if="songList.length"></song-list>
                 </div>
             </div>
         </scroll>

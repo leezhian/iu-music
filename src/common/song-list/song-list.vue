@@ -5,8 +5,11 @@
                 @click="selectItem(item,index)"
                 v-for="(item, index) in songList"
                 :key="item.id">
-                <div class="rank">
-                    <span class="num" v-if="showNum">{{index +1}}</span>
+                <div class="cover" :style="{backgroundImage: `url(${item.cover})`}" v-if="showType == 'cover'">
+
+                </div>
+                <div class="rank" v-else-if="showType == 'num'">
+                    <span class="num">{{index +1}}</span>
                 </div>
                 <div class="container">
                     <h2 class="name">{{item.songName}}</h2>
@@ -33,9 +36,10 @@
                 type: Boolean,
                 default: false
             },
-            showNum: {
-                type: Boolean,
-                default: true
+            showType: {
+                type: String,
+                // num 显示数字 cover显示头像 none都不显示
+                default: 'num'
             }
         },
         methods: {
@@ -79,6 +83,7 @@
         .song-item {
             display: flex;
             position: relative;
+            margin-top: .2rem;
             width: 100%;
             align-items: center;
             overflow: hidden;
@@ -109,17 +114,24 @@
                 }
             }
 
-            .rank {
+            .rank, .cover {
                 flex-shrink: 0;
-                width: 1rem;
-                height: 1.2rem;
-                line-height: 1.2rem;
+                width: 1.1rem;
+                height: 1.1rem;
+                line-height: 1.1rem;
                 text-align: center;
                 color: $color-grey-background;
 
                 .num {
                     font-size: $font-size-medium;
                 }
+            }
+
+            .cover {
+                margin-right: .2rem;
+                width: 1.1rem;
+                border-radius: 4px;
+                @include bg-coverAndCenter();
             }
 
             .container {
@@ -129,7 +141,7 @@
 
                 .name {
                     font-weight: normal;
-                    font-size: $font-size-medium;
+                    font-size: $font-size-medium-s;
                     @include no-wrap();
                 }
 
@@ -145,7 +157,7 @@
                 flex-shrink: 0;
                 width: 1rem;
                 height: 1rem;
-                line-height: 1.2rem;
+                line-height: 1.1rem;
                 text-align: center;
 
                 .download {
