@@ -162,13 +162,13 @@
 
   export default {
     mounted() {
-      this.initScroll();
+      this._initScroll();
     },
     data() {
       return {}
     },
     methods: {
-      initScroll() {
+      _initScroll() {
         new BScroll(this.$refs.myScroller, {
           scrollY: false,
           scrollX: true
