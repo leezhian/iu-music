@@ -201,7 +201,6 @@
       }
 
       .recordBox {
-        margin-top: .2rem;
         border-top: 5px solid $color-html-background;
       }
     }

@@ -23,7 +23,7 @@
 
             <div class="me-scrollbar" ref="myScroller">
               <ul class="me-box">
-                <li class="me-item">
+                <li class="me-item" @click="handleJump('audition')">
                   <div class="shadow">
                     <div class="center">
                       <div class="icon icon-audition"></div>
@@ -33,7 +33,8 @@
                 </li>
 
                 <li class="me-item"
-                    :style="{backgroundImage: 'url(http://d.paper.i4.cn/max/2016/12/28/14/1482908345995_299323.jpeg)'}">
+                    :style="{backgroundImage: 'url(http://d.paper.i4.cn/max/2016/12/28/14/1482908345995_299323.jpeg)'}"
+                    @click="handleJump('like')">
                   <div class="shadow">
                     <div class="center">
                       <div class="icon icon-like"></div>

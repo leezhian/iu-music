@@ -86,8 +86,10 @@
   @import "static/scss/mixin.scss";
 
   .container {
+    padding-bottom: .2rem;
     width: 100%;
     overflow: hidden;
+    background-color: $color-background;
   }
 
   .cover-box {

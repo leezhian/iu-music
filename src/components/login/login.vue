@@ -22,6 +22,10 @@
             <p class="btn">获取验证码</p>
           </div>
           <p class="forget" v-show="route === 'login'" @click="changeRouter('forget')">忘记密码？</p>
+
+          <div class="submit-btn" v-show="route === 'login'">登录</div>
+          <div class="submit-btn" v-show="route === 'register'">注册</div>
+          <div class="submit-btn" v-show="route === 'forget'">确认</div>
         </div>
       </div>
 
@@ -29,7 +33,7 @@
 
         <div class="btn-box">
           <div class="btn-con"
-               v-show="route === 'login' || route === 'index'"
+               v-show="route === 'index'"
                @click="changeRouter('login')">
             <i class="icon-circleRight"></i>
             <span class="text">登录</span>
@@ -37,7 +41,7 @@
         </div>
 
         <div class="btn-box"
-             v-show="route === 'register' || route === 'index'"
+             v-show="route === 'index'"
              @click="changeRouter('register')">
           <div class="btn-con">
             <i class="icon-circleRight"></i>
@@ -176,6 +180,18 @@
           font-size: $font-size-medium-x;
           color: $color-text-white;
         }
+      }
+
+      .submit-btn {
+        margin-top: 1rem;
+        width: 100%;
+        height: 1rem;
+        line-height: 1rem;
+        border-radius: .1rem;
+        text-align: center;
+        font-size: $font-size-medium;
+        color: $color-text-white;
+        background-color: $color-text-theme;
       }
 
       .forget {

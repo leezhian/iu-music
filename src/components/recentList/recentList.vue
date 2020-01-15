@@ -41,14 +41,6 @@
                     {
                         id: 1,
                         title: '歌曲'
-                    },
-                    {
-                        id: 2,
-                        title: '专辑'
-                    },
-                    {
-                        id: 3,
-                        title: '歌单'
                     }
                 ],
                 navActiveId: 1,
@@ -113,7 +105,7 @@
 
     .nav {
         display: flex;
-        justify-content: center;
+        /*justify-content: center;*/
         align-items: center;
         width: 100%;
         height: .8rem;
@@ -121,7 +113,9 @@
 
         .item {
             position: relative;
-            flex-grow: 1;
+            /*flex-grow: 1;*/
+            flex-shrink: 0;
+            width: 1.6rem;
             height: 100%;
             line-height: .8rem;
             text-align: center;
