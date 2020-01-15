@@ -16,6 +16,9 @@ import './static/scss/reset.scss';
 // 懒加载
 import VueLazyload from "vue-lazyload";
 import loadImg from 'static/images/default.jpg';
+// 加密
+import rsa from 'static/js/rsa';
+rsa.install(Vue);
 
 fastclick.attach(document.body);
 

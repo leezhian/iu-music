@@ -4,8 +4,8 @@
       <div>
         <div class="header">
           <div class="avatar"></div>
-          <router-link to="/login" tag="div" class="login-btn">未登录</router-link>
-          <div class="info" v-show="false">
+          <router-link to="/login" tag="div" class="login-btn" v-if="!isLogin">未登录</router-link>
+          <div class="info" v-if="isLogin">
             <p class="name">IU</p>
           </div>
 

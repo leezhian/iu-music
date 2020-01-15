@@ -12,18 +12,30 @@
       <div class="login-wrapper">
         <div v-show="route !== 'index'">
           <div class="input-box">
-            <input class="input" type="text" placeholder="请输入手机号" maxlength="11">
+            <input class="input"
+                   type="text"
+                   placeholder="请输入手机号"
+                   maxlength="11"
+                   v-model="phone">
           </div>
           <div class="input-box">
-            <input class="input" type="password" placeholder="请输入密码" maxlength="16">
+            <input class="input"
+                   type="password"
+                   placeholder="请输入密码"
+                   maxlength="16"
+                   v-model="password">
           </div>
           <div class="input-box" v-show="route === 'register' || route === 'forget'">
-            <input class="input" type="text" placeholder="请输入验证码" maxlength="6">
+            <input class="input"
+                   type="text"
+                   placeholder="请输入验证码"
+                   maxlength="6"
+                   v-model="code">
             <p class="btn">获取验证码</p>
           </div>
           <p class="forget" v-show="route === 'login'" @click="changeRouter('forget')">忘记密码？</p>
 
-          <div class="submit-btn" v-show="route === 'login'">登录</div>
+          <div class="submit-btn" v-show="route === 'login'" @click="checkParams">登录</div>
           <div class="submit-btn" v-show="route === 'register'">注册</div>
           <div class="submit-btn" v-show="route === 'forget'">确认</div>
         </div>
@@ -65,18 +77,85 @@
   import {mapMutations} from 'vuex';
   import {SET_USER_TOKEN} from 'store/mutation-types';
 
+  import {login} from 'api/login';
+
+  const phoneRE = /^(13[0-9]|14[5|7]|15[0|1|2|3|4|5|6|7|8|9]|18[0|1|2|3|5|6|7|8|9])\d{8}$/;
+  const pwdRE = /^[a-zA-Z]\w{5,15}$/;
+  const codeRE = /^[0-9]*$/;
+
   export default {
     data() {
       return {
         route: 'index', // index 默认 login登录 register 注册 forget 忘了密码
+        phone: null,
+        password: null,
+        code: null
       }
     },
     methods: {
+      /**
+       * 返回
+       */
       handleBack() {
         this.$router.go(-1);
       },
+      // 改变路由
       changeRouter(route) {
+        // 重置
+        this.phone = this.password = this.code = null;
         this.route = route;
+      },
+      // 检查参数
+      checkParams() {
+        if (this.route == 'index') {
+          return;
+        }
+
+        if (!this.phone || this.phone.trim() == '') {
+          this.$toast('手机号不许为空');
+          return;
+        }
+
+        if (!phoneRE.test(this.phone)) {
+          this.$toast('请输入正确的手机号');
+          return;
+        }
+
+        if (!this.password || this.password.trim() == '') {
+          this.$toast('密码不许为空');
+          return;
+        }
+
+        if (!pwdRE.test(this.password)) {
+          this.$toast('密码必须以字母开头，长度在6~16之间，只能包含字母、数字和下划线');
+          return;
+        }
+
+        if (this.route == 'login') {
+          this.handleLogin();
+        } else {
+          if (!this.code || this.code.trim() == '') {
+            this.$toast('验证码不许为空');
+            return;
+          }
+
+          if (!codeRE.test(this.code)) {
+            this.$toast('请输入正确的验证码');
+            return;
+          }
+        }
+      },
+      // 登录
+      handleLogin() {
+        let pwd = this.password
+        pwd = this.$rsa.encrypt(pwd);
+        const data = {
+          type: 100,
+          phone: this.phone,
+          password: pwd
+        }
+
+        login(data);
       },
       ...mapMutations({
         setUserToken: SET_USER_TOKEN
