@@ -68,7 +68,7 @@
           </div>
           <!--我的音乐 end-->
           <!--歌单 start-->
-          <div class="playlist-wrapper">
+          <div class="playlist-wrapper" v-if="isLogin">
             <div class="head-box">
               <p class="title">创建歌单<span>1</span></p>
               <p class="title inactive">收藏歌单<span>0</span></p>
@@ -133,7 +133,7 @@
           </div>
         </div>
 
-        <div class="footer">
+        <div class="footer" v-if="isLogin">
           <div class="logout">退出登录</div>
         </div>
       </div>
@@ -159,14 +159,23 @@
   import ScrollBar from '@better-scroll/scroll-bar';
   import Scroll from 'common/scroll/scroll';
 
+  import {mapGetters, mapMutations} from 'vuex';
+
   BScroll.use(ScrollBar);
 
   export default {
+    created() {
+      if (this.userToken) {
+        this.isLogin = true;
+      }
+    },
     mounted() {
       this._initScroll();
     },
     data() {
-      return {}
+      return {
+        isLogin: false
+      }
     },
     methods: {
       _initScroll() {
@@ -179,10 +188,13 @@
         this.$router.push({
           path: `/user/${route}`
         });
-      }
+      },
     },
     components: {
       Scroll
+    },
+    computed: {
+      ...mapGetters(['userToken'])
     }
   }
 </script>

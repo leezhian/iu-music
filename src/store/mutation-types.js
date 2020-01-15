@@ -13,3 +13,5 @@ export const SET_PLAY_MODE = 'set_play_mode';
 export const SET_CURRENT_INDEX = 'set_current_index';
 
 export const SET_CURRENT_LYRIC = 'set_current_lyric';
+
+export const SET_USER_TOKEN = 'set_user_token';

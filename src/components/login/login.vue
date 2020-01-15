@@ -62,6 +62,9 @@
 </template>
 
 <script>
+  import {mapMutations} from 'vuex';
+  import {SET_USER_TOKEN} from 'store/mutation-types';
+
   export default {
     data() {
       return {
@@ -74,7 +77,10 @@
       },
       changeRouter(route) {
         this.route = route;
-      }
+      },
+      ...mapMutations({
+        setUserToken: SET_USER_TOKEN
+      })
     }
   }
 </script>

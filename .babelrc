@@ -18,6 +18,14 @@
         "regenerator": true,
         "useESModules": false
       }
+    ],
+    [
+      "import",
+      {
+        "libraryName": "vant",
+        "libraryDirectory": "es",
+        "style": true
+      }
     ]
   ]
 }

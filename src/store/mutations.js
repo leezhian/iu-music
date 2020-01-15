@@ -25,6 +25,9 @@ const mutations = {
     [types.SET_CURRENT_LYRIC](state, lyricObj) {
         state.playlist[lyricObj.index].lyric = lyricObj.data.lyric;
     },
+    [types.SET_USER_TOKEN](state, token) {
+        state.token = token;
+    }
 };
 
 export default mutations;

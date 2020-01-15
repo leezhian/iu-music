@@ -1,6 +1,7 @@
 import {playMode} from 'static/js/config';
 
 const state = {
+    token: localStorage.getItem("token"),
     recordDetail: {}, // 专辑或歌单详情
     isPlay: false, // 是否处于播放
     fullPlayer: false, // 是否处于全屏播放器

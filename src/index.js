@@ -1,6 +1,8 @@
 import 'static/js/replaceFontSize';
 
 import Vue from 'vue';
+import {Toast} from 'vant';
+Vue.use(Toast);
 
 Vue.config.devtools = true; // 用于调试
 
@@ -18,12 +20,12 @@ import loadImg from 'static/images/default.jpg';
 fastclick.attach(document.body);
 
 Vue.use(VueLazyload, {
-    loading: loadImg
+  loading: loadImg
 });
 
 new Vue({
-    el: '#app',
-    render: h => h(App),
-    store,
-    router
+  el: '#app',
+  render: h => h(App),
+  store,
+  router
 });

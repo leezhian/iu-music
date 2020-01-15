@@ -15,3 +15,6 @@ export const currentIndex = state => state.currentIndex;
 export const currentSong = (state) => {
     return state.playlist[state.currentIndex] || {}
 };
+
+// 获取用户token
+export const userToken = state => state.token;
