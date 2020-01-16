@@ -157,7 +157,9 @@
 
         login(data).then(res => {
           if (res.code == 200) {
-            // localStorage.setItem('token', res.data.token);
+            // 保存到本地
+            localStorage.setItem('token', res.data.token);
+            // 设置state
             this.setUserToken(res.data.token);
             this.setUserInfo(res.data.info);
             this.$router.push({

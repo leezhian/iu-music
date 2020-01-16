@@ -3,7 +3,7 @@
     <scroll class="user-content" :bounce-top="false" :bounce-bottom="false" :watch-data="[1,2]">
       <div>
         <div class="header">
-          <div class="avatar"></div>
+          <div class="avatar" :style="{backgroundImage: `url(${this.isLogin ? this.userInfo.avatar : ''})`}"></div>
           <router-link to="/login" tag="div" class="login-btn" v-if="!isLogin">未登录</router-link>
           <div class="info" v-if="isLogin">
             <p class="name">{{this.userInfo.username}}</p>
@@ -156,17 +156,27 @@
 
 <script>
   import BScroll from '@better-scroll/core';
-  import ScrollBar from '@better-scroll/scroll-bar';
+  // import ScrollBar from '@better-scroll/scroll-bar';
   import Scroll from 'common/scroll/scroll';
+  import {mapMutations, mapGetters} from 'vuex';
+  import {getUserInfo} from 'api/user';
+  import {SET_USER_INFO} from 'store/mutation-types';
 
-  import {mapGetters} from 'vuex';
-
-  BScroll.use(ScrollBar);
+  // BScroll.use(ScrollBar);
 
   export default {
     created() {
+      // 判断是否登录
       if (this.userToken) {
         this.isLogin = true;
+        // 刷新页面数据
+        setTimeout(() => {
+          getUserInfo(this.userInfo.id).then(res => {
+            if (res.code == 200) {
+              this.setUserInfo(res.data);
+            }
+          });
+        }, 500);
       }
     },
     mounted() {
@@ -189,6 +199,9 @@
           path: `/user/${route}`
         });
       },
+      ...mapMutations({
+        setUserInfo: SET_USER_INFO
+      })
     },
     components: {
       Scroll
@@ -233,6 +246,7 @@
       height: 1rem;
       border-radius: 50%;
       background-color: $color-text-grey;
+      @include bg-coverAndCenter();
     }
 
     .info {
