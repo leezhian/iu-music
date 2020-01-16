@@ -75,7 +75,7 @@
 
 <script>
   import {mapMutations} from 'vuex';
-  import {SET_USER_TOKEN} from 'store/mutation-types';
+  import {SET_USER_TOKEN, SET_USER_INFO} from 'store/mutation-types';
 
   import {login} from 'api/login';
 
@@ -155,10 +155,20 @@
           password: pwd
         }
 
-        login(data);
+        login(data).then(res => {
+          if (res.code == 200) {
+            // localStorage.setItem('token', res.data.token);
+            this.setUserToken(res.data.token);
+            this.setUserInfo(res.data.info);
+            this.$router.push({
+              path: `/user`
+            });
+          }
+        });
       },
       ...mapMutations({
-        setUserToken: SET_USER_TOKEN
+        setUserToken: SET_USER_TOKEN,
+        setUserInfo: SET_USER_INFO,
       })
     }
   }

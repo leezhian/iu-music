@@ -18,3 +18,5 @@ export const currentSong = (state) => {
 
 // 获取用户token
 export const userToken = state => state.token;
+
+export const userInfo = state => state.userInfo;

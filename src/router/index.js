@@ -20,6 +20,8 @@ const router = new Router({
             redirect: '/recommend',
             meta: {
                 title: '推荐',
+                // 是否缓存
+                keepAlive: true
             }
         },
         {
@@ -28,6 +30,7 @@ const router = new Router({
             component: Recommend,
             meta: {
                 title: '推荐',
+                keepAlive: true
             },
             children: [
                 {
@@ -49,6 +52,7 @@ const router = new Router({
             component: Album,
             meta: {
                 title: '专辑',
+                keepAlive: true
             },
             children: [
                 {
@@ -63,6 +67,7 @@ const router = new Router({
             component: RankingList,
             meta: {
                 title: '排行榜',
+                keepAlive: true
             }
         },
         {
@@ -75,7 +80,8 @@ const router = new Router({
             children: [
                 {
                     path: ':type',
-                    component: RecentList
+                    component: RecentList,
+                    keepAlive: false
                 }
             ]
         },
@@ -85,6 +91,7 @@ const router = new Router({
             component: Login,
             meta: {
                 title: '登录与注册',
+                keepAlive: true
             }
         },
         {

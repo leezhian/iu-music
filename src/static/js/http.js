@@ -44,11 +44,13 @@ function request(type, option) {
     // 接口返回数据执行
     axiosPromise.then(response => {
       let data = response.data;
-      if (data.code != 200) {
-        Toast(data.message);
-      }
       resolve(data);
     }).catch(error => {
+      const errData = error.response.data;
+      // 错误提示
+      if (error.response.status != 200) {
+          Toast(errData.message);
+      }
       // 错误处理
       reject(error);
     });

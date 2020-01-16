@@ -6,7 +6,7 @@
           <div class="avatar"></div>
           <router-link to="/login" tag="div" class="login-btn" v-if="!isLogin">未登录</router-link>
           <div class="info" v-if="isLogin">
-            <p class="name">IU</p>
+            <p class="name">{{this.userInfo.username}}</p>
           </div>
 
           <div class="vip-box">
@@ -159,7 +159,7 @@
   import ScrollBar from '@better-scroll/scroll-bar';
   import Scroll from 'common/scroll/scroll';
 
-  import {mapGetters, mapMutations} from 'vuex';
+  import {mapGetters} from 'vuex';
 
   BScroll.use(ScrollBar);
 
@@ -174,7 +174,7 @@
     },
     data() {
       return {
-        isLogin: false
+        isLogin: false,
       }
     },
     methods: {
@@ -194,7 +194,7 @@
       Scroll
     },
     computed: {
-      ...mapGetters(['userToken'])
+      ...mapGetters(['userToken', 'userInfo'])
     }
   }
 </script>
