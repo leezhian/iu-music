@@ -36,8 +36,8 @@
           <p class="forget" v-show="route === 'login'" @click="changeRouter('forget')">忘记密码？</p>
 
           <div class="submit-btn" v-show="route === 'login'" @click="checkParams">登录</div>
-          <div class="submit-btn" v-show="route === 'register'">注册</div>
-          <div class="submit-btn" v-show="route === 'forget'">确认</div>
+          <div class="submit-btn" v-show="route === 'register'" @click="checkParams">注册</div>
+          <div class="submit-btn" v-show="route === 'forget'" @click="checkParams">确认</div>
         </div>
       </div>
 
@@ -77,7 +77,7 @@
   import {mapMutations} from 'vuex';
   import {SET_USER_TOKEN, SET_USER_INFO} from 'store/mutation-types';
 
-  import {login} from 'api/login';
+  import {login, forgetPwd, register} from 'api/login';
 
   const phoneRE = /^(13[0-9]|14[5|7]|15[0|1|2|3|4|5|6|7|8|9]|18[0|1|2|3|5|6|7|8|9])\d{8}$/;
   const pwdRE = /^[a-zA-Z]\w{5,15}$/;
@@ -143,6 +143,12 @@
             this.$toast('请输入正确的验证码');
             return;
           }
+
+          if (this.route == 'forget') {
+            this.handleForget();
+          } else {
+            this.handleRegister();
+          }
         }
       },
       // 登录
@@ -165,6 +171,39 @@
             this.$router.push({
               path: `/user`
             });
+          }
+        });
+      },
+      handleRegister() {
+        let pwd = this.password
+        pwd = this.$rsa.encrypt(pwd);
+        const data = {
+          phone: this.phone,
+          password: pwd,
+          code: this.code
+        }
+
+        register(data).then(res => {
+          if (res.code == 200) {
+            this.phone = this.password = this.code = null;
+            this.$toast(res.message);
+          }
+        });
+      },
+      // 忘记密码
+      handleForget() {
+        let pwd = this.password
+        pwd = this.$rsa.encrypt(pwd);
+        const data = {
+          phone: this.phone,
+          password: pwd,
+          code: this.code
+        }
+
+        forgetPwd(data).then(res => {
+          if (res.code == 200) {
+            this.phone = this.password = this.code = null;
+            this.$toast(res.message);
           }
         });
       },
