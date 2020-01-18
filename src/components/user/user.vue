@@ -3,10 +3,12 @@
     <scroll class="user-content" :bounce-top="false" :bounce-bottom="false" :watch-data="[1,2]">
       <div>
         <div class="header">
-          <div class="avatar" :style="{backgroundImage: `url(${this.isLogin ? this.userInfo.avatar : ''})`}"></div>
+          <div class="avatar"
+               @click="linkToInfo"
+               :style="{backgroundImage: `url(${this.isLogin ? this.userInfo.avatar : ''})`}"></div>
           <router-link to="/login" tag="div" class="login-btn" v-if="!isLogin">未登录</router-link>
           <div class="info" v-if="isLogin">
-            <p class="name">{{this.userInfo.username}}</p>
+            <p class="name" @click="linkToInfo">{{this.userInfo.username}}</p>
           </div>
 
           <div class="vip-box">
@@ -156,13 +158,10 @@
 
 <script>
   import BScroll from '@better-scroll/core';
-  // import ScrollBar from '@better-scroll/scroll-bar';
   import Scroll from 'common/scroll/scroll';
   import {mapMutations, mapGetters} from 'vuex';
   import {getUserInfo} from 'api/user';
   import {SET_USER_INFO} from 'store/mutation-types';
-
-  // BScroll.use(ScrollBar);
 
   export default {
     created() {
@@ -188,6 +187,7 @@
       }
     },
     methods: {
+      // 初始化滚动
       _initScroll() {
         new BScroll(this.$refs.myScroller, {
           scrollY: false,
@@ -197,6 +197,15 @@
       handleJump(route) {
         this.$router.push({
           path: `/user/${route}`
+        });
+      },
+      // 跳转到个人信息页
+      linkToInfo() {
+        if (!this.isLogin) {
+          return;
+        }
+        this.$router.push({
+          path: `/user/info`
         });
       },
       ...mapMutations({

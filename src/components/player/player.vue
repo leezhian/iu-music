@@ -200,6 +200,7 @@
       // 当音乐准备好会自动触发
       canReady(e) {
         this.songReady = true;
+        // 获取歌曲长度
         // console.log(this.$refs.audio.duration);
       },
       // 音乐播放完自动触发

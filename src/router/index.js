@@ -9,6 +9,7 @@ import Login from 'components/login/login';
 
 import recordDetail from 'components/recordDetail/recordDetail';
 import RecentList from 'components/recentList/recentList';
+import Info from 'components/info/info';
 import Error from 'components/error/error';
 
 Vue.use(Router);
@@ -76,12 +77,16 @@ const router = new Router({
             component: User,
             meta: {
                 title: '我的',
+                keepAlive: false
             },
             children: [
                 {
+                    path: 'info',
+                    component: Info
+                },
+                {
                     path: ':type',
-                    component: RecentList,
-                    keepAlive: false
+                    component: RecentList
                 }
             ]
         },
