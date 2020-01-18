@@ -136,7 +136,7 @@
         </div>
 
         <div class="footer" v-if="isLogin">
-          <div class="logout">退出登录</div>
+          <div class="logout" @click="logout">退出登录</div>
         </div>
       </div>
     </scroll>
@@ -161,7 +161,7 @@
   import Scroll from 'common/scroll/scroll';
   import {mapMutations, mapGetters} from 'vuex';
   import {getUserInfo} from 'api/user';
-  import {SET_USER_INFO} from 'store/mutation-types';
+  import {SET_USER_INFO, SET_USER_TOKEN} from 'store/mutation-types';
 
   export default {
     created() {
@@ -208,8 +208,26 @@
           path: `/user/info`
         });
       },
+      // 退出登录
+      logout() {
+        localStorage.removeItem('token');
+        const info = {
+          id: 0,
+          avatar: '',
+          username: '',
+          phone: '',
+          buyId: null,
+          likeId: null
+        }
+        // 重置用户信息和token
+        this.setUserInfo(info);
+        this.setToken(null);
+        // 重载页面
+        this.$router.go(0);
+      },
       ...mapMutations({
-        setUserInfo: SET_USER_INFO
+        setUserInfo: SET_USER_INFO,
+        setToken: SET_USER_TOKEN
       })
     },
     components: {
