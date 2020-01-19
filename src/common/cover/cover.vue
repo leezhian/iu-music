@@ -1,7 +1,8 @@
 <template>
     <div class="cover-wrap">
-        <div class="top" @click="goToBackHandle" :style="{'background-image': `url(${coverImg})`}" v-if="hasBack">
-            <i class="goToBack icon-back"></i>
+        <div class="top" :style="{'background-image': `url(${coverImg})`}" v-if="hasBack">
+            <i class="icon icon-back" @click="goToBackHandle"></i>
+            <i class="icon icon-like"></i>
         </div>
         <slot>
             <!--            <div class="container">-->
@@ -51,6 +52,9 @@
     }
 
     .top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
         position: absolute;
         left: 0;
         top: 0;
@@ -61,7 +65,7 @@
         background-repeat: no-repeat;
         background-position: top;
 
-        .goToBack {
+        .icon {
             display: block;
             width: .8rem;
             height: .8rem;

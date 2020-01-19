@@ -72,8 +72,10 @@
           <!--歌单 start-->
           <div class="playlist-wrapper" v-if="isLogin">
             <div class="head-box">
-              <p class="title">创建歌单<span>1</span></p>
-              <p class="title inactive">收藏歌单<span>0</span></p>
+              <p :class="['title', {'inactive': switchPlaylistType != 'me'}]" @click="switchPlaylist('me')">
+                创建歌单<span>1</span></p>
+              <p :class="['title', {'inactive': switchPlaylistType != 'like'}]" @click="switchPlaylist('like')">
+                收藏歌单<span>0</span></p>
             </div>
 
             <ul class="playlist-box">
@@ -184,6 +186,7 @@
     data() {
       return {
         isLogin: false,
+        switchPlaylistType: 'me', // me 我的 like 收藏歌单
       }
     },
     methods: {
@@ -193,6 +196,14 @@
           scrollY: false,
           scrollX: true
         });
+      },
+      // 切换歌单类型
+      switchPlaylist(type) {
+        if (type == this.switchPlaylistType) {
+          return;
+        }
+
+        this.switchPlaylistType = type;
       },
       handleJump(route) {
         this.$router.push({
