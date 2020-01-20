@@ -175,7 +175,7 @@
         this.isLogin = true;
         // 刷新页面数据
         setTimeout(() => {
-          getUserInfo(this.userInfo.id).then(res => {
+          getUserInfo().then(res => {
             if (res.code == 200) {
               this.setUserInfo(res.data);
             }

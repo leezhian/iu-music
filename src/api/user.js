@@ -1,8 +1,8 @@
 import {_get, _post} from 'static/js/http';
 
 // 获取用户信息
-export async function getUserInfo(uid) {
-  const res = await _get({url: '/v1/user/info.do', data: {id: uid}});
+export async function getUserInfo() {
+  const res = await _get({url: '/v1/user/info.do'});
   return res;
 }
 
