@@ -2,7 +2,7 @@
     <div class="cover-wrap">
         <div class="top" :style="{'background-image': `url(${coverImg})`}" v-if="hasBack">
             <i class="icon icon-back" @click="goToBackHandle"></i>
-            <i class="icon icon-like"></i>
+            <i class="icon icon-like like"></i>
         </div>
         <slot>
             <!--            <div class="container">-->
@@ -74,6 +74,10 @@
             text-align: center;
             line-height: .8rem;
             color: $color-icon-default;
+
+            &.icon-like.like {
+                color: $color-text-theme;
+            }
         }
     }
 

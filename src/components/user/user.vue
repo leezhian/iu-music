@@ -162,8 +162,11 @@
   import BScroll from '@better-scroll/core';
   import Scroll from 'common/scroll/scroll';
   import {mapMutations, mapGetters} from 'vuex';
+
   import {getUserInfo} from 'api/user';
   import {SET_USER_INFO, SET_USER_TOKEN} from 'store/mutation-types';
+
+  import {resetUserInfo} from 'static/js/utils';
 
   export default {
     created() {
@@ -222,16 +225,8 @@
       // 退出登录
       logout() {
         localStorage.removeItem('token');
-        const info = {
-          id: 0,
-          avatar: '',
-          username: '',
-          phone: '',
-          buyId: null,
-          likeId: null
-        }
         // 重置用户信息和token
-        this.setUserInfo(info);
+        resetUserInfo();
         this.setToken(null);
         // 重载页面
         this.$router.go(0);
