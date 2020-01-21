@@ -18,3 +18,14 @@ export async function getMyPlaylist() {
   return res
 }
 
+// 获取收藏的歌单或专辑
+export async function getRecordList(type) {
+  const res = await _get({url: '/v1/user/getRecordList.do', data: {type}});
+  return res;
+}
+
+// 获取我喜欢的
+export async function getLikeSongs() {
+  const res = await _get({url: '/v1/user/getLikeSongs.do'});
+  return res;
+}

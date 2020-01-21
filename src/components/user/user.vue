@@ -75,11 +75,11 @@
               <p :class="['title', {'inactive': switchPlaylistType != 'me'}]" @click="switchPlaylist('me')">
                 创建歌单<span>{{myPlaylist.length}}</span></p>
               <p :class="['title', {'inactive': switchPlaylistType != 'like'}]" @click="switchPlaylist('like')">
-                收藏歌单<span>0</span></p>
+                收藏歌单<span>{{likePlaylist.length}}</span></p>
             </div>
 
             <ul class="playlist-box">
-              <li class="playlist-item" v-for="item in myPlaylist" :key="item.id">
+              <li class="playlist-item" v-for="item in getList" :key="item.id">
                 <div class="item-img" :style="{backgroundImage: `url(${item.cover})`}"></div>
                 <div class="info-box">
                   <p class="name">{{item.recordName}}</p>
@@ -140,7 +140,7 @@
   import {mapMutations, mapGetters} from 'vuex';
   import _ from 'lodash';
 
-  import {getUserInfo, getMyPlaylist} from 'api/user';
+  import {getUserInfo, getMyPlaylist, getRecordList} from 'api/user';
   import {SET_USER_INFO, SET_USER_TOKEN} from 'store/mutation-types';
 
   import {resetUserInfo} from 'static/js/utils';
@@ -170,6 +170,18 @@
               });
             }
           });
+
+          getRecordList(2).then(res => {
+            if (res.code == 200) {
+              this.likePlaylist = res.data || [];
+              _.forEach(this.likePlaylist, (value) => {
+                if (!value.songIds) {
+                  return;
+                }
+                value.songIds = value.songIds.split(',');
+              });
+            }
+          });
         }, 500);
       }
     },
@@ -181,6 +193,7 @@
         isLogin: false,
         switchPlaylistType: 'me', // me 我的 like 收藏歌单
         myPlaylist: [], // 我创建的歌单
+        likePlaylist: [], // 收藏的歌单
       }
     },
     methods: {
@@ -231,6 +244,10 @@
       Scroll
     },
     computed: {
+      // 计算渲染哪个列表
+      getList() {
+        return this.switchPlaylistType == 'me' ? this.myPlaylist : this.likePlaylist;
+      },
       ...mapGetters(['userToken', 'userInfo'])
     }
   }
