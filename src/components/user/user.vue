@@ -73,45 +73,21 @@
           <div class="playlist-wrapper" v-if="isLogin">
             <div class="head-box">
               <p :class="['title', {'inactive': switchPlaylistType != 'me'}]" @click="switchPlaylist('me')">
-                创建歌单<span>1</span></p>
+                创建歌单<span>{{myPlaylist.length}}</span></p>
               <p :class="['title', {'inactive': switchPlaylistType != 'like'}]" @click="switchPlaylist('like')">
                 收藏歌单<span>0</span></p>
             </div>
 
             <ul class="playlist-box">
-              <li class="playlist-item">
-                <div class="item-img"></div>
+              <li class="playlist-item" v-for="item in myPlaylist" :key="item.id">
+                <div class="item-img" :style="{backgroundImage: `url(${item.cover})`}"></div>
                 <div class="info-box">
-                  <p class="name">IUUU~~~</p>
-                  <p class="total"><span>0</span> 首</p>
+                  <p class="name">{{item.recordName}}</p>
+                  <p class="total"><span>{{item.songIds ? item.songIds.length : 0}}</span> 首</p>
                 </div>
               </li>
 
-              <li class="playlist-item">
-                <div class="item-img"></div>
-                <div class="info-box">
-                  <p class="name">IUUU~~~</p>
-                  <p class="total"><span>0</span> 首</p>
-                </div>
-              </li>
-
-              <li class="playlist-item">
-                <div class="item-img"></div>
-                <div class="info-box">
-                  <p class="name">IUUU~~~</p>
-                  <p class="total"><span>0</span> 首</p>
-                </div>
-              </li>
-
-              <li class="playlist-item">
-                <div class="item-img"></div>
-                <div class="info-box">
-                  <p class="name">IUUU~~~</p>
-                  <p class="total"><span>0</span> 首</p>
-                </div>
-              </li>
-
-              <li class="playlist-item">
+              <li class="playlist-item" v-show="switchPlaylistType == 'me'">
                 <div class="item-img icon icon-add"></div>
                 <div class="info-box">
                   <p class="name">新建歌单</p>
@@ -162,8 +138,9 @@
   import BScroll from '@better-scroll/core';
   import Scroll from 'common/scroll/scroll';
   import {mapMutations, mapGetters} from 'vuex';
+  import _ from 'lodash';
 
-  import {getUserInfo} from 'api/user';
+  import {getUserInfo, getMyPlaylist} from 'api/user';
   import {SET_USER_INFO, SET_USER_TOKEN} from 'store/mutation-types';
 
   import {resetUserInfo} from 'static/js/utils';
@@ -180,6 +157,19 @@
               this.setUserInfo(res.data);
             }
           });
+
+          getMyPlaylist().then(res => {
+            if (res.code == 200) {
+              this.myPlaylist = res.data;
+              // 把songIds转为数组
+              _.forEach(this.myPlaylist, (value) => {
+                if (!value.songIds) {
+                  return;
+                }
+                value.songIds = value.songIds.split(',');
+              });
+            }
+          });
         }, 500);
       }
     },
@@ -190,6 +180,7 @@
       return {
         isLogin: false,
         switchPlaylistType: 'me', // me 我的 like 收藏歌单
+        myPlaylist: [], // 我创建的歌单
       }
     },
     methods: {
@@ -433,6 +424,7 @@
         height: 1.1rem;
         font-family: iconfont;
         background-color: $color-search-background;
+        @include bg-coverAndCenter();
 
         &.icon-add::before {
           position: absolute;
