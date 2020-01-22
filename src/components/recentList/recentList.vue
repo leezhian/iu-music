@@ -25,15 +25,22 @@
             :watch-data="songList"
             ref="list">
       <div>
-        <song-list :song-list="songList"></song-list>
+        <album-list :album-list="albumList" @handleClickAlbum="handleClickAlbum" v-if="routeType == 'collect'"></album-list>
+        <song-list :song-list="songList" v-else></song-list>
       </div>
     </scroll>
   </div>
 </template>
 
 <script>
+  import _ from "lodash";
+  import {mapMutations} from "vuex";
+
+  import {SET_RECORD_DETAIL} from 'store/mutation-types';
   import songList from "common/song-list/song-list";
-  import {getLikeSongs} from 'api/user';
+  import AlbumList from "common/album-list/album-list";
+  import {getLikeSongs, getRecordList} from 'api/user';
+
 
   export default {
     created() {
@@ -41,26 +48,11 @@
       switch (this.routeType) {
         case 'like':
           // 我喜欢的
-          getLikeSongs().then(res => {
-            if (res.code == 200) {
-              _.forEach(res.data, item => {
-                let singer = '';
-                if (item.singerList.length > 1) {
-                  _.forEach(item.singerList, value => {
-                    singer += value.singerName + '/';
-                  });
-                } else {
-                  singer = item.singerList[0].singerName + '/';
-                }
-                item.singer = singer.substring(0, singer.length - 1);
-              });
-
-              this.songList = res.data;
-            }
-          });
+          this._getLikeSongs();
           break;
         case 'collect':
           // 我的收藏
+          this._getRecordList();
           break;
         case 'audition':
           // 试听列表
@@ -77,6 +69,7 @@
         ],
         navActiveId: 1,
         songList: [], // 歌曲列表
+        albumList: [],
         routeType: ''
       }
     },
@@ -86,10 +79,62 @@
       },
       handleClickNav(navItem) {
         this.navActiveId = navItem.id;
-      }
+      },
+      // 点击专辑
+      handleClickAlbum(index) {
+        console.log(index);
+        const recordId = this.albumList[index].id;
+        this.$router.push({
+          path: `/album/${recordId}`,
+          query: {
+            recordtype: 1
+          }
+        });
+        // 修改store的数据
+        this.setRecordDetail(this.albumList[index]);
+      },
+      /**
+       * 处理返回数据
+       * @param data
+       */
+      handleSinger(data) {
+        _.forEach(data, item => {
+          let singer = '';
+          if (item.singerList.length > 1) {
+            _.forEach(item.singerList, value => {
+              singer += value.singerName + '/';
+            });
+          } else {
+            singer = item.singerList[0].singerName + '/';
+          }
+          item.singer = singer.substring(0, singer.length - 1);
+        });
+      },
+      // 获取我的喜欢
+      _getLikeSongs() {
+        getLikeSongs().then(res => {
+          if (res.code == 200) {
+            this.handleSinger(res.data);
+            this.songList = res.data;
+          }
+        });
+      },
+      // 获取我的收藏
+      _getRecordList() {
+        getRecordList(1).then(res => {
+          if (res.code == 200) {
+            this.handleSinger(res.data);
+            this.albumList = res.data;
+          }
+        });
+      },
+      ...mapMutations({
+        setRecordDetail: SET_RECORD_DETAIL
+      }),
     },
     components: {
-      songList
+      songList,
+      AlbumList
     }
   }
 </script>
