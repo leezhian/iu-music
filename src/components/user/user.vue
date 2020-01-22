@@ -57,7 +57,8 @@
                 </li>
 
                 <li class="me-item"
-                    :style="{backgroundImage: 'url(http://b-ssl.duitang.com/uploads/item/201707/26/20170726215335_GXna8.thumb.700_0.jpeg)'}">
+                    :style="{backgroundImage: 'url(http://b-ssl.duitang.com/uploads/item/201707/26/20170726215335_GXna8.thumb.700_0.jpeg)'}"
+                    @click="handleJump('collect')">
                   <div class="shadow">
                     <div class="center">
                       <div class="icon icon-star"></div>
@@ -79,11 +80,14 @@
             </div>
 
             <ul class="playlist-box">
-              <li class="playlist-item" v-for="item in getList" :key="item.id">
+              <li class="playlist-item"
+                  v-for="(item, index) in getList"
+                  :key="item.id"
+                  @click="handlePlaylist(index)">
                 <div class="item-img" :style="{backgroundImage: `url(${item.cover})`}"></div>
                 <div class="info-box">
                   <p class="name">{{item.recordName}}</p>
-                  <p class="total"><span>{{item.songIds ? item.songIds.length : 0}}</span> 首</p>
+                  <p class="total"><span>{{item.songsTotal ? item.songsTotal : 0}}</span> 首</p>
                 </div>
               </li>
 
@@ -118,18 +122,6 @@
         </div>
       </div>
     </scroll>
-
-    <!--            <div class="item" @click="handleJump('like')">-->
-    <!--                <div class="icon icon-noLike"></div>-->
-    <!--                <p class="title">我喜欢的</p>-->
-    <!--                <div class="icon icon-rightBack"></div>-->
-    <!--            </div>-->
-    <!--            <div class="item" @click="handleJump('lately')">-->
-    <!--                <div class="icon icon-lately"></div>-->
-    <!--                <p class="title">最近播放</p>-->
-    <!--                <div class="icon icon-rightBack"></div>-->
-    <!--            </div>-->
-
     <router-view></router-view>
   </div>
 </template>
@@ -141,7 +133,7 @@
   import _ from 'lodash';
 
   import {getUserInfo, getMyPlaylist, getRecordList} from 'api/user';
-  import {SET_USER_INFO, SET_USER_TOKEN} from 'store/mutation-types';
+  import {SET_USER_INFO, SET_USER_TOKEN, SET_RECORD_DETAIL} from 'store/mutation-types';
 
   import {resetUserInfo} from 'static/js/utils';
 
@@ -166,7 +158,7 @@
                 if (!value.songIds) {
                   return;
                 }
-                value.songIds = value.songIds.split(',');
+                value.songsTotal = value.songIds.split(',').length;
               });
             }
           });
@@ -178,7 +170,7 @@
                 if (!value.songIds) {
                   return;
                 }
-                value.songIds = value.songIds.split(',');
+                value.songsTotal = value.songIds.split(',').length;
               });
             }
           });
@@ -212,6 +204,23 @@
 
         this.switchPlaylistType = type;
       },
+      /**
+       * 点击歌单
+       * @param index 索引
+       */
+      handlePlaylist(index) {
+        // 根据类型选择列表
+        const recordList = this.switchPlaylistType == 'me' ? this.myPlaylist[index] : this.likePlaylist[index];
+        const recordId = recordList.id;
+        this.$router.push({
+          path: `/recommend/playlist/${recordId}`,
+          query: {
+            recordtype: 2 // 封面类型
+          }
+        });
+        // 修改store的数据
+        this.setRecordDetail(recordList);
+      },
       handleJump(route) {
         this.$router.push({
           path: `/user/${route}`
@@ -237,7 +246,8 @@
       },
       ...mapMutations({
         setUserInfo: SET_USER_INFO,
-        setToken: SET_USER_TOKEN
+        setToken: SET_USER_TOKEN,
+        setRecordDetail: SET_RECORD_DETAIL
       })
     },
     components: {
