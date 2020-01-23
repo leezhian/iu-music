@@ -12,7 +12,7 @@
             <p class="sing-name">{{currentSong.songName}}</p>
             <p class="singer">{{currentSong.singer}}</p>
           </div>
-          <div class="like-btn icon-like"></div>
+          <div :class="['like-btn', 'icon-like', {'like': currentSong.isLike}]"></div>
         </div>
 
         <div class="player-container"
@@ -531,7 +531,7 @@
       height: 100%;
       line-height: 1rem;
 
-      &.icon-like {
+      &.like {
         color: $color-text-theme;
       }
     }
