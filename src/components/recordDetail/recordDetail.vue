@@ -1,7 +1,7 @@
 <template>
     <transition name="player">
         <div class="record-page">
-            <cover :has-back="true" :cover-img="this.recordDetail.cover">
+            <cover :has-back="true" :cover-img="this.recordDetail.cover" :isLike="recordDetail.isLike">
                 <div class="container" :style="{'background-image': `url(${this.recordDetail.cover})`}" ref="bgImage">
                     <div class="info">
                         <h3 class="record-name">{{this.recordDetail.recordName}}</h3>
