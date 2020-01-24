@@ -49,6 +49,13 @@ export const setUsername = async function ({commit, state}, username) {
   return false;
 }
 
+/**
+ * 修改喜欢状态
+ * @param commit
+ * @param type 类型：1专辑 2歌单 3单曲
+ * @param likeId 喜欢的歌单专辑单曲id
+ * @returns {Promise<void>}
+ */
 export const updateLikeIds = async function({commit}, {type, likeId}){
   const res = await updateLike(type, likeId);
   if (res.code == 200) {
