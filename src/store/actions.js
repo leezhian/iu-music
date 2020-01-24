@@ -56,7 +56,11 @@ export const setUsername = async function ({commit, state}, username) {
  * @param likeId 喜欢的歌单专辑单曲id
  * @returns {Promise<void>}
  */
-export const updateLikeIds = async function({commit}, {type, likeId}){
+export const updateLikeIds = async function({commit, state}, {type, likeId}){
+  if (!state.token) {
+    Toast('请先登录');
+    return
+  }
   const res = await updateLike(type, likeId);
   if (res.code == 200) {
     commit(types.UPDATE_LIKE, type);
