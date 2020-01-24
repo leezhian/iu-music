@@ -1,8 +1,10 @@
 import * as types from './mutation-types';
-import {getLyric} from 'api/album';
-import {updateName} from 'api/user';
 import {Base64} from 'js-base64';
 import {Toast} from "vant";
+
+import {getLyric} from 'api/album';
+import {updateName} from 'api/user';
+import {updateLike} from 'api/current';
 
 export const selectPlay = function ({commit}, {list, index}) {
   commit(types.SET_PLAYLIST, list);
@@ -45,4 +47,11 @@ export const setUsername = async function ({commit, state}, username) {
     return true;
   }
   return false;
+}
+
+export const updateLikeIds = async function({commit}, {type, likeId}){
+  const res = await updateLike(type, likeId);
+  if (res.code == 200) {
+    commit(types.UPDATE_LIKE, type);
+  }
 }

@@ -2,7 +2,9 @@
   <div class="cover-wrap">
     <div class="top" :style="{'background-image': `url(${coverImg})`}" v-if="hasBack">
       <i class="icon icon-back" @click="goToBackHandle"></i>
-      <i :class="['icon', 'icon-like', {'like': isLike}]"></i>
+      <i v-if="likeIcon"
+         :class="['icon', 'icon-like', {'like': isLike}]"
+         @click="handleLike"></i>
     </div>
     <slot>
       <!--            <div class="container">-->
@@ -31,6 +33,11 @@
         type: Boolean,
         default: false
       },
+      // 是否有喜欢图标
+      likeIcon: {
+        type: Boolean,
+        default: false
+      },
       isLike: {
         type: Boolean,
         default: false
@@ -39,6 +46,10 @@
     methods: {
       goToBackHandle() {
         this.$router.go(-1);
+      },
+      // 点击喜欢图标
+      handleLike() {
+        this.$emit('handleLike');
       }
     }
   }

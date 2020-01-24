@@ -12,7 +12,7 @@
             <p class="sing-name">{{currentSong.songName}}</p>
             <p class="singer">{{currentSong.singer}}</p>
           </div>
-          <div :class="['like-btn', 'icon-like', {'like': currentSong.isLike}]"></div>
+          <div :class="['like-btn', 'icon-like', {'like': currentSong.isLike}]" @click="handleLike"></div>
         </div>
 
         <div class="player-container"
@@ -197,6 +197,10 @@
         const mode = (this.mode + 1) % 3;
         this.setPlayMode(mode);
       },
+      // 点击喜欢
+      handleLike() {
+        this.updateLikeIds({type: 3, likeId: this.currentSong.id});
+      },
       // 当音乐准备好会自动触发
       canReady(e) {
         this.songReady = true;
@@ -378,7 +382,8 @@
         this.$refs.progress.style.width = `${offsetWidth}px`;
       },
       ...mapActions({
-        setCurrentLyric: 'setLyric'
+        setCurrentLyric: 'setLyric',
+        updateLikeIds: 'updateLikeIds'
       }),
       ...mapMutations({
         setFullScreen: types.SET_FULL_SCREEN,

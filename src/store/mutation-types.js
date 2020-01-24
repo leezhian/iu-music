@@ -1,6 +1,6 @@
 export const SET_RECORD_DETAIL = 'set_record_detail';
 
-export const UPDATE_PLAY_STATE = 'up_play_state';
+export const UPDATE_PLAY_STATE = 'update_play_state';
 
 export const SET_FULL_SCREEN = 'set_full_screen';
 
@@ -17,3 +17,5 @@ export const SET_CURRENT_LYRIC = 'set_current_lyric';
 export const SET_USER_TOKEN = 'set_user_token';
 // 设置个人信息
 export const SET_USER_INFO = 'set_user_info';
+
+export const UPDATE_LIKE = 'update_like';
